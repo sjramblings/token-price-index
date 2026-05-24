@@ -1,0 +1,8 @@
+node_modules/
+dashboard/dist/
+dashboard/.vite/
+.DS_Store
+*.log
+data/_raw/
+.env*
+*.tsbuildinfo
