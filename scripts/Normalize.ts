@@ -55,7 +55,9 @@ async function main(): Promise<void> {
   const zeroContext = litellmResult.skipped.zeroContext + openrouterResult.skipped.zeroContext;
   const missingPrice = litellmResult.skipped.missingPrice + openrouterResult.skipped.missingPrice;
   const skipped = zeroContext + missingPrice;
-  const historyPath = `data/history/${todayISO()}.json`;
+  // Use the captured fetchedAt (not a second todayISO() call) so the run is atomically
+  // tied to one date across a UTC-midnight boundary. Codex P2 on PR #2.
+  const historyPath = `data/history/${fetchedAt}.json`;
 
   await writeJson('data/current.json', records);
   await writeJson(historyPath, records);

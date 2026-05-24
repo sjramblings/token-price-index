@@ -148,6 +148,16 @@ function formatNotes(summary: DiffSummary, currentSources: Map<string, string>):
   ].join('\n');
 }
 
+async function releaseExists(tag: string): Promise<boolean> {
+  const proc = Bun.spawn(['gh', 'release', 'view', tag], {
+    stdout: 'pipe',
+    stderr: 'pipe',
+  });
+  await new Response(proc.stdout).text();
+  await new Response(proc.stderr).text();
+  return (await proc.exited) === 0;
+}
+
 async function main(): Promise<void> {
   if (!(await Bun.file(DIFF_PATH).exists())) {
     console.error('[BuildRelease] diff.json missing -- run Diff.ts first');
@@ -167,6 +177,15 @@ async function main(): Promise<void> {
 
   if (dryRun) {
     console.log(`--- TAG ---\n${tag}\n--- NOTES ---\n${notes}`);
+    process.exit(0);
+  }
+
+  // Same-day retry guard. Diff counts are computed against the prior-day snapshot,
+  // so they stay non-zero on any same-day rerun. Without this, a successful release
+  // followed by a retry would call `gh release create` again with an existing tag.
+  // Codex P1 on PR #2.
+  if (await releaseExists(tag)) {
+    console.log(`[BuildRelease] release ${tag} already exists -- skipping (idempotent retry)`);
     process.exit(0);
   }
 
