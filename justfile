@@ -9,30 +9,31 @@ install:
     bun install
 
 # Fetch all sources, normalize to data/current.json, write daily snapshot, verify
+# Placeholder for PR #1; PR #2 will replace package script with real fetchers.
 refresh:
-    bun scripts/FetchLiteLLM.ts
-    bun scripts/FetchOpenRouter.ts
-    bun scripts/FetchBedrockRegional.ts
-    bun scripts/FetchAzureOpenAIRegional.ts
-    bun scripts/Normalize.ts
-    bun scripts/Verify.ts
+    bun run refresh
 
 # Run schema and invariant checks on data/current.json
+# Placeholder for PR #1; PR #2 will replace package script with real checks.
 verify:
-    bun scripts/Verify.ts
+    bun run verify
 
 # Cut a vYYYY.MM.DD GitHub Release if content changed (used by CI)
+# Placeholder for PR #1; PR #3 will replace package script with release automation.
 release:
-    bun scripts/BuildRelease.ts
+    echo 'PR #3 will fill this in'
 
 # Report whether a release would be cut, without cutting one
+# Placeholder for PR #1; PR #3 will replace package script with release automation.
 release-dryrun:
-    bun scripts/BuildRelease.ts --dry-run
+    echo 'PR #3 will fill this in'
 
 # Run the dashboard SPA in dev mode (Vite)
+# Placeholder for PR #1; PR #4 will add the dashboard package.
 dev:
-    cd dashboard && bun run dev
+    bun run dev
 
 # Build the dashboard SPA for GitHub Pages deployment
+# Placeholder for PR #1; PR #4 will add the dashboard package.
 build:
-    cd dashboard && bun run build
+    bun run build
