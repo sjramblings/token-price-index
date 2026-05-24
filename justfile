@@ -8,25 +8,21 @@ default:
 install:
     bun install
 
-# Fetch all sources, normalize to data/current.json, write daily snapshot, verify
-# Placeholder for PR #1; PR #2 will replace package script with real fetchers.
+# Fetch all sources, normalize to data/current.json, write daily snapshot, verify, diff
 refresh:
-    bun run refresh
+    bun scripts/FetchLiteLLM.ts && bun scripts/FetchOpenRouter.ts && bun scripts/Normalize.ts && bun scripts/Verify.ts && bun scripts/Diff.ts
 
 # Run schema and invariant checks on data/current.json
-# Placeholder for PR #1; PR #2 will replace package script with real checks.
 verify:
-    bun run verify
+    bun scripts/Verify.ts
 
 # Cut a vYYYY.MM.DD GitHub Release if content changed (used by CI)
-# Placeholder for PR #1; PR #3 will replace package script with release automation.
 release:
-    echo 'PR #3 will fill this in'
+    bun scripts/BuildRelease.ts
 
 # Report whether a release would be cut, without cutting one
-# Placeholder for PR #1; PR #3 will replace package script with release automation.
 release-dryrun:
-    echo 'PR #3 will fill this in'
+    bun scripts/BuildRelease.ts --dry-run
 
 # Run the dashboard SPA in dev mode (Vite)
 # Placeholder for PR #1; PR #4 will add the dashboard package.

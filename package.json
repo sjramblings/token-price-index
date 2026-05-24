@@ -14,8 +14,6 @@
     "url": "https://github.com/sjramblings/token-price-index/issues"
   },
   "scripts": {
-    "refresh": "echo 'PR #2 will fill this in'",
-    "verify": "echo 'PR #2 will fill this in'",
     "dev": "echo 'PR #4 will fill this in'",
     "build": "echo 'PR #4 will fill this in'"
   },
