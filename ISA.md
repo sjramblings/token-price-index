@@ -169,6 +169,18 @@ Ship a coupled F6+F7 increment that adds per-region Bedrock + Azure OpenAI prici
   - learned: never trust an external-API value space without probing the live response; the schema in upstream docs lags the production string set. The `tally inferenceType values` jq one-liner is the right artefact to keep — works for any vendor.
   - criterion now: ISC-9 + ISC-11 verification includes a `tally distinct inferenceType` step before accepting a normalizer as done.
 
+- 2026-05-25T07:30:00Z
+  - conjectured: a small allowlist of vendor names was sufficient to cover dotted-vendor prefix stripping in `extractFamily` — `anthropic|amazon|meta|mistral|cohere|ai21|stability|deepseek|writer` would catch every real Bedrock model ID.
+  - refuted by: Codex P1 review on PR #7 named three concrete misses — `openai.gpt-oss-120b`, `google.gemini-2.5-pro`, `qwen.qwen3-32b` — all real Bedrock-hosted families that fragmented away from their slash-form siblings (`openrouter/openai/gpt-oss-120b`, etc.). Tried a universal regex `^[a-z][a-z0-9_]*\.` and it ate `llama3.` from `ollama/llama3.1` (regression: family=1 reappeared).
+  - learned: vendor-prefix stripping is intrinsically allowlist work — any "model name starts with a vendor-shaped token" heuristic also matches "model name starts with the model's own letters before a version dot." The right shape is an explicit allowlist that grows as new third-party Bedrock vendors land. Anti-regression test for `ollama/llama3.1` now guards the boundary.
+  - criterion now: the allowlist must enumerate every vendor that appears with a dotted prefix in any source. New vendors require a one-line allowlist add + a test case. ISC-19 (no family="1") and the new convergence tests are the regression guards.
+
+- 2026-05-25T07:30:00Z
+  - conjectured: defaulting unknown Bedrock model names to `provider: 'amazon'` was acceptable because most unmatched Bedrock models would in fact be Amazon-owned.
+  - refuted by: Codex P2 review and the 2026-05-25 dataset itself — GLM, Llama, Mistral, and 80+ third-party model rows under `aws-pricelist` were silently mislabelled as Amazon-owned because the keyword list didn't cover them.
+  - learned: the right fallback for an unknown classification is `'unknown'`, not the most common known value. Honest absence beats wrong presence — downstream filters can detect `unknown` and prompt for a keyword-list extension; they can't recover from a confident wrong label.
+  - criterion now: `providerForAwsModel` returns `'unknown'` as the only fallback. New third-party vendors require an explicit keyword check (`glm` → `z-ai`, `gemini` → `google`, `gpt`/`oss` → `openai`, `marengo`/`pegasus` → `twelve-labs`, `ray` → `luma`, `palmyra` → `writer`). Anti-criterion to consider for v0.2: `[.[]|select(.source=="aws-pricelist" and .provider=="unknown")] | length` trending up signals coverage drift.
+
 ## Verification
 
 - ISC-1: file — `ls scripts/FetchAwsPriceList.ts` → exists (PASS)

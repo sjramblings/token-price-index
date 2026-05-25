@@ -66,7 +66,7 @@ export function extractFamily(modelId: string): string {
   }
 
   family = family.replace(
-    /^(anthropic|amazon|meta|mistral|mistralai|cohere|ai21|stability|deepseek|writer)\./,
+    /^(anthropic|amazon|meta|mistral|mistralai|cohere|ai21|stability|deepseek|writer|openai|google|qwen|microsoft|huggingface|z-ai|zhipu)\./,
     '',
   );
   family = family.replace(/-v\d+:\d+$/, '');
@@ -215,11 +215,26 @@ function providerForAwsModel(modelName: string): string {
   if (normalized.includes('qwen')) {
     return 'qwen';
   }
-  if (normalized.includes('writer')) {
+  if (normalized.includes('writer') || normalized.includes('palmyra')) {
     return 'writer';
   }
+  if (normalized.includes('glm')) {
+    return 'z-ai';
+  }
+  if (normalized.includes('gemini')) {
+    return 'google';
+  }
+  if (normalized.includes('gpt') || normalized.includes('oss')) {
+    return 'openai';
+  }
+  if (normalized.includes('marengo') || normalized.includes('pegasus')) {
+    return 'twelve-labs';
+  }
+  if (normalized.includes('ray')) {
+    return 'luma';
+  }
 
-  return 'amazon';
+  return 'unknown';
 }
 
 function usdPriceForAwsSku(offer: AwsPriceListOffer, sku: string): number | null {
