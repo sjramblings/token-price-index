@@ -1,0 +1,32 @@
+{
+  "name": "tpi-channel-azure",
+  "description": "Azure-channel index. Same 16 ATPI members, selectors restricted to hyperscaler='azure' (Azure OpenAI Service + Azure AI Foundry). 8 of ATPI's 16 members resolve here — the 4 OpenAI GPT-5.x models (Azure OpenAI's exclusive cloud channel), the 3 Anthropic Claude models (now offered through Azure AI Foundry), and Mistral Large 3. The 8 unresolved members are Google Gemini, GLM, Kimi, Grok, Qwen Plus, MiniMax, and DeepSeek — none yet on Azure cloud channels.",
+  "blend": {
+    "input": 0.7,
+    "output": 0.3
+  },
+  "computed_at": "2026-05-25T14:19:27.352Z",
+  "member_count": 16,
+  "series": [
+    {
+      "date": "2026-05-24",
+      "geometric_mean_usd_per_million": null,
+      "arithmetic_mean_usd_per_million": null,
+      "members_resolved": 0,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-05-25",
+      "geometric_mean_usd_per_million": 3.1477916390444767,
+      "arithmetic_mean_usd_per_million": 5.2175,
+      "members_resolved": 8,
+      "members_with_invalid_price": 0
+    }
+  ],
+  "earliest_date": "2026-05-25",
+  "latest_date": "2026-05-25",
+  "earliest_value": 3.1477916390444767,
+  "latest_value": 3.1477916390444767,
+  "pct_change_earliest_to_latest": 0,
+  "stable": true
+}

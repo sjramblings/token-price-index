@@ -1,0 +1,32 @@
+{
+  "name": "tpi-region-apac",
+  "description": "Regional index for APAC — frontier-shaped models available in AWS ap-southeast-1 (Bedrock) and Azure southeastasia (OpenAI Service). Same 19-member candidate set as TPI-USEast / TPI-EU. APAC coverage is materially thinner: most third-party Bedrock models (Mistral, Llama, DeepSeek, GLM, Kimi, Qwen, GPT-OSS) are not yet in Singapore in our catalog, and Azure SEA lacks the o1/o3 reasoning models. The geometric mean computes over the small set that is regionally available — typically only Amazon Nova + Azure GPT-4.x. This honest gap is the story.",
+  "blend": {
+    "input": 0.7,
+    "output": 0.3
+  },
+  "computed_at": "2026-05-25T14:19:27.358Z",
+  "member_count": 19,
+  "series": [
+    {
+      "date": "2026-05-24",
+      "geometric_mean_usd_per_million": null,
+      "arithmetic_mean_usd_per_million": null,
+      "members_resolved": 0,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-05-25",
+      "geometric_mean_usd_per_million": 0.631673646013275,
+      "arithmetic_mean_usd_per_million": 1.5729624999999998,
+      "members_resolved": 8,
+      "members_with_invalid_price": 0
+    }
+  ],
+  "earliest_date": "2026-05-25",
+  "latest_date": "2026-05-25",
+  "earliest_value": 0.631673646013275,
+  "latest_value": 0.631673646013275,
+  "pct_change_earliest_to_latest": 0,
+  "stable": true
+}

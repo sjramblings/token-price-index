@@ -1,0 +1,32 @@
+{
+  "name": "tpi-channel-aggregator",
+  "description": "Aggregator-channel index. Same 16 ATPI members, selectors restricted to hyperscaler='aggregator' (OpenRouter, Vercel AI Gateway, Together, Novita, etc.). Aggregator coverage is the broadest of any channel — 15 of 16 ATPI members are reachable via at least one aggregator. The single exception (Mistral Large 3) is direct + AWS only in our catalog.",
+  "blend": {
+    "input": 0.7,
+    "output": 0.3
+  },
+  "computed_at": "2026-05-25T14:19:27.351Z",
+  "member_count": 16,
+  "series": [
+    {
+      "date": "2026-05-24",
+      "geometric_mean_usd_per_million": 1.2490347138419216,
+      "arithmetic_mean_usd_per_million": 2.5713,
+      "members_resolved": 11,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-05-25",
+      "geometric_mean_usd_per_million": 1.8315755346212113,
+      "arithmetic_mean_usd_per_million": 3.522286666666667,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    }
+  ],
+  "earliest_date": "2026-05-24",
+  "latest_date": "2026-05-25",
+  "earliest_value": 1.2490347138419216,
+  "latest_value": 1.8315755346212113,
+  "pct_change_earliest_to_latest": 46.63928186490871,
+  "stable": false
+}
