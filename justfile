@@ -35,3 +35,15 @@ build:
 # Run unit tests via bun test
 test:
     bun test
+
+# Compute one of the indices defined under indices/members/ (e.g. just index atpi-replica)
+index NAME:
+    bun scripts/ComputeIndex.ts {{NAME}}
+
+# Compute every index defined under indices/members/
+index-all:
+    @for spec in indices/members/*.json; do \
+        name=$(basename "$spec" .json); \
+        echo "--- $name ---"; \
+        bun scripts/ComputeIndex.ts "$name"; \
+    done
