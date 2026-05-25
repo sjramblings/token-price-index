@@ -119,7 +119,10 @@ export default function Timeline(): JSX.Element {
   const pickerResults = useMemo(() => {
     const normalizedQuery = query.toLowerCase().trim();
     if (normalizedQuery === '') {
-      return records.slice(0, MAX_RESULTS);
+      // No query = browse mode. Return all records and let the scrollable
+      // container handle the display. Capping at 12 here hid models 13..N
+      // from anyone who didn't already know what to search for.
+      return records;
     }
     return records
       .filter((record) => record.model_id.toLowerCase().includes(normalizedQuery)
@@ -208,22 +211,29 @@ export default function Timeline(): JSX.Element {
             {pickerResults.length === 0 ? (
               <p className="mt-3 font-mono text-sm text-ink-600">no matches</p>
             ) : (
-              <ul className="mt-3 max-h-72 divide-y divide-ink-300/20 overflow-y-auto rounded-xl border border-ink-300/20 bg-ink-100/20">
-                {pickerResults.map((record) => (
-                  <li key={recordKey(record)}>
-                    <button
-                      type="button"
-                      onClick={() => chooseRecord(record)}
-                      className="block w-full px-4 py-2 text-left transition hover:bg-ink-100/40"
-                    >
-                      <p className="font-mono text-sm text-ink-900">{record.model_id}</p>
-                      <p className="font-mono text-[11px] text-ink-600">
-                        {record.provider} · {record.hyperscaler} · {formatRegion(record.region)} · {record.source}
-                      </p>
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <>
+                <p className="mt-3 font-mono text-[11px] text-ink-600">
+                  {query.trim() === ''
+                    ? `${pickerResults.length} models — scroll to browse, or type to filter`
+                    : `${pickerResults.length} match${pickerResults.length === 1 ? '' : 'es'}${pickerResults.length === MAX_RESULTS ? ' (showing first ' + MAX_RESULTS + ', refine to narrow)' : ''}`}
+                </p>
+                <ul className="mt-2 max-h-72 divide-y divide-ink-300/20 overflow-y-auto rounded-xl border border-ink-300/20 bg-ink-100/20">
+                  {pickerResults.map((record) => (
+                    <li key={recordKey(record)}>
+                      <button
+                        type="button"
+                        onClick={() => chooseRecord(record)}
+                        className="block w-full px-4 py-2 text-left transition hover:bg-ink-100/40"
+                      >
+                        <p className="font-mono text-sm text-ink-900">{record.model_id}</p>
+                        <p className="font-mono text-[11px] text-ink-600">
+                          {record.provider} · {record.hyperscaler} · {formatRegion(record.region)} · {record.source}
+                        </p>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </>
             )}
           </div>
         ) : null}
