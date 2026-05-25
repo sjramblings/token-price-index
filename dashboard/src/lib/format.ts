@@ -19,7 +19,7 @@ export function formatContextWindow(tokens: number): string {
 }
 
 export function formatRegion(region: string | null): string {
-  return region ?? 'global';
+  return region ?? '—';
 }
 
 export const fmt = new Intl.NumberFormat('en-US');
