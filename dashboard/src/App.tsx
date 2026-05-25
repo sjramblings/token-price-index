@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Nav } from './components/Nav';
 import Compare from './pages/Compare';
 import Explorer from './pages/Explorer';
+import Methodology from './pages/Methodology';
 import Pivot from './pages/Pivot';
 import Simulator from './pages/Simulator';
 import Timeline from './pages/Timeline';
@@ -17,6 +18,7 @@ export default function App(): JSX.Element {
           <Route path="/pivot" element={<Pivot />} />
           <Route path="/simulator" element={<Simulator />} />
           <Route path="/timeline" element={<Timeline />} />
+          <Route path="/methodology" element={<Methodology />} />
         </Routes>
       </main>
     </div>

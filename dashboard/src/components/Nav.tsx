@@ -14,6 +14,7 @@ const routes: NavRoute[] = [
   { to: "/pivot", label: "Pivot" },
   { to: "/simulator", label: "Simulator" },
   { to: "/timeline", label: "Timeline" },
+  { to: "/methodology", label: "Methodology" },
 ];
 
 export function Nav(): JSX.Element {
