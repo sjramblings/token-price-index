@@ -1,4 +1,11 @@
-import type { Hyperscaler, LiteLLMEntry, OpenRouterEntry, PriceRecord } from './types.ts';
+import type {
+  AwsPriceListOffer,
+  AzureRetailItem,
+  Hyperscaler,
+  LiteLLMEntry,
+  OpenRouterEntry,
+  PriceRecord,
+} from './types.ts';
 
 type NormalizationResult = {
   records: PriceRecord[];
@@ -39,7 +46,37 @@ export function inferProviderFromLitellm(modelId: string, litellmProvider?: stri
 }
 
 export function extractFamily(modelId: string): string {
-  return stripSubstratePrefix(modelId).replace(/^[a-z0-9_-]+[./]/, '').toLowerCase();
+  let family = modelId.toLowerCase();
+
+  const substratePrefixes = ['bedrock/', 'azure/', 'vertex_ai/', 'openrouter/'];
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const prefix of substratePrefixes) {
+      if (family.startsWith(prefix)) {
+        family = family.slice(prefix.length);
+        changed = true;
+      }
+    }
+  }
+
+  const slashIndex = family.indexOf('/');
+  if (slashIndex > 0 && !family.slice(0, slashIndex).includes('.')) {
+    family = family.slice(slashIndex + 1);
+  }
+
+  family = family.replace(
+    /^(anthropic|amazon|meta|mistral|mistralai|cohere|ai21|stability|deepseek|writer|openai|google|qwen|microsoft|huggingface|z-ai|zhipu)\./,
+    '',
+  );
+  family = family.replace(/-v\d+:\d+$/, '');
+  family = family.replace(/-\d{8}$/, '');
+
+  if (family.startsWith('claude') || family.startsWith('gemini')) {
+    family = family.replace(/(\d)\.(\d)/g, '$1-$2');
+  }
+
+  return family.length > 0 ? family : modelId.toLowerCase();
 }
 
 export function normalizeLitellm(
@@ -146,4 +183,316 @@ export function normalizeOpenRouter(
   }
 
   return { records, skipped: { zeroContext, missingPrice } };
+}
+
+function providerForAwsModel(modelName: string): string {
+  const normalized = modelName.toLowerCase();
+
+  if (normalized.includes('claude')) {
+    return 'anthropic';
+  }
+  if (normalized.includes('nova') || normalized.includes('titan')) {
+    return 'amazon';
+  }
+  if (normalized.includes('llama')) {
+    return 'meta';
+  }
+  if (normalized.includes('mistral') || normalized.includes('mixtral')) {
+    return 'mistral';
+  }
+  if (normalized.includes('command')) {
+    return 'cohere';
+  }
+  if (normalized.includes('jamba')) {
+    return 'ai21';
+  }
+  if (normalized.includes('stable diffusion') || normalized.includes('stability')) {
+    return 'stability';
+  }
+  if (normalized.includes('deepseek')) {
+    return 'deepseek';
+  }
+  if (normalized.includes('qwen')) {
+    return 'qwen';
+  }
+  if (normalized.includes('writer') || normalized.includes('palmyra')) {
+    return 'writer';
+  }
+  if (normalized.includes('glm')) {
+    return 'z-ai';
+  }
+  if (normalized.includes('gemini')) {
+    return 'google';
+  }
+  if (normalized.includes('gpt') || normalized.includes('oss')) {
+    return 'openai';
+  }
+  if (normalized.includes('marengo') || normalized.includes('pegasus')) {
+    return 'twelve-labs';
+  }
+  if (normalized.includes('ray')) {
+    return 'luma';
+  }
+
+  return 'unknown';
+}
+
+function usdPriceForAwsSku(offer: AwsPriceListOffer, sku: string): number | null {
+  const terms = offer.terms.OnDemand[sku];
+  if (terms === undefined) {
+    return null;
+  }
+
+  const term = Object.values(terms)[0];
+  if (term === undefined) {
+    return null;
+  }
+
+  const dimension = Object.values(term.priceDimensions)[0];
+  if (dimension === undefined || dimension.pricePerUnit.USD === undefined) {
+    return null;
+  }
+
+  const price = Number.parseFloat(dimension.pricePerUnit.USD);
+  return Number.isFinite(price) && price >= 0 ? price : null;
+}
+
+type AwsPriceGroup = {
+  model: string;
+  input?: number;
+  output?: number;
+  cachedInput?: number;
+};
+
+export function normalizeAwsPriceList(
+  regionOffers: Array<{ region: string; offerJson: AwsPriceListOffer; sourceUrl: string }>,
+  fetchedAt: string,
+): NormalizationResult {
+  const records: PriceRecord[] = [];
+  let missingPrice = 0;
+
+  for (const { region, offerJson, sourceUrl } of regionOffers) {
+    const groups = new Map<string, AwsPriceGroup>();
+
+    for (const product of Object.values(offerJson.products)) {
+      const model = product.attributes.model;
+      const inferenceType = product.attributes.inferenceType;
+      const usageType = product.attributes.usagetype?.toLowerCase();
+
+      if (model === undefined || inferenceType === undefined) {
+        continue;
+      }
+      if (
+        usageType !== undefined
+        && (usageType.includes('cross-region') || usageType.includes('global'))
+      ) {
+        continue;
+      }
+      const kind: 'input' | 'output' | 'cachedInput' | null =
+        inferenceType === 'Input tokens'
+          ? 'input'
+          : inferenceType === 'Output tokens'
+            ? 'output'
+            : inferenceType === 'Prompt cache read input tokens'
+              ? 'cachedInput'
+              : null;
+      if (kind === null) {
+        continue;
+      }
+      if (
+        usageType !== undefined
+        && (usageType.includes('flex')
+          || usageType.includes('priority')
+          || usageType.includes('batch'))
+      ) {
+        continue;
+      }
+
+      const group = groups.get(model) ?? { model };
+      groups.set(model, group);
+      const price = usdPriceForAwsSku(offerJson, product.sku);
+      if (price === null) {
+        continue;
+      }
+
+      if (kind === 'input') {
+        group.input = price;
+      } else if (kind === 'output') {
+        group.output = price;
+      } else {
+        group.cachedInput = price;
+      }
+    }
+
+    for (const group of groups.values()) {
+      if (group.input === undefined || group.output === undefined) {
+        missingPrice += 1;
+        continue;
+      }
+
+      const modelId = group.model.toLowerCase().replace(/\s+/g, '-');
+      records.push({
+        provider: providerForAwsModel(group.model),
+        model_id: modelId,
+        family: extractFamily(modelId),
+        hyperscaler: 'aws',
+        region,
+        input_per_1k: group.input,
+        output_per_1k: group.output,
+        cached_input_per_1k: group.cachedInput ?? null,
+        image_per_1k: null,
+        context_window: 0,
+        source: 'aws-pricelist',
+        source_url: sourceUrl,
+        fetched_at: fetchedAt,
+      });
+    }
+  }
+
+  return { records, skipped: { zeroContext: 0, missingPrice } };
+}
+
+function modelNameForAzureMeter(meterName: string): string {
+  return meterName.replace(/\s+(Inp|Outp|Cached Input).*/i, '').trim();
+}
+
+function isExcludedAzureMeter(meterName: string, allowCachedInput: boolean): boolean {
+  const excludedPatterns = [
+    /-ft/i,
+    /batch/i,
+    /mdl grdr/i,
+    /grdr/i,
+    /image/i,
+    /embed/i,
+    /whisper/i,
+    /tts/i,
+    /audio/i,
+    /fine/i,
+    /provisioned/i,
+  ];
+
+  if (!allowCachedInput && /cached input/i.test(meterName)) {
+    return true;
+  }
+
+  return excludedPatterns.some((pattern) => pattern.test(meterName));
+}
+
+type AzurePriceGroup = {
+  modelName: string;
+  skuName?: string;
+  input?: number;
+  output?: number;
+  cachedInput?: number;
+};
+
+function validAzureUnitPrice(item: AzureRetailItem): number | null {
+  if (
+    item.unitOfMeasure !== '1K'
+    || item.unitPrice === undefined
+    || !Number.isFinite(item.unitPrice)
+    || item.unitPrice < 0
+  ) {
+    return null;
+  }
+
+  return item.unitPrice;
+}
+
+export function normalizeAzureRetail(
+  items: AzureRetailItem[],
+  fetchedAt: string,
+  sourceUrl: string,
+): NormalizationResult {
+  const groups = new Map<string, AzurePriceGroup>();
+  const records: PriceRecord[] = [];
+  let missingPrice = 0;
+
+  for (const item of items) {
+    const meterName = item.meterName;
+    const region = item.armRegionName;
+    if (
+      item.productName !== 'Azure OpenAI'
+      || meterName === undefined
+      || region === undefined
+      || !/cached input/i.test(meterName)
+      || isExcludedAzureMeter(meterName, true)
+    ) {
+      continue;
+    }
+
+    const modelName = modelNameForAzureMeter(meterName);
+    const price = validAzureUnitPrice(item);
+    if (modelName === '' || price === null) {
+      continue;
+    }
+
+    const key = `${region}\u0000${modelName}`;
+    const group = groups.get(key) ?? { modelName, skuName: item.skuName };
+    group.cachedInput = price;
+    groups.set(key, group);
+  }
+
+  for (const item of items) {
+    const meterName = item.meterName;
+    const region = item.armRegionName;
+    if (
+      item.productName !== 'Azure OpenAI'
+      || meterName === undefined
+      || region === undefined
+      || isExcludedAzureMeter(meterName, false)
+    ) {
+      continue;
+    }
+
+    const isInput = /\s+Inp\b/i.test(meterName);
+    const isOutput = /\s+Outp\b/i.test(meterName);
+    if (!isInput && !isOutput) {
+      continue;
+    }
+
+    const modelName = modelNameForAzureMeter(meterName);
+    const price = validAzureUnitPrice(item);
+    if (modelName === '' || price === null) {
+      continue;
+    }
+
+    const key = `${region}\u0000${modelName}`;
+    const group = groups.get(key) ?? { modelName, skuName: item.skuName };
+    if (isInput) {
+      group.input = price;
+    } else {
+      group.output = price;
+    }
+    group.skuName ??= item.skuName;
+    groups.set(key, group);
+  }
+
+  for (const [key, group] of groups) {
+    const region = key.split('\u0000', 1)[0];
+    if (group.input === undefined || group.output === undefined) {
+      missingPrice += 1;
+      continue;
+    }
+
+    const modelId = (group.skuName ?? group.modelName).toLowerCase().replace(/\s+/g, '-');
+    const familyId = group.modelName.toLowerCase().replace(/\s+/g, '-');
+    records.push({
+      provider: 'openai',
+      model_id: modelId,
+      family: extractFamily(familyId),
+      hyperscaler: 'azure',
+      region,
+      input_per_1k: group.input,
+      output_per_1k: group.output,
+      cached_input_per_1k: group.cachedInput ?? null,
+      image_per_1k: null,
+      context_window: 0,
+      source: 'azure-retail',
+      source_url: sourceUrl,
+      fetched_at: fetchedAt,
+    });
+  }
+
+  return { records, skipped: { zeroContext: 0, missingPrice } };
 }

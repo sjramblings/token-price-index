@@ -37,6 +37,64 @@ export type OpenRouterEntry = {
 
 export type OpenRouterResponse = { data: OpenRouterEntry[] };
 
+export type AwsPriceListProduct = {
+  sku: string;
+  productFamily?: string;
+  attributes: {
+    model?: string;
+    inferenceType?: string;
+    regionCode?: string;
+    usagetype?: string;
+    [key: string]: string | undefined;
+  };
+};
+
+export type AwsPriceListOnDemandTerm = {
+  priceDimensions: Record<string, {
+    pricePerUnit: { USD?: string };
+    unit?: string;
+    description?: string;
+  }>;
+};
+
+export type AwsPriceListOffer = {
+  formatVersion?: string;
+  publicationDate?: string;
+  products: Record<string, AwsPriceListProduct>;
+  terms: { OnDemand: Record<string, Record<string, AwsPriceListOnDemandTerm>> };
+};
+
+export type AwsPriceListIndex = {
+  regions: string[];
+  fetchedAt: string;
+  sourceUrls: Record<string, string>;
+};
+
+export type AzureRetailItem = {
+  currencyCode?: string;
+  retailPrice?: number;
+  unitPrice?: number;
+  armRegionName?: string;
+  location?: string;
+  meterId?: string;
+  meterName?: string;
+  productId?: string;
+  skuId?: string;
+  productName?: string;
+  skuName?: string;
+  serviceName?: string;
+  serviceId?: string;
+  serviceFamily?: string;
+  unitOfMeasure?: string;
+  type?: string;
+};
+
+export type AzureRetailBundle = {
+  items: AzureRetailItem[];
+  fetchedAt: string;
+  sourceUrl: string;
+};
+
 export type Hyperscaler = 'aws' | 'azure' | 'gcp' | 'direct' | 'aggregator';
 
 export type Source = 'litellm' | 'openrouter' | 'aws-pricelist' | 'azure-retail';
