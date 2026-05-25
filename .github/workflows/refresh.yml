@@ -78,3 +78,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: bun scripts/BuildRelease.ts
+
+      # GitHub Actions blocks downstream workflow triggers from pushes made with
+      # the default GITHUB_TOKEN to avoid recursion. Without this explicit dispatch,
+      # the deploy.yml workflow would not see daily data commits and Pages would
+      # stay frozen on whatever was current when the last code PR merged.
+      - name: Trigger Pages deploy
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref main
