@@ -10,6 +10,7 @@ interface NavRoute {
 
 const routes: NavRoute[] = [
   { to: "/", label: "Explorer", end: true },
+  { to: "/indices", label: "Indices" },
   { to: "/compare", label: "Compare" },
   { to: "/pivot", label: "Pivot" },
   { to: "/simulator", label: "Simulator" },
