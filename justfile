@@ -25,11 +25,9 @@ release-dryrun:
     bun scripts/BuildRelease.ts --dry-run
 
 # Run the dashboard SPA in dev mode (Vite)
-# Placeholder for PR #1; PR #4 will add the dashboard package.
 dev:
-    bun run dev
+    cd dashboard && bun run dev
 
 # Build the dashboard SPA for GitHub Pages deployment
-# Placeholder for PR #1; PR #4 will add the dashboard package.
 build:
-    bun run build
+    cd dashboard && bun run build

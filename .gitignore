@@ -6,3 +6,4 @@ dashboard/.vite/
 data/_raw/
 .env*
 *.tsbuildinfo
+dashboard/public/data/
