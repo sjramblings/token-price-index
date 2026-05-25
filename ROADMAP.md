@@ -31,10 +31,8 @@ The same script, three orthogonal dimensions, all reproducible from the same dat
 | Dimension | Indices | PR | Why only we can do this |
 |-----------|---------|-----|------------------------|
 | **Tier** | TPI-Frontier, TPI-Mid, TPI-Fast | #12 — ✅ SHIPPED | Configuration only — anyone could do this if they had the data |
-| **Region** | TPI-USEast, TPI-EU, TPI-APAC | #13 | Requires per-region pricing — ATPI doesn't have it |
-| **Channel** | TPI-Direct, TPI-Bedrock, TPI-Azure, TPI-Aggregator | #13 | Requires multi-hyperscaler coverage — ATPI doesn't have it |
-
-Cross product = 3 × 3 × 4 = **36 indices**, each its own JSON file under `data/indices/`, all updated daily, all reproducible.
+| **Channel** | TPI-Direct, TPI-Aggregator, TPI-Bedrock, TPI-Azure | #13 — ✅ SHIPPED | Requires multi-hyperscaler coverage — ATPI doesn't have it |
+| **Region** | TPI-USEast, TPI-EU, TPI-APAC | #14 (deferred — see below) | Requires per-region pricing — ATPI doesn't have it |
 
 **Phase 1.1 result** (data refresh 2026-05-25):
 
@@ -46,6 +44,23 @@ Cross product = 3 × 3 × 4 = **36 indices**, each its own JSON file under `data
 | ATPI-Replica (reference) | 16 | $1.74/M tokens |
 
 Frontier capability runs ~20× the price of Fast tier; Mid is ~4× cheaper than Frontier. The tier selection is purely mechanical (members from `atpi-replica` partitioned by published blended price thresholds — Frontier ≥ $5, Mid $1–$5, Fast < $1) — no editorial judgement was applied, so anyone applying the same threshold to ATPI's 16 reproduces this split.
+
+**Phase 1.2 result** (data refresh 2026-05-25):
+
+| Index | Members resolved | Geometric mean | What it shows |
+|-------|------------------|----------------|---------------|
+| TPI-Aggregator | 15/16 | $1.83/M tokens | Broadest coverage; cheapest channel on average |
+| TPI-Direct | 13/16 | $2.27/M tokens | Provider's own API; ~24% pricier than aggregator |
+| TPI-Azure | 8/16 | $3.15/M tokens | OpenAI exclusive cloud + Claude on Foundry + Mistral |
+| TPI-Bedrock | 4/16 | $3.52/M tokens | Claude family + Mistral Large 3 only |
+
+The story ATPI structurally cannot tell: **cloud channels are 50–90% more expensive than aggregators and cover less than half of ATPI's frontier set.** Bedrock has just 4 of the 16 ATPI members invocable (3 Claude + Mistral Large 3); Azure has 8 (4 GPT-5.x + 3 Claude + Mistral Large 3). The 12 unresolved Bedrock and 8 unresolved Azure members are documented per-spec — this is the regional deployment gap made legible.
+
+**Phase 1.3 — Regional indices (deferred to PR #14)**
+
+A first-pass attempt at regional indices using ATPI's 16 members revealed that only `mistral-large-3` has actual per-region pricing across our 11 AWS regions and 30 Azure regions in `aws-pricelist` / `azure-retail`. The other 15 ATPI members are LiteLLM baselines with `region: null`. A 1-member regional index isn't a useful index.
+
+The fix is broader curation: build regional indices from the models that actually carry regional pricing in our catalog. `aws-pricelist` has ~31 families per region (DeepSeek v3.x, GLM 4.7/5, GPT-OSS series, Kimi K2 Thinking/2.5, Llama 3.x, MiniMax M2.x, Mistral, Nova, Qwen3); `azure-retail` has the GPT-4.1/4o/o1/o3 series. The right shape is regionally-curated frontier-capable member sets, not ATPI's 16 squashed into a regional view. Deferring to PR #14 so it gets its own attention.
 
 ### Phase 2 — Historical reconstruction (PR #14)
 

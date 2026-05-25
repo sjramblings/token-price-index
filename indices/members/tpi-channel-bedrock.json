@@ -1,0 +1,25 @@
+{
+  "name": "tpi-channel-bedrock",
+  "description": "Bedrock-channel index. Same 16 ATPI members, selectors restricted to hyperscaler='aws' (AWS Bedrock). Only 4 of ATPI's 16 frontier members are invocable on Bedrock in our catalog (the 3 Claude models + Mistral Large 3). The 12 unresolved members demonstrate the deployment-channel gap: most frontier capability (GPT-5.x, Gemini, Grok, DeepSeek, etc.) is not available on AWS-hosted Bedrock today.",
+  "blend": { "input": 0.7, "output": 0.3 },
+  "channel": "aws",
+  "selection_rule": "ATPI 16 members, hyperscaler == 'aws' filter (first matching record per family — pricing is approximately uniform across Bedrock regions for most models)",
+  "members": [
+    { "label": "GPT-5.5", "select": [{ "family": "gpt-5.5", "hyperscaler": "aws" }], "published_blended_per_million": 12.50, "note": "Not available on Bedrock — OpenAI exclusive to Azure on cloud channels. Expected unresolved." },
+    { "label": "Claude Opus 4.7", "select": [{ "family": "claude-opus-4-7", "hyperscaler": "aws" }], "published_blended_per_million": 10.50 },
+    { "label": "Claude Sonnet 4.6", "select": [{ "family": "claude-sonnet-4-6", "hyperscaler": "aws" }], "published_blended_per_million": 6.60 },
+    { "label": "GPT-5.4", "select": [{ "family": "gpt-5.4", "hyperscaler": "aws" }], "published_blended_per_million": 6.25, "note": "Not available on Bedrock. Expected unresolved." },
+    { "label": "Gemini 2.5 Pro", "select": [{ "family": "google/gemini-2.5-pro", "hyperscaler": "aws" }], "published_blended_per_million": 4.00, "note": "Not available on Bedrock. Expected unresolved." },
+    { "label": "Gemini 3.5 Flash", "select": [{ "family": "gemini-3-flash-preview", "hyperscaler": "aws" }], "published_blended_per_million": 3.75, "note": "Not available on Bedrock. Expected unresolved." },
+    { "label": "GLM 5.1", "select": [{ "family": "glm-5.1", "hyperscaler": "aws" }], "published_blended_per_million": 2.30, "note": "GLM 5.1 not yet in Bedrock catalog (GLM 4.7 and GLM 5 are — see aws-pricelist source). Expected unresolved." },
+    { "label": "Claude Haiku 4.5", "select": [{ "family": "claude-haiku-4-5", "hyperscaler": "aws" }], "published_blended_per_million": 2.20 },
+    { "label": "GPT-5.4 Mini", "select": [{ "family": "gpt-5.4-mini", "hyperscaler": "aws" }], "published_blended_per_million": 1.875, "note": "Not available on Bedrock. Expected unresolved." },
+    { "label": "Kimi K2.6", "select": [{ "family": "kimi-k2.6", "hyperscaler": "aws" }], "published_blended_per_million": 1.865, "note": "Kimi K2.6 not yet in Bedrock catalog (Kimi K2 Thinking and K2.5 are). Expected unresolved." },
+    { "label": "Grok 4.3", "select": [{ "family": "grok-4.3", "hyperscaler": "aws" }], "published_blended_per_million": 1.625, "note": "xAI Grok not available on Bedrock. Expected unresolved." },
+    { "label": "Qwen 3.6 Plus", "select": [{ "family": "qwen-plus", "hyperscaler": "aws" }], "published_blended_per_million": 1.25, "note": "Qwen Plus not on Bedrock (Qwen3 series is — different lineage). Expected unresolved." },
+    { "label": "Mistral Large 3", "select": [{ "family": "mistral-large-3", "hyperscaler": "aws", "source": "aws-pricelist", "region": "us-east-1" }], "published_blended_per_million": 0.80 },
+    { "label": "MiniMax M2.7", "select": [{ "family": "minimax-m2.7", "hyperscaler": "aws" }], "published_blended_per_million": 0.57, "note": "MiniMax M2.7 not yet in Bedrock catalog (M2/M2.1/M2.5 are). Expected unresolved." },
+    { "label": "GPT-5.4 Nano", "select": [{ "family": "gpt-5.4-nano", "hyperscaler": "aws" }], "published_blended_per_million": 0.515, "note": "Not available on Bedrock. Expected unresolved." },
+    { "label": "DeepSeek V4 Flash", "select": [{ "family": "deepseek-v4-flash", "hyperscaler": "aws" }], "published_blended_per_million": 0.182, "note": "DeepSeek V4 Flash not yet on Bedrock (V3.1/V3.2 are). Expected unresolved." }
+  ]
+}
