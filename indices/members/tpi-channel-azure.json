@@ -1,0 +1,25 @@
+{
+  "name": "tpi-channel-azure",
+  "description": "Azure-channel index. Same 16 ATPI members, selectors restricted to hyperscaler='azure' (Azure OpenAI Service + Azure AI Foundry). 8 of ATPI's 16 members resolve here — the 4 OpenAI GPT-5.x models (Azure OpenAI's exclusive cloud channel), the 3 Anthropic Claude models (now offered through Azure AI Foundry), and Mistral Large 3. The 8 unresolved members are Google Gemini, GLM, Kimi, Grok, Qwen Plus, MiniMax, and DeepSeek — none yet on Azure cloud channels.",
+  "blend": { "input": 0.7, "output": 0.3 },
+  "channel": "azure",
+  "selection_rule": "ATPI 16 members, hyperscaler == 'azure' filter (first matching record per family)",
+  "members": [
+    { "label": "GPT-5.5", "select": [{ "family": "gpt-5.5", "hyperscaler": "azure" }], "published_blended_per_million": 12.50 },
+    { "label": "Claude Opus 4.7", "select": [{ "family": "claude-opus-4-7", "hyperscaler": "azure" }], "published_blended_per_million": 10.50 },
+    { "label": "Claude Sonnet 4.6", "select": [{ "family": "claude-sonnet-4-6", "hyperscaler": "azure" }], "published_blended_per_million": 6.60 },
+    { "label": "GPT-5.4", "select": [{ "family": "gpt-5.4", "hyperscaler": "azure" }], "published_blended_per_million": 6.25 },
+    { "label": "Gemini 2.5 Pro", "select": [{ "family": "google/gemini-2.5-pro", "hyperscaler": "azure" }], "published_blended_per_million": 4.00, "note": "Google Gemini not on Azure cloud channel. Expected unresolved." },
+    { "label": "Gemini 3.5 Flash", "select": [{ "family": "gemini-3-flash-preview", "hyperscaler": "azure" }], "published_blended_per_million": 3.75, "note": "Google Gemini not on Azure cloud channel. Expected unresolved." },
+    { "label": "GLM 5.1", "select": [{ "family": "glm-5.1", "hyperscaler": "azure" }], "published_blended_per_million": 2.30, "note": "Z-AI GLM not on Azure cloud channel. Expected unresolved." },
+    { "label": "Claude Haiku 4.5", "select": [{ "family": "claude-haiku-4-5", "hyperscaler": "azure" }], "published_blended_per_million": 2.20 },
+    { "label": "GPT-5.4 Mini", "select": [{ "family": "gpt-5.4-mini", "hyperscaler": "azure" }], "published_blended_per_million": 1.875 },
+    { "label": "Kimi K2.6", "select": [{ "family": "kimi-k2.6", "hyperscaler": "azure" }], "published_blended_per_million": 1.865, "note": "Moonshot Kimi not on Azure cloud channel. Expected unresolved." },
+    { "label": "Grok 4.3", "select": [{ "family": "grok-4.3", "hyperscaler": "azure" }], "published_blended_per_million": 1.625, "note": "xAI Grok not on Azure cloud channel. Expected unresolved." },
+    { "label": "Qwen 3.6 Plus", "select": [{ "family": "qwen-plus", "hyperscaler": "azure" }], "published_blended_per_million": 1.25, "note": "Alibaba Qwen Plus not on Azure cloud channel. Expected unresolved." },
+    { "label": "Mistral Large 3", "select": [{ "family": "mistral-large-3", "hyperscaler": "azure" }], "published_blended_per_million": 0.80 },
+    { "label": "MiniMax M2.7", "select": [{ "family": "minimax-m2.7", "hyperscaler": "azure" }], "published_blended_per_million": 0.57, "note": "MiniMax not on Azure cloud channel. Expected unresolved." },
+    { "label": "GPT-5.4 Nano", "select": [{ "family": "gpt-5.4-nano", "hyperscaler": "azure" }], "published_blended_per_million": 0.515 },
+    { "label": "DeepSeek V4 Flash", "select": [{ "family": "deepseek-v4-flash", "hyperscaler": "azure" }], "published_blended_per_million": 0.182, "note": "DeepSeek not on Azure cloud channel. Expected unresolved." }
+  ]
+}

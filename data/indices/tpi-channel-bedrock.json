@@ -1,0 +1,229 @@
+{
+  "name": "tpi-channel-bedrock",
+  "description": "Bedrock-channel index. Same 16 ATPI members, selectors restricted to hyperscaler='aws' (AWS Bedrock). Only 4 of ATPI's 16 frontier members are invocable on Bedrock in our catalog (the 3 Claude models + Mistral Large 3). The 12 unresolved members demonstrate the deployment-channel gap: most frontier capability (GPT-5.x, Gemini, Grok, DeepSeek, etc.) is not available on AWS-hosted Bedrock today.",
+  "blend": {
+    "input": 0.7,
+    "output": 0.3
+  },
+  "computed_at": "2026-05-25T13:42:25.621Z",
+  "data_source": "data/current.json",
+  "member_count": 16,
+  "members_resolved": 4,
+  "members_with_invalid_price": 0,
+  "members": [
+    {
+      "label": "GPT-5.5",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 12.5,
+      "note": "Not available on Bedrock — OpenAI exclusive to Azure on cloud channels. Expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "Claude Opus 4.7",
+      "resolved": {
+        "provider": "bedrock_converse",
+        "model_id": "anthropic.claude-opus-4-7",
+        "family": "claude-opus-4-7",
+        "hyperscaler": "aws",
+        "region": null,
+        "input_per_1k": 0.005,
+        "output_per_1k": 0.025,
+        "cached_input_per_1k": 0.0005,
+        "image_per_1k": null,
+        "context_window": 1000000,
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
+        "fetched_at": "2026-05-25"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 11,
+      "ln_blended": 2.3978952727983707,
+      "published_blended_per_million": 10.5,
+      "divergence_pct": 4.761904761904762
+    },
+    {
+      "label": "Claude Sonnet 4.6",
+      "resolved": {
+        "provider": "bedrock_converse",
+        "model_id": "anthropic.claude-sonnet-4-6",
+        "family": "claude-sonnet-4-6",
+        "hyperscaler": "aws",
+        "region": null,
+        "input_per_1k": 0.003,
+        "output_per_1k": 0.015000000000000001,
+        "cached_input_per_1k": 0.0003,
+        "image_per_1k": null,
+        "context_window": 1000000,
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
+        "fetched_at": "2026-05-25"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 6.6,
+      "ln_blended": 1.8870696490323797,
+      "published_blended_per_million": 6.6,
+      "divergence_pct": 0
+    },
+    {
+      "label": "GPT-5.4",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 6.25,
+      "note": "Not available on Bedrock. Expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "Gemini 2.5 Pro",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 4,
+      "note": "Not available on Bedrock. Expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "Gemini 3.5 Flash",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 3.75,
+      "note": "Not available on Bedrock. Expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "GLM 5.1",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 2.3,
+      "note": "GLM 5.1 not yet in Bedrock catalog (GLM 4.7 and GLM 5 are — see aws-pricelist source). Expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "Claude Haiku 4.5",
+      "resolved": {
+        "provider": "bedrock",
+        "model_id": "bedrock/us-gov-east-1/anthropic.claude-haiku-4-5-20251001-v1:0",
+        "family": "claude-haiku-4-5",
+        "hyperscaler": "aws",
+        "region": null,
+        "input_per_1k": 0.0012,
+        "output_per_1k": 0.006,
+        "cached_input_per_1k": 0.00011999999999999999,
+        "image_per_1k": null,
+        "context_window": 200000,
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
+        "fetched_at": "2026-05-25"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 2.6399999999999997,
+      "ln_blended": 0.9707789171582246,
+      "published_blended_per_million": 2.2,
+      "divergence_pct": 19.999999999999975
+    },
+    {
+      "label": "GPT-5.4 Mini",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 1.875,
+      "note": "Not available on Bedrock. Expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "Kimi K2.6",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 1.865,
+      "note": "Kimi K2.6 not yet in Bedrock catalog (Kimi K2 Thinking and K2.5 are). Expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "Grok 4.3",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 1.625,
+      "note": "xAI Grok not available on Bedrock. Expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "Qwen 3.6 Plus",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 1.25,
+      "note": "Qwen Plus not on Bedrock (Qwen3 series is — different lineage). Expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "Mistral Large 3",
+      "resolved": {
+        "provider": "mistral",
+        "model_id": "mistral-large-3",
+        "family": "mistral-large-3",
+        "hyperscaler": "aws",
+        "region": "us-east-1",
+        "input_per_1k": 0.0005,
+        "output_per_1k": 0.0015,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 262144,
+        "source": "aws-pricelist",
+        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/us-east-1/index.json",
+        "fetched_at": "2026-05-25T11:15:37.463Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.7999999999999999,
+      "ln_blended": -0.22314355131420985,
+      "published_blended_per_million": 0.8,
+      "divergence_pct": -1.3877787807814457e-14
+    },
+    {
+      "label": "MiniMax M2.7",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 0.57,
+      "note": "MiniMax M2.7 not yet in Bedrock catalog (M2/M2.1/M2.5 are). Expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "GPT-5.4 Nano",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 0.515,
+      "note": "Not available on Bedrock. Expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "DeepSeek V4 Flash",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 0.182,
+      "note": "DeepSeek V4 Flash not yet on Bedrock (V3.1/V3.2 are). Expected unresolved.",
+      "excluded_reason": "unresolved"
+    }
+  ],
+  "geometric_mean_usd_per_million": 3.5189057398478085,
+  "arithmetic_mean_usd_per_million": 5.260000000000001
+}

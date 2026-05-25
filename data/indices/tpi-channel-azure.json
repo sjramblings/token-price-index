@@ -1,0 +1,281 @@
+{
+  "name": "tpi-channel-azure",
+  "description": "Azure-channel index. Same 16 ATPI members, selectors restricted to hyperscaler='azure' (Azure OpenAI Service + Azure AI Foundry). 8 of ATPI's 16 members resolve here — the 4 OpenAI GPT-5.x models (Azure OpenAI's exclusive cloud channel), the 3 Anthropic Claude models (now offered through Azure AI Foundry), and Mistral Large 3. The 8 unresolved members are Google Gemini, GLM, Kimi, Grok, Qwen Plus, MiniMax, and DeepSeek — none yet on Azure cloud channels.",
+  "blend": {
+    "input": 0.7,
+    "output": 0.3
+  },
+  "computed_at": "2026-05-25T13:42:25.647Z",
+  "data_source": "data/current.json",
+  "member_count": 16,
+  "members_resolved": 8,
+  "members_with_invalid_price": 0,
+  "members": [
+    {
+      "label": "GPT-5.5",
+      "resolved": {
+        "provider": "azure",
+        "model_id": "azure/gpt-5.5",
+        "family": "gpt-5.5",
+        "hyperscaler": "azure",
+        "region": null,
+        "input_per_1k": 0.005,
+        "output_per_1k": 0.030000000000000002,
+        "cached_input_per_1k": 0.0005,
+        "image_per_1k": null,
+        "context_window": 1050000,
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
+        "fetched_at": "2026-05-25"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 12.5,
+      "ln_blended": 2.5257286443082556,
+      "published_blended_per_million": 12.5,
+      "divergence_pct": 0
+    },
+    {
+      "label": "Claude Opus 4.7",
+      "resolved": {
+        "provider": "azure_ai",
+        "model_id": "azure_ai/claude-opus-4-7",
+        "family": "claude-opus-4-7",
+        "hyperscaler": "azure",
+        "region": null,
+        "input_per_1k": 0.005,
+        "output_per_1k": 0.025,
+        "cached_input_per_1k": 0.0005,
+        "image_per_1k": null,
+        "context_window": 200000,
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
+        "fetched_at": "2026-05-25"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 11,
+      "ln_blended": 2.3978952727983707,
+      "published_blended_per_million": 10.5,
+      "divergence_pct": 4.761904761904762
+    },
+    {
+      "label": "Claude Sonnet 4.6",
+      "resolved": {
+        "provider": "azure_ai",
+        "model_id": "azure_ai/claude-sonnet-4-6",
+        "family": "claude-sonnet-4-6",
+        "hyperscaler": "azure",
+        "region": null,
+        "input_per_1k": 0.003,
+        "output_per_1k": 0.015000000000000001,
+        "cached_input_per_1k": 0.0003,
+        "image_per_1k": null,
+        "context_window": 1000000,
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
+        "fetched_at": "2026-05-25"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 6.6,
+      "ln_blended": 1.8870696490323797,
+      "published_blended_per_million": 6.6,
+      "divergence_pct": 0
+    },
+    {
+      "label": "GPT-5.4",
+      "resolved": {
+        "provider": "azure",
+        "model_id": "azure/gpt-5.4",
+        "family": "gpt-5.4",
+        "hyperscaler": "azure",
+        "region": null,
+        "input_per_1k": 0.0025,
+        "output_per_1k": 0.015000000000000001,
+        "cached_input_per_1k": 0.00025,
+        "image_per_1k": null,
+        "context_window": 1050000,
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
+        "fetched_at": "2026-05-25"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 6.25,
+      "ln_blended": 1.8325814637483102,
+      "published_blended_per_million": 6.25,
+      "divergence_pct": 0
+    },
+    {
+      "label": "Gemini 2.5 Pro",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 4,
+      "note": "Google Gemini not on Azure cloud channel. Expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "Gemini 3.5 Flash",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 3.75,
+      "note": "Google Gemini not on Azure cloud channel. Expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "GLM 5.1",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 2.3,
+      "note": "Z-AI GLM not on Azure cloud channel. Expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "Claude Haiku 4.5",
+      "resolved": {
+        "provider": "azure_ai",
+        "model_id": "azure_ai/claude-haiku-4-5",
+        "family": "claude-haiku-4-5",
+        "hyperscaler": "azure",
+        "region": null,
+        "input_per_1k": 0.001,
+        "output_per_1k": 0.005,
+        "cached_input_per_1k": 0.00009999999999999999,
+        "image_per_1k": null,
+        "context_window": 200000,
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
+        "fetched_at": "2026-05-25"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 2.2,
+      "ln_blended": 0.7884573603642703,
+      "published_blended_per_million": 2.2,
+      "divergence_pct": 0
+    },
+    {
+      "label": "GPT-5.4 Mini",
+      "resolved": {
+        "provider": "azure",
+        "model_id": "azure/gpt-5.4-mini",
+        "family": "gpt-5.4-mini",
+        "hyperscaler": "azure",
+        "region": null,
+        "input_per_1k": 0.00075,
+        "output_per_1k": 0.0045000000000000005,
+        "cached_input_per_1k": 0.000075,
+        "image_per_1k": null,
+        "context_window": 1050000,
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
+        "fetched_at": "2026-05-25"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 1.8750000000000002,
+      "ln_blended": 0.6286086594223742,
+      "published_blended_per_million": 1.875,
+      "divergence_pct": 1.1842378929335004e-14
+    },
+    {
+      "label": "Kimi K2.6",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 1.865,
+      "note": "Moonshot Kimi not on Azure cloud channel. Expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "Grok 4.3",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 1.625,
+      "note": "xAI Grok not on Azure cloud channel. Expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "Qwen 3.6 Plus",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 1.25,
+      "note": "Alibaba Qwen Plus not on Azure cloud channel. Expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "Mistral Large 3",
+      "resolved": {
+        "provider": "azure_ai",
+        "model_id": "azure_ai/mistral-large-3",
+        "family": "mistral-large-3",
+        "hyperscaler": "azure",
+        "region": null,
+        "input_per_1k": 0.0005,
+        "output_per_1k": 0.0015,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 256000,
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
+        "fetched_at": "2026-05-25"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.7999999999999999,
+      "ln_blended": -0.22314355131420985,
+      "published_blended_per_million": 0.8,
+      "divergence_pct": -1.3877787807814457e-14
+    },
+    {
+      "label": "MiniMax M2.7",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 0.57,
+      "note": "MiniMax not on Azure cloud channel. Expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "GPT-5.4 Nano",
+      "resolved": {
+        "provider": "azure",
+        "model_id": "azure/gpt-5.4-nano",
+        "family": "gpt-5.4-nano",
+        "hyperscaler": "azure",
+        "region": null,
+        "input_per_1k": 0.00019999999999999998,
+        "output_per_1k": 0.00125,
+        "cached_input_per_1k": 0.00002,
+        "image_per_1k": null,
+        "context_window": 1050000,
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
+        "fetched_at": "2026-05-25"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.515,
+      "ln_blended": -0.6635883783184009,
+      "published_blended_per_million": 0.515,
+      "divergence_pct": 0
+    },
+    {
+      "label": "DeepSeek V4 Flash",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "published_blended_per_million": 0.182,
+      "note": "DeepSeek not on Azure cloud channel. Expected unresolved.",
+      "excluded_reason": "unresolved"
+    }
+  ],
+  "geometric_mean_usd_per_million": 3.1477916390444767,
+  "arithmetic_mean_usd_per_million": 5.2175
+}
