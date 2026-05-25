@@ -49,6 +49,12 @@ jobs:
       - name: Fetch OpenRouter
         run: bun scripts/FetchOpenRouter.ts
 
+      - name: Fetch AWS Bedrock pricing
+        run: bun scripts/FetchAwsPriceList.ts
+
+      - name: Fetch Azure OpenAI pricing
+        run: bun scripts/FetchAzureRetail.ts
+
       - name: Normalize
         run: bun scripts/Normalize.ts
 
