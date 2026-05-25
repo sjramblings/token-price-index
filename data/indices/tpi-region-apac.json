@@ -1,0 +1,284 @@
+{
+  "name": "tpi-region-apac",
+  "description": "Regional index for APAC — frontier-shaped models available in AWS ap-southeast-1 (Bedrock) and Azure southeastasia (OpenAI Service). Same 19-member candidate set as TPI-USEast / TPI-EU. APAC coverage is materially thinner: most third-party Bedrock models (Mistral, Llama, DeepSeek, GLM, Kimi, Qwen, GPT-OSS) are not yet in Singapore in our catalog, and Azure SEA lacks the o1/o3 reasoning models. The geometric mean computes over the small set that is regionally available — typically only Amazon Nova + Azure GPT-4.x. This honest gap is the story.",
+  "blend": {
+    "input": 0.7,
+    "output": 0.3
+  },
+  "computed_at": "2026-05-25T14:02:49.541Z",
+  "data_source": "data/current.json",
+  "member_count": 19,
+  "members_resolved": 8,
+  "members_with_invalid_price": 0,
+  "members": [
+    {
+      "label": "Nova Pro",
+      "resolved": {
+        "provider": "amazon",
+        "model_id": "nova-pro",
+        "family": "nova-pro",
+        "hyperscaler": "aws",
+        "region": "ap-southeast-1",
+        "input_per_1k": 0.00108,
+        "output_per_1k": 0.00432,
+        "cached_input_per_1k": 0.00027,
+        "image_per_1k": null,
+        "context_window": 300000,
+        "source": "aws-pricelist",
+        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/ap-southeast-1/index.json",
+        "fetched_at": "2026-05-25T11:15:37.463Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 2.052,
+      "ln_blended": 0.7188149273085231
+    },
+    {
+      "label": "Nova Lite",
+      "resolved": {
+        "provider": "amazon",
+        "model_id": "nova-lite",
+        "family": "nova-lite",
+        "hyperscaler": "aws",
+        "region": "ap-southeast-1",
+        "input_per_1k": 0.000081,
+        "output_per_1k": 0.000324,
+        "cached_input_per_1k": 0.00002025,
+        "image_per_1k": null,
+        "context_window": 300000,
+        "source": "aws-pricelist",
+        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/ap-southeast-1/index.json",
+        "fetched_at": "2026-05-25T11:15:37.463Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.15389999999999998,
+      "ln_blended": -1.8714522381373035
+    },
+    {
+      "label": "Nova Micro",
+      "resolved": {
+        "provider": "amazon",
+        "model_id": "nova-micro",
+        "family": "nova-micro",
+        "hyperscaler": "aws",
+        "region": "ap-southeast-1",
+        "input_per_1k": 0.000047,
+        "output_per_1k": 0.000188,
+        "cached_input_per_1k": 0.00001175,
+        "image_per_1k": null,
+        "context_window": 128000,
+        "source": "aws-pricelist",
+        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/ap-southeast-1/index.json",
+        "fetched_at": "2026-05-25T11:15:37.463Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.08929999999999999,
+      "ln_blended": -2.4157537910996836
+    },
+    {
+      "label": "Mistral Large 3",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "note": "Mistral has no Singapore SKU in our catalog — expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "Mistral Small",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "note": "Not yet GA in ap-southeast-1 — expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "Llama 3.3 70B",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "note": "Not yet GA in ap-southeast-1 — expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "Llama 3.2 3B",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "note": "Not yet GA in ap-southeast-1 — expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "DeepSeek v3.2",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "note": "DeepSeek not in ap-southeast-1 — expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "GLM 4.7",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "note": "Z-AI GLM not in ap-southeast-1 — expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "Kimi K2 Thinking",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "note": "Moonshot Kimi not in ap-southeast-1 — expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "Qwen3 32B",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "note": "Alibaba Qwen not in ap-southeast-1 — expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "GPT-OSS 120B",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "note": "OpenAI OSS not in Bedrock ap-southeast-1 — expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "GPT-4.1",
+      "resolved": {
+        "provider": "openai",
+        "model_id": "gpt-4.1-outp-glbl",
+        "family": "gpt-4.1",
+        "hyperscaler": "azure",
+        "region": "southeastasia",
+        "input_per_1k": 0.002,
+        "output_per_1k": 0.008,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 1047576,
+        "source": "azure-retail",
+        "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
+        "fetched_at": "2026-05-25T11:15:42.600Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 3.8,
+      "ln_blended": 1.33500106673234
+    },
+    {
+      "label": "GPT-4.1 Mini",
+      "resolved": {
+        "provider": "openai",
+        "model_id": "gpt-4.1-mini-inp-glbl",
+        "family": "gpt-4.1-mini",
+        "hyperscaler": "azure",
+        "region": "southeastasia",
+        "input_per_1k": 0.0004,
+        "output_per_1k": 0.0016,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 1047576,
+        "source": "azure-retail",
+        "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
+        "fetched_at": "2026-05-25T11:15:42.600Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.76,
+      "ln_blended": -0.2744368457017603
+    },
+    {
+      "label": "GPT-4.1 Nano",
+      "resolved": {
+        "provider": "openai",
+        "model_id": "gpt-4.1-nano-inp-glbl",
+        "family": "gpt-4.1-nano",
+        "hyperscaler": "azure",
+        "region": "southeastasia",
+        "input_per_1k": 0.0001,
+        "output_per_1k": 0.0004,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 1047576,
+        "source": "azure-retail",
+        "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
+        "fetched_at": "2026-05-25T11:15:42.600Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.19,
+      "ln_blended": -1.6607312068216509
+    },
+    {
+      "label": "GPT-4o",
+      "resolved": {
+        "provider": "openai",
+        "model_id": "gpt-4o-0806-inp-data-zone",
+        "family": "gpt-4o",
+        "hyperscaler": "azure",
+        "region": "southeastasia",
+        "input_per_1k": 0.00275,
+        "output_per_1k": 0.011,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 128000,
+        "source": "azure-retail",
+        "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
+        "fetched_at": "2026-05-25T11:15:42.600Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 5.225,
+      "ln_blended": 1.6534547978508747
+    },
+    {
+      "label": "GPT-4o Mini",
+      "resolved": {
+        "provider": "openai",
+        "model_id": "gpt-4o-mini-0718-outp-data-zone",
+        "family": "gpt-4o-mini",
+        "hyperscaler": "azure",
+        "region": "southeastasia",
+        "input_per_1k": 0.000165,
+        "output_per_1k": 0.00066,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 128000,
+        "source": "azure-retail",
+        "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
+        "fetched_at": "2026-05-25T11:15:42.600Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.3135,
+      "ln_blended": -1.1599559189091617
+    },
+    {
+      "label": "o1",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "note": "Azure o1 not in southeastasia — expected unresolved.",
+      "excluded_reason": "unresolved"
+    },
+    {
+      "label": "o3",
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
+      "note": "Azure o3 not in southeastasia — expected unresolved.",
+      "excluded_reason": "unresolved"
+    }
+  ],
+  "geometric_mean_usd_per_million": 0.631673646013275,
+  "arithmetic_mean_usd_per_million": 1.5729624999999998
+}

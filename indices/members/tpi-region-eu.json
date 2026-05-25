@@ -1,0 +1,30 @@
+{
+  "name": "tpi-region-eu",
+  "description": "Regional index for EU — frontier-shaped models available in AWS eu-west-1 (Bedrock) and Azure westeurope (OpenAI Service). Same 19-member candidate set as TPI-USEast. Members not yet GA in EU regions (Mistral Small, Llama 3.3 70B on AWS) are reported as unresolved — the geometric mean computes over what IS available, making the regional capability gap legible.",
+  "blend": { "input": 0.7, "output": 0.3 },
+  "region_group": "eu",
+  "aws_region": "eu-west-1",
+  "azure_region": "westeurope",
+  "selection_rule": "frontier-shaped families with per-region pricing in aws-pricelist (eu-west-1) or azure-retail (westeurope)",
+  "members": [
+    { "label": "Nova Pro", "select": [{ "source": "aws-pricelist", "family": "nova-pro", "region": "eu-west-1" }] },
+    { "label": "Nova Lite", "select": [{ "source": "aws-pricelist", "family": "nova-lite", "region": "eu-west-1" }] },
+    { "label": "Nova Micro", "select": [{ "source": "aws-pricelist", "family": "nova-micro", "region": "eu-west-1" }] },
+    { "label": "Mistral Large 3", "select": [{ "source": "aws-pricelist", "family": "mistral-large-3", "region": "eu-west-1" }] },
+    { "label": "Mistral Small", "select": [{ "source": "aws-pricelist", "family": "mistral-small", "region": "eu-west-1" }], "note": "Not yet GA in eu-west-1 in our catalog — expected unresolved." },
+    { "label": "Llama 3.3 70B", "select": [{ "source": "aws-pricelist", "family": "llama-3.3-70b", "region": "eu-west-1" }], "note": "Not yet GA in eu-west-1 in our catalog — expected unresolved." },
+    { "label": "Llama 3.2 3B", "select": [{ "source": "aws-pricelist", "family": "llama-3.2-3b", "region": "eu-west-1" }] },
+    { "label": "DeepSeek v3.2", "select": [{ "source": "aws-pricelist", "family": "deepseek-v3.2", "region": "eu-west-1" }] },
+    { "label": "GLM 4.7", "select": [{ "source": "aws-pricelist", "family": "glm-4.7", "region": "eu-west-1" }] },
+    { "label": "Kimi K2 Thinking", "select": [{ "source": "aws-pricelist", "family": "kimi-k2-thinking", "region": "eu-west-1" }] },
+    { "label": "Qwen3 32B", "select": [{ "source": "aws-pricelist", "family": "qwen3-32b", "region": "eu-west-1" }] },
+    { "label": "GPT-OSS 120B", "select": [{ "source": "aws-pricelist", "family": "gpt-oss-120b", "region": "eu-west-1" }] },
+    { "label": "GPT-4.1", "select": [{ "source": "azure-retail", "family": "gpt-4.1", "region": "westeurope" }] },
+    { "label": "GPT-4.1 Mini", "select": [{ "source": "azure-retail", "family": "gpt-4.1-mini", "region": "westeurope" }] },
+    { "label": "GPT-4.1 Nano", "select": [{ "source": "azure-retail", "family": "gpt-4.1-nano", "region": "westeurope" }] },
+    { "label": "GPT-4o", "select": [{ "source": "azure-retail", "family": "gpt-4o", "region": "westeurope" }] },
+    { "label": "GPT-4o Mini", "select": [{ "source": "azure-retail", "family": "gpt-4o-mini", "region": "westeurope" }] },
+    { "label": "o1", "select": [{ "source": "azure-retail", "family": "o1", "region": "westeurope" }] },
+    { "label": "o3", "select": [{ "source": "azure-retail", "family": "o3", "region": "westeurope" }] }
+  ]
+}

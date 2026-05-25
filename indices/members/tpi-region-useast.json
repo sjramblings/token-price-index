@@ -1,0 +1,30 @@
+{
+  "name": "tpi-region-useast",
+  "description": "Regional index for US East — frontier-shaped models available in AWS us-east-1 (Bedrock) and Azure eastus (OpenAI Service). 19 members spanning Amazon Nova, Mistral, Meta Llama, DeepSeek, GLM, Kimi, Qwen, OpenAI GPT-OSS / GPT-4.1 / GPT-4o / o1 / o3. Departs from ATPI's 16: ATPI's frontier set is mostly direct-provider API models (GPT-5.x, Claude 4.x, Gemini, Grok) which have no per-region pricing in our catalog — so regional indices need a regionally-available frontier set.",
+  "blend": { "input": 0.7, "output": 0.3 },
+  "region_group": "useast",
+  "aws_region": "us-east-1",
+  "azure_region": "eastus",
+  "selection_rule": "frontier-shaped families with per-region pricing in aws-pricelist (us-east-1) or azure-retail (eastus)",
+  "members": [
+    { "label": "Nova Pro", "select": [{ "source": "aws-pricelist", "family": "nova-pro", "region": "us-east-1" }] },
+    { "label": "Nova Lite", "select": [{ "source": "aws-pricelist", "family": "nova-lite", "region": "us-east-1" }] },
+    { "label": "Nova Micro", "select": [{ "source": "aws-pricelist", "family": "nova-micro", "region": "us-east-1" }] },
+    { "label": "Mistral Large 3", "select": [{ "source": "aws-pricelist", "family": "mistral-large-3", "region": "us-east-1" }] },
+    { "label": "Mistral Small", "select": [{ "source": "aws-pricelist", "family": "mistral-small", "region": "us-east-1" }] },
+    { "label": "Llama 3.3 70B", "select": [{ "source": "aws-pricelist", "family": "llama-3.3-70b", "region": "us-east-1" }] },
+    { "label": "Llama 3.2 3B", "select": [{ "source": "aws-pricelist", "family": "llama-3.2-3b", "region": "us-east-1" }] },
+    { "label": "DeepSeek v3.2", "select": [{ "source": "aws-pricelist", "family": "deepseek-v3.2", "region": "us-east-1" }] },
+    { "label": "GLM 4.7", "select": [{ "source": "aws-pricelist", "family": "glm-4.7", "region": "us-east-1" }] },
+    { "label": "Kimi K2 Thinking", "select": [{ "source": "aws-pricelist", "family": "kimi-k2-thinking", "region": "us-east-1" }] },
+    { "label": "Qwen3 32B", "select": [{ "source": "aws-pricelist", "family": "qwen3-32b", "region": "us-east-1" }] },
+    { "label": "GPT-OSS 120B", "select": [{ "source": "aws-pricelist", "family": "gpt-oss-120b", "region": "us-east-1" }] },
+    { "label": "GPT-4.1", "select": [{ "source": "azure-retail", "family": "gpt-4.1", "region": "eastus" }] },
+    { "label": "GPT-4.1 Mini", "select": [{ "source": "azure-retail", "family": "gpt-4.1-mini", "region": "eastus" }] },
+    { "label": "GPT-4.1 Nano", "select": [{ "source": "azure-retail", "family": "gpt-4.1-nano", "region": "eastus" }] },
+    { "label": "GPT-4o", "select": [{ "source": "azure-retail", "family": "gpt-4o", "region": "eastus" }] },
+    { "label": "GPT-4o Mini", "select": [{ "source": "azure-retail", "family": "gpt-4o-mini", "region": "eastus" }] },
+    { "label": "o1", "select": [{ "source": "azure-retail", "family": "o1", "region": "eastus" }] },
+    { "label": "o3", "select": [{ "source": "azure-retail", "family": "o3", "region": "eastus" }] }
+  ]
+}
