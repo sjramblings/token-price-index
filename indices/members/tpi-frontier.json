@@ -1,0 +1,37 @@
+{
+  "name": "tpi-frontier",
+  "description": "Frontier-tier capability index. Mechanical split of ATPI's 16 members: blended >= $5/M tokens. 4 members spanning OpenAI + Anthropic. Reproducible from indices/members/atpi-replica.json without editorial judgment — anyone slicing the ATPI set by published blended price arrives at this list.",
+  "blend": { "input": 0.7, "output": 0.3 },
+  "tier": "frontier",
+  "selection_rule": "members from atpi-replica with published_blended_per_million >= 5.00",
+  "members": [
+    {
+      "label": "GPT-5.5",
+      "select": [
+        { "source": "openrouter", "family": "gpt-5.5", "model_id_equals": "openai/gpt-5.5" }
+      ],
+      "published_blended_per_million": 12.50
+    },
+    {
+      "label": "Claude Opus 4.7",
+      "select": [
+        { "source": "openrouter", "family": "claude-opus-4-7", "model_id_equals": "anthropic/claude-opus-4.7" }
+      ],
+      "published_blended_per_million": 10.50
+    },
+    {
+      "label": "Claude Sonnet 4.6",
+      "select": [
+        { "source": "openrouter", "family": "claude-sonnet-4-6", "model_id_equals": "anthropic/claude-sonnet-4.6" }
+      ],
+      "published_blended_per_million": 6.60
+    },
+    {
+      "label": "GPT-5.4",
+      "select": [
+        { "source": "openrouter", "family": "gpt-5.4", "model_id_equals": "openai/gpt-5.4" }
+      ],
+      "published_blended_per_million": 6.25
+    }
+  ]
+}

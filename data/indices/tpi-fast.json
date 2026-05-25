@@ -1,0 +1,110 @@
+{
+  "name": "tpi-fast",
+  "description": "Fast-tier capability index. Mechanical split of ATPI's 16 members: blended < $1/M tokens. 4 members spanning Mistral, MiniMax, OpenAI, DeepSeek — the cost-optimised end of the frontier set. Reproducible from indices/members/atpi-replica.json without editorial judgment.",
+  "blend": {
+    "input": 0.7,
+    "output": 0.3
+  },
+  "computed_at": "2026-05-25T13:35:34.431Z",
+  "data_source": "data/current.json",
+  "member_count": 4,
+  "members_resolved": 4,
+  "members_with_invalid_price": 0,
+  "members": [
+    {
+      "label": "Mistral Large 3",
+      "resolved": {
+        "provider": "openrouter",
+        "model_id": "openrouter/mistralai/mistral-large-2512",
+        "family": "mistral-large",
+        "hyperscaler": "aggregator",
+        "region": null,
+        "input_per_1k": 0.0005,
+        "output_per_1k": 0.0015,
+        "cached_input_per_1k": null,
+        "image_per_1k": 0,
+        "context_window": 262144,
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
+        "fetched_at": "2026-05-25"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.7999999999999999,
+      "ln_blended": -0.22314355131420985,
+      "published_blended_per_million": 0.8,
+      "divergence_pct": -1.3877787807814457e-14,
+      "note": "Mistral Large 3 (mistral-large-2512) is the December 2025 release; Mistral hasn't published direct API pricing in our LiteLLM source. Falls back to Bedrock us-east-1."
+    },
+    {
+      "label": "MiniMax M2.7",
+      "resolved": {
+        "provider": "minimax",
+        "model_id": "minimax/minimax-m2.7",
+        "family": "minimax-m2.7",
+        "hyperscaler": "aggregator",
+        "region": null,
+        "input_per_1k": 0.000279,
+        "output_per_1k": 0.0012,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 196608,
+        "source": "openrouter",
+        "source_url": "https://openrouter.ai/api/v1/models",
+        "fetched_at": "2026-05-25"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.5553,
+      "ln_blended": -0.5882467707345755,
+      "published_blended_per_million": 0.57,
+      "divergence_pct": -2.5789473684210416
+    },
+    {
+      "label": "GPT-5.4 Nano",
+      "resolved": {
+        "provider": "openai",
+        "model_id": "openai/gpt-5.4-nano",
+        "family": "gpt-5.4-nano",
+        "hyperscaler": "aggregator",
+        "region": null,
+        "input_per_1k": 0.00019999999999999998,
+        "output_per_1k": 0.00125,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 400000,
+        "source": "openrouter",
+        "source_url": "https://openrouter.ai/api/v1/models",
+        "fetched_at": "2026-05-25"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.515,
+      "ln_blended": -0.6635883783184009,
+      "published_blended_per_million": 0.515,
+      "divergence_pct": 0
+    },
+    {
+      "label": "DeepSeek V4 Flash",
+      "resolved": {
+        "provider": "deepseek",
+        "model_id": "deepseek/deepseek-v4-flash",
+        "family": "deepseek-v4-flash",
+        "hyperscaler": "aggregator",
+        "region": null,
+        "input_per_1k": 0.00009999999999999999,
+        "output_per_1k": 0.00019999999999999998,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 1048576,
+        "source": "openrouter",
+        "source_url": "https://openrouter.ai/api/v1/models",
+        "fetched_at": "2026-05-25"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.12999999999999998,
+      "ln_blended": -2.0402208285265546,
+      "published_blended_per_million": 0.182,
+      "divergence_pct": -28.57142857142858
+    }
+  ],
+  "geometric_mean_usd_per_million": 0.4152809988491556,
+  "arithmetic_mean_usd_per_million": 0.5000749999999999
+}
