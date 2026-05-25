@@ -10,6 +10,11 @@ on:
 
 permissions:
   contents: write
+  # actions: write is required by the final "Trigger Pages deploy" step,
+  # which calls the REST Create-Workflow-Dispatch endpoint via gh CLI.
+  # Without it, GH_TOKEN gets 403 on the dispatch and Pages stays frozen
+  # on the last code-PR-authored push. Codex P1 on PR #5.
+  actions: write
 
 # One refresh in flight at a time. Prevents racing same-day runs against
 # each other on the BuildRelease idempotency guard.
