@@ -10,7 +10,7 @@ install:
 
 # Fetch all sources, normalize to data/current.json, write daily snapshot, verify, diff
 refresh:
-    bun scripts/FetchLiteLLM.ts && bun scripts/FetchOpenRouter.ts && bun scripts/Normalize.ts && bun scripts/Verify.ts && bun scripts/Diff.ts
+    bun scripts/FetchLiteLLM.ts && bun scripts/FetchOpenRouter.ts && bun scripts/FetchAwsPriceList.ts && bun scripts/FetchAzureRetail.ts && bun scripts/Normalize.ts && bun scripts/Verify.ts && bun scripts/Diff.ts
 
 # Run schema and invariant checks on data/current.json
 verify:
@@ -31,3 +31,7 @@ dev:
 # Build the dashboard SPA for GitHub Pages deployment
 build:
     cd dashboard && bun run build
+
+# Run unit tests via bun test
+test:
+    bun test

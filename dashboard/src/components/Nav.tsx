@@ -11,6 +11,7 @@ interface NavRoute {
 const routes: NavRoute[] = [
   { to: "/", label: "Explorer", end: true },
   { to: "/compare", label: "Compare" },
+  { to: "/pivot", label: "Pivot" },
   { to: "/simulator", label: "Simulator" },
   { to: "/timeline", label: "Timeline" },
 ];
