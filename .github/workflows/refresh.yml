@@ -64,6 +64,24 @@ jobs:
       - name: Diff
         run: bun scripts/Diff.ts
 
+      # Recompute every index against the freshly-normalized current.json.
+      # Without this the dashboard's data/indices/*.json files freeze at
+      # whatever values were committed in the last code PR, even as the
+      # underlying snapshots refresh daily.
+      - name: Compute indices
+        run: |
+          for spec in indices/members/*.json; do
+            name="$(basename "$spec" .json)"
+            bun scripts/ComputeIndex.ts "$name"
+          done
+
+      # Walk data/history/ + data/current.json and rebuild every index's
+      # time-series JSON so sparklines on /indices reflect the new
+      # snapshot. Same reason as Compute indices — without this, the
+      # historical reconstruction is only as fresh as the last code PR.
+      - name: Compute index history
+        run: bun scripts/ComputeIndexHistory.ts --all
+
       - name: Commit if data/ changed
         run: |
           git config user.name  "github-actions[bot]"
