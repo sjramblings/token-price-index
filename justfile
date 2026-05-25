@@ -47,3 +47,11 @@ index-all:
         echo "--- $name ---"; \
         bun scripts/ComputeIndex.ts "$name"; \
     done
+
+# Compute time-series history for one index by walking data/history/ + data/current.json
+index-history NAME:
+    bun scripts/ComputeIndexHistory.ts {{NAME}}
+
+# Compute time-series history for every spec under indices/members/
+index-history-all:
+    bun scripts/ComputeIndexHistory.ts --all

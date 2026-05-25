@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ChevronRight } from 'lucide-react';
+import { Line, LineChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { cn } from '../lib/cn';
-import { loadAllIndices } from '../lib/indices';
-import type { IndexMember, IndexResult } from '../lib/indices';
+import { loadAllIndexHistories, loadAllIndices } from '../lib/indices';
+import type { IndexHistory, IndexMember, IndexResult } from '../lib/indices';
 
 type DisplayLabel = { title: string; tagline: string };
 
@@ -112,13 +113,79 @@ function memberStatusLabel(member: IndexMember): string {
   return 'resolved';
 }
 
+function changeTone(pct: number | null | undefined): string {
+  if (pct === null || pct === undefined || !Number.isFinite(pct)) {
+    return 'text-ink-600';
+  }
+  if (Math.abs(pct) < 0.01) {
+    return 'text-ink-600';
+  }
+  return pct > 0 ? 'text-amber-400' : 'text-emerald-400';
+}
+
+function strokeColor(pct: number | null | undefined): string {
+  if (pct === null || pct === undefined || Math.abs(pct) < 0.01) {
+    return '#94a3b8';
+  }
+  return pct > 0 ? '#fbbf24' : '#34d399';
+}
+
+interface SparklineProps {
+  history: IndexHistory;
+}
+
+function Sparkline({ history }: SparklineProps): JSX.Element | null {
+  const points = history.series
+    .filter((p): p is typeof p & { geometric_mean_usd_per_million: number } =>
+      p.geometric_mean_usd_per_million !== null && Number.isFinite(p.geometric_mean_usd_per_million),
+    )
+    .map((p) => ({ date: p.date, value: p.geometric_mean_usd_per_million }));
+
+  if (points.length < 2) {
+    // Single-point series — render nothing; let the card surface earliest/latest text only.
+    return null;
+  }
+
+  const stroke = strokeColor(history.pct_change_earliest_to_latest);
+
+  return (
+    <div className="h-10 w-32">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={points} margin={{ top: 4, right: 0, left: 0, bottom: 4 }}>
+          <Line
+            type="monotone"
+            dataKey="value"
+            stroke={stroke}
+            strokeWidth={1.5}
+            dot={false}
+            isAnimationActive={false}
+          />
+          <Tooltip
+            cursor={false}
+            contentStyle={{
+              background: 'rgba(11, 15, 20, 0.95)',
+              border: '1px solid rgba(58, 70, 84, 0.4)',
+              borderRadius: 8,
+              fontSize: 11,
+            }}
+            itemStyle={{ color: 'rgb(229 231 235)' }}
+            labelStyle={{ color: 'rgb(148 163 184)' }}
+            formatter={(value: number) => [`$${value.toFixed(4)}/M`, 'index']}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
 interface IndexCardProps {
   index: IndexResult;
+  history?: IndexHistory;
   expanded: boolean;
   onToggle: () => void;
 }
 
-function IndexCard({ index, expanded, onToggle }: IndexCardProps): JSX.Element {
+function IndexCard({ index, history, expanded, onToggle }: IndexCardProps): JSX.Element {
   const label = DISPLAY_LABELS[index.name] ?? { title: index.name, tagline: index.description ?? '' };
   const reference = index.published_value_usd_per_million;
 
@@ -141,6 +208,25 @@ function IndexCard({ index, expanded, onToggle }: IndexCardProps): JSX.Element {
           <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-600">{index.name}</p>
           <h3 className="mt-1 text-lg font-semibold tracking-tight text-ink-900">{label.title}</h3>
           <p className="mt-1 text-sm text-ink-600">{label.tagline}</p>
+          {history !== undefined && history.series.length > 0 && (
+            <div className="mt-3 flex items-center gap-3">
+              <Sparkline history={history} />
+              {history.pct_change_earliest_to_latest !== null && history.earliest_date !== null && history.latest_date !== null && (
+                <div className="font-mono text-[11px]">
+                  <span className={changeTone(history.pct_change_earliest_to_latest)}>
+                    {history.stable
+                      ? 'stable'
+                      : `${history.pct_change_earliest_to_latest >= 0 ? '+' : ''}${history.pct_change_earliest_to_latest.toFixed(2)}%`}
+                  </span>
+                  <span className="ml-2 text-ink-500">
+                    {history.earliest_date === history.latest_date
+                      ? history.latest_date
+                      : `${history.earliest_date} → ${history.latest_date}`}
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
         <div className="text-right">
           <p className="num-display text-3xl text-ink-900">
@@ -225,6 +311,7 @@ function GroupHeader({ eyebrow, title, description }: GroupHeaderProps): JSX.Ele
 
 export default function Indices(): JSX.Element {
   const [indices, setIndices] = useState<IndexResult[]>([]);
+  const [histories, setHistories] = useState<Map<string, IndexHistory>>(new Map());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [requestAttempt, setRequestAttempt] = useState(0);
@@ -235,10 +322,11 @@ export default function Indices(): JSX.Element {
     setLoading(true);
     setError(null);
 
-    void loadAllIndices()
-      .then((results) => {
+    void Promise.all([loadAllIndices(), loadAllIndexHistories()])
+      .then(([results, historyMap]) => {
         if (active) {
           setIndices(results);
+          setHistories(historyMap);
           setLoading(false);
         }
       })
@@ -324,6 +412,7 @@ export default function Indices(): JSX.Element {
           />
           <IndexCard
             index={atpi}
+            history={histories.get(atpi.name)}
             expanded={expanded.has(atpi.name)}
             onToggle={() => toggle(atpi.name)}
           />
@@ -341,6 +430,7 @@ export default function Indices(): JSX.Element {
             <IndexCard
               key={index.name}
               index={index}
+              history={histories.get(index.name)}
               expanded={expanded.has(index.name)}
               onToggle={() => toggle(index.name)}
             />
@@ -359,6 +449,7 @@ export default function Indices(): JSX.Element {
             <IndexCard
               key={index.name}
               index={index}
+              history={histories.get(index.name)}
               expanded={expanded.has(index.name)}
               onToggle={() => toggle(index.name)}
             />
@@ -377,6 +468,7 @@ export default function Indices(): JSX.Element {
             <IndexCard
               key={index.name}
               index={index}
+              history={histories.get(index.name)}
               expanded={expanded.has(index.name)}
               onToggle={() => toggle(index.name)}
             />

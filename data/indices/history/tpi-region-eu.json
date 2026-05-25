@@ -1,0 +1,32 @@
+{
+  "name": "tpi-region-eu",
+  "description": "Regional index for EU — frontier-shaped models available in AWS eu-west-1 (Bedrock) and Azure westeurope (OpenAI Service). Same 19-member candidate set as TPI-USEast. Members not yet GA in EU regions (Mistral Small, Llama 3.3 70B on AWS) are reported as unresolved — the geometric mean computes over what IS available, making the regional capability gap legible.",
+  "blend": {
+    "input": 0.7,
+    "output": 0.3
+  },
+  "computed_at": "2026-05-25T14:19:27.359Z",
+  "member_count": 19,
+  "series": [
+    {
+      "date": "2026-05-24",
+      "geometric_mean_usd_per_million": null,
+      "arithmetic_mean_usd_per_million": null,
+      "members_resolved": 0,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-05-25",
+      "geometric_mean_usd_per_million": 0.8750386713177449,
+      "arithmetic_mean_usd_per_million": 3.0562470588235295,
+      "members_resolved": 17,
+      "members_with_invalid_price": 0
+    }
+  ],
+  "earliest_date": "2026-05-25",
+  "latest_date": "2026-05-25",
+  "earliest_value": 0.8750386713177449,
+  "latest_value": 0.8750386713177449,
+  "pct_change_earliest_to_latest": 0,
+  "stable": true
+}

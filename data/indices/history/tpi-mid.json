@@ -1,0 +1,32 @@
+{
+  "name": "tpi-mid",
+  "description": "Mid-tier capability index. Mechanical split of ATPI's 16 members: $1 <= blended < $5/M tokens. 8 members spanning Google, Z-AI, Anthropic, OpenAI, Moonshot, xAI, Alibaba — high provider diversity by construction. Reproducible from indices/members/atpi-replica.json without editorial judgment.",
+  "blend": {
+    "input": 0.7,
+    "output": 0.3
+  },
+  "computed_at": "2026-05-25T14:19:27.356Z",
+  "member_count": 8,
+  "series": [
+    {
+      "date": "2026-05-24",
+      "geometric_mean_usd_per_million": 1.5163690592729602,
+      "arithmetic_mean_usd_per_million": 1.788,
+      "members_resolved": 7,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-05-25",
+      "geometric_mean_usd_per_million": 1.588572847349462,
+      "arithmetic_mean_usd_per_million": 1.8395,
+      "members_resolved": 8,
+      "members_with_invalid_price": 0
+    }
+  ],
+  "earliest_date": "2026-05-24",
+  "latest_date": "2026-05-25",
+  "earliest_value": 1.5163690592729602,
+  "latest_value": 1.588572847349462,
+  "pct_change_earliest_to_latest": 4.761623671688524,
+  "stable": false
+}

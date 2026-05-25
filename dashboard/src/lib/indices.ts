@@ -95,3 +95,71 @@ export function groupForIndex(slug: string): 'reference' | 'tier' | 'channel' | 
   const found = INDEX_MANIFEST.find((entry) => entry.slug === slug);
   return found?.group ?? 'unknown';
 }
+
+export type IndexHistoryPoint = {
+  date: string;
+  geometric_mean_usd_per_million: number | null;
+  arithmetic_mean_usd_per_million: number | null;
+  members_resolved: number;
+  members_with_invalid_price: number;
+};
+
+export type IndexHistory = {
+  name: string;
+  description?: string;
+  blend: IndexBlend;
+  computed_at: string;
+  member_count: number;
+  series: IndexHistoryPoint[];
+  earliest_date: string | null;
+  latest_date: string | null;
+  earliest_value: number | null;
+  latest_value: number | null;
+  pct_change_earliest_to_latest: number | null;
+  stable: boolean;
+};
+
+function isIndexHistory(value: unknown): value is IndexHistory {
+  if (!isObject(value)) {
+    return false;
+  }
+  return typeof value.name === 'string'
+    && isObject(value.blend)
+    && typeof value.computed_at === 'string'
+    && typeof value.member_count === 'number'
+    && Array.isArray(value.series)
+    && (value.earliest_date === null || typeof value.earliest_date === 'string')
+    && (value.latest_date === null || typeof value.latest_date === 'string')
+    && typeof value.stable === 'boolean';
+}
+
+export async function loadIndexHistory(slug: string): Promise<IndexHistory | null> {
+  const response = await fetch(`${BASE_URL}data/indices/history/${slug}.json`);
+  if (response.status === 404) {
+    return null;
+  }
+  if (!response.ok) {
+    throw new Error(`indices/history/${slug}.json request failed with HTTP ${response.status}`);
+  }
+  const parsed: unknown = await response.json();
+  if (!isIndexHistory(parsed)) {
+    throw new Error(`indices/history/${slug}.json failed shape validation`);
+  }
+  return parsed;
+}
+
+export async function loadAllIndexHistories(): Promise<Map<string, IndexHistory>> {
+  const entries = await Promise.all(
+    INDEX_MANIFEST.map(async (entry) => {
+      const history = await loadIndexHistory(entry.slug);
+      return [entry.slug, history] as const;
+    }),
+  );
+  const map = new Map<string, IndexHistory>();
+  for (const [slug, history] of entries) {
+    if (history !== null) {
+      map.set(slug, history);
+    }
+  }
+  return map;
+}

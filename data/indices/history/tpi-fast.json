@@ -1,0 +1,32 @@
+{
+  "name": "tpi-fast",
+  "description": "Fast-tier capability index. Mechanical split of ATPI's 16 members: blended < $1/M tokens. 4 members spanning Mistral, MiniMax, OpenAI, DeepSeek — the cost-optimised end of the frontier set. Reproducible from indices/members/atpi-replica.json without editorial judgment.",
+  "blend": {
+    "input": 0.7,
+    "output": 0.3
+  },
+  "computed_at": "2026-05-25T14:19:27.355Z",
+  "member_count": 4,
+  "series": [
+    {
+      "date": "2026-05-24",
+      "geometric_mean_usd_per_million": 0.33375369688283935,
+      "arithmetic_mean_usd_per_million": 0.40009999999999996,
+      "members_resolved": 3,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-05-25",
+      "geometric_mean_usd_per_million": 0.4152809988491556,
+      "arithmetic_mean_usd_per_million": 0.5000749999999999,
+      "members_resolved": 4,
+      "members_with_invalid_price": 0
+    }
+  ],
+  "earliest_date": "2026-05-24",
+  "latest_date": "2026-05-25",
+  "earliest_value": 0.33375369688283935,
+  "latest_value": 0.4152809988491556,
+  "pct_change_earliest_to_latest": 24.427385442545535,
+  "stable": false
+}

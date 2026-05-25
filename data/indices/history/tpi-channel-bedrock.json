@@ -1,0 +1,32 @@
+{
+  "name": "tpi-channel-bedrock",
+  "description": "Bedrock-channel index. Same 16 ATPI members, selectors restricted to hyperscaler='aws' (AWS Bedrock). Only 4 of ATPI's 16 frontier members are invocable on Bedrock in our catalog (the 3 Claude models + Mistral Large 3). The 12 unresolved members demonstrate the deployment-channel gap: most frontier capability (GPT-5.x, Gemini, Grok, DeepSeek, etc.) is not available on AWS-hosted Bedrock today.",
+  "blend": {
+    "input": 0.7,
+    "output": 0.3
+  },
+  "computed_at": "2026-05-25T14:19:27.353Z",
+  "member_count": 16,
+  "series": [
+    {
+      "date": "2026-05-24",
+      "geometric_mean_usd_per_million": null,
+      "arithmetic_mean_usd_per_million": null,
+      "members_resolved": 0,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-05-25",
+      "geometric_mean_usd_per_million": 3.5189057398478085,
+      "arithmetic_mean_usd_per_million": 5.260000000000001,
+      "members_resolved": 4,
+      "members_with_invalid_price": 0
+    }
+  ],
+  "earliest_date": "2026-05-25",
+  "latest_date": "2026-05-25",
+  "earliest_value": 3.5189057398478085,
+  "latest_value": 3.5189057398478085,
+  "pct_change_earliest_to_latest": 0,
+  "stable": true
+}

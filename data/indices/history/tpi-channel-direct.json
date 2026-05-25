@@ -1,0 +1,32 @@
+{
+  "name": "tpi-channel-direct",
+  "description": "Direct-channel index. Same 16 ATPI members, selectors restricted to hyperscaler='direct' (the model provider's own published API — e.g. anthropic.com, openai.com, xai.com, moonshot.cn). Members not available via a direct provider API are unresolved; the geometric mean computes over those that are. Of ATPI's 16, 13 resolve here; the 3 unresolved (Gemini 3.5 Flash, GLM 5.1, DeepSeek V4 Flash) demonstrate that some frontier-tier providers do not yet expose a direct first-party API and are aggregator-only in our catalog.",
+  "blend": {
+    "input": 0.7,
+    "output": 0.3
+  },
+  "computed_at": "2026-05-25T14:19:27.354Z",
+  "member_count": 16,
+  "series": [
+    {
+      "date": "2026-05-24",
+      "geometric_mean_usd_per_million": 1.8973465341014166,
+      "arithmetic_mean_usd_per_million": 3.0050000000000003,
+      "members_resolved": 13,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-05-25",
+      "geometric_mean_usd_per_million": 2.2650079736481152,
+      "arithmetic_mean_usd_per_million": 3.8703846153846158,
+      "members_resolved": 13,
+      "members_with_invalid_price": 0
+    }
+  ],
+  "earliest_date": "2026-05-24",
+  "latest_date": "2026-05-25",
+  "earliest_value": 1.8973465341014166,
+  "latest_value": 2.2650079736481152,
+  "pct_change_earliest_to_latest": 19.37766417144368,
+  "stable": false
+}
