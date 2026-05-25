@@ -68,15 +68,22 @@ function printReport(result: IndexResult): void {
   if (result.description !== undefined) {
     console.log(result.description);
   }
-  console.log(`Data source:         ${result.data_source}`);
-  console.log(`Members configured:  ${result.member_count}`);
-  console.log(`Members resolved:    ${result.members_resolved}`);
-  console.log(`Blend ratio:         input ${result.blend.input}, output ${result.blend.output}\n`);
+  console.log(`Data source:                 ${result.data_source}`);
+  console.log(`Members configured:          ${result.member_count}`);
+  console.log(`Members resolved:            ${result.members_resolved}`);
+  console.log(`Members with invalid price:  ${result.members_with_invalid_price}`);
+  console.log(`Blend ratio:                 input ${result.blend.input}, output ${result.blend.output}\n`);
 
   console.log('Member resolution:');
   for (const m of result.members) {
     if (m.resolved === null) {
       console.log(`  ✗ ${m.label.padEnd(22)} UNRESOLVED — no selector matched`);
+      continue;
+    }
+    if (m.excluded_reason === 'non_positive_blended_price' || m.excluded_reason === 'non_finite_blended_price') {
+      console.log(
+        `  ⚠ ${m.label.padEnd(22)} EXCLUDED — ${m.excluded_reason} (resolved ${m.resolved.source}/${m.resolved.model_id} with blended=${m.blended_per_million})`,
+      );
       continue;
     }
     const blendedStr = formatPrice(m.blended_per_million);
@@ -123,7 +130,34 @@ async function main(): Promise<void> {
   printReport(result);
   console.log(`\nWrote ${outPath}`);
 
-  if (maxDivergencePct !== null && result.index_divergence_pct !== undefined) {
+  if (maxDivergencePct !== null) {
+    // Refuse to silently pass the CI gate when divergence cannot be
+    // evaluated. Either the spec lacks `published_value_usd_per_million`
+    // (nothing to compare against) or the index computation produced a
+    // null geometric mean (e.g. invalid-priced members). Failing loudly
+    // is the only honest behavior — a green CI signal here would falsely
+    // imply the threshold was checked.
+    if (result.geometric_mean_usd_per_million === null) {
+      console.error(
+        `\nFAIL: --max-divergence=${maxDivergencePct}% requested but geometric_mean_usd_per_million is null` +
+          (result.members_with_invalid_price > 0
+            ? ` (${result.members_with_invalid_price} member(s) with invalid price)`
+            : ''),
+      );
+      process.exit(1);
+    }
+    if (result.published_value_usd_per_million === undefined) {
+      console.error(
+        `\nFAIL: --max-divergence=${maxDivergencePct}% requested but the spec has no published_value_usd_per_million to compare against`,
+      );
+      process.exit(1);
+    }
+    if (result.index_divergence_pct === undefined) {
+      console.error(
+        `\nFAIL: --max-divergence=${maxDivergencePct}% requested but index_divergence_pct could not be computed`,
+      );
+      process.exit(1);
+    }
     const absolute = Math.abs(result.index_divergence_pct);
     if (absolute > maxDivergencePct) {
       console.error(

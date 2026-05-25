@@ -5,10 +5,11 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-05-25T13:19:26.211Z",
+  "computed_at": "2026-05-25T13:34:09.172Z",
   "data_source": "data/current.json",
   "member_count": 16,
   "members_resolved": 16,
+  "members_with_invalid_price": 0,
   "members": [
     {
       "label": "GPT-5.5",

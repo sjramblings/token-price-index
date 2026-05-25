@@ -194,3 +194,109 @@ describe('computeIndex (ATPI worked example)', () => {
     expect(result.index_divergence_pct).toBeCloseTo(0, 6);
   });
 });
+
+describe('computeIndex — invalid-price member handling (Codex P1)', () => {
+  // Resolved-but-zero-priced members are a data-integrity failure, not a
+  // member-set evolution. Silently dropping them yields a mathematically
+  // valid mean over a different member set than the consumer thinks they
+  // requested. The fix is to hard-fail the geometric mean.
+
+  test('zero-priced resolved member nulls the geometric mean and flags the member', () => {
+    const records: PriceRecord[] = [
+      record({ family: 'paid', model_id: 'p/1', input_per_1k: 0.001, output_per_1k: 0.002 }),
+      record({ family: 'free', model_id: 'f/1', input_per_1k: 0, output_per_1k: 0 }),
+    ];
+    const spec: IndexSpec = {
+      name: 'free-mix',
+      blend: { input: 0.5, output: 0.5 },
+      members: [
+        { label: 'Paid', select: [{ model_id_equals: 'p/1' }] },
+        { label: 'Free', select: [{ model_id_equals: 'f/1' }] },
+      ],
+    };
+    const result = computeIndex(records, spec);
+    expect(result.members_resolved).toBe(2);
+    expect(result.members_with_invalid_price).toBe(1);
+    expect(result.members[1]?.excluded_reason).toBe('non_positive_blended_price');
+    expect(result.geometric_mean_usd_per_million).toBeNull();
+    expect(result.arithmetic_mean_usd_per_million).toBeNull();
+    expect(result.index_divergence_pct).toBeUndefined();
+  });
+
+  test('negative blended price flags non_positive_blended_price', () => {
+    // Pathological data: prices producing a net-negative blended slip
+    // through Verify (which would normally reject negative per_1k values).
+    // The lib still has to behave.
+    const records: PriceRecord[] = [
+      record({ family: 'bad', model_id: 'b/1', input_per_1k: -0.005, output_per_1k: 0.001 }),
+    ];
+    const spec: IndexSpec = {
+      name: 'pathological',
+      blend: { input: 0.5, output: 0.5 },
+      members: [{ label: 'Bad', select: [{ model_id_equals: 'b/1' }] }],
+    };
+    const result = computeIndex(records, spec);
+    expect(result.members_resolved).toBe(1);
+    expect(result.members_with_invalid_price).toBe(1);
+    expect(result.members[0]?.excluded_reason).toBe('non_positive_blended_price');
+    expect(result.members[0]?.blended_per_million ?? 0).toBeLessThan(0);
+    expect(result.geometric_mean_usd_per_million).toBeNull();
+  });
+
+  test('non-finite blended (NaN input) flags non_finite_blended_price', () => {
+    const records: PriceRecord[] = [
+      record({ family: 'nan', model_id: 'n/1', input_per_1k: Number.NaN, output_per_1k: 0.001 }),
+    ];
+    const spec: IndexSpec = {
+      name: 'nan',
+      blend: { input: 0.5, output: 0.5 },
+      members: [{ label: 'NaN', select: [{ model_id_equals: 'n/1' }] }],
+    };
+    const result = computeIndex(records, spec);
+    expect(result.members_resolved).toBe(1);
+    expect(result.members_with_invalid_price).toBe(1);
+    expect(result.members[0]?.excluded_reason).toBe('non_finite_blended_price');
+    expect(result.geometric_mean_usd_per_million).toBeNull();
+  });
+
+  test('unresolved member is distinct from invalid-priced — unresolved does not null the mean', () => {
+    // Unresolved is a member-set/selector mismatch, not a data-integrity
+    // failure. The mean over resolved members is still meaningful (and is
+    // the documented behavior in the worked-example test).
+    const records: PriceRecord[] = [
+      record({ family: 'paid', model_id: 'p/1', input_per_1k: 0.001, output_per_1k: 0.002 }),
+    ];
+    const spec: IndexSpec = {
+      name: 'partial',
+      blend: { input: 0.5, output: 0.5 },
+      members: [
+        { label: 'Paid', select: [{ model_id_equals: 'p/1' }] },
+        { label: 'Ghost', select: [{ model_id_equals: 'never/exists' }] },
+      ],
+    };
+    const result = computeIndex(records, spec);
+    expect(result.members_resolved).toBe(1);
+    expect(result.members_with_invalid_price).toBe(0);
+    expect(result.members[1]?.excluded_reason).toBe('unresolved');
+    expect(result.geometric_mean_usd_per_million).not.toBeNull();
+    expect(result.geometric_mean_usd_per_million ?? 0).toBeCloseTo(1.5, 6);
+  });
+
+  test('all-valid run reports members_with_invalid_price === 0', () => {
+    const records: PriceRecord[] = [
+      record({ family: 'a', model_id: 'a/1', input_per_1k: 0.001, output_per_1k: 0.002 }),
+      record({ family: 'b', model_id: 'b/1', input_per_1k: 0.002, output_per_1k: 0.003 }),
+    ];
+    const spec: IndexSpec = {
+      name: 'clean',
+      blend: { input: 0.5, output: 0.5 },
+      members: [
+        { label: 'A', select: [{ model_id_equals: 'a/1' }] },
+        { label: 'B', select: [{ model_id_equals: 'b/1' }] },
+      ],
+    };
+    const result = computeIndex(records, spec);
+    expect(result.members_with_invalid_price).toBe(0);
+    expect(result.geometric_mean_usd_per_million).not.toBeNull();
+  });
+});
