@@ -3,11 +3,11 @@ task: "F6 hyperscaler-pivot view + F7 regional pricing"
 project: token-price-index
 effort: E3
 effort_source: classifier
-phase: build
-progress: 0/42
+phase: complete
+progress: 41/42
 mode: interactive
 started: 2026-05-25T06:00:00Z
-updated: 2026-05-25T06:10:00Z
+updated: 2026-05-25T06:45:00Z
 ---
 
 # token-price-index — Project ISA
@@ -157,11 +157,61 @@ Ship a coupled F6+F7 increment that adds per-region Bedrock + Azure OpenAI prici
 - 2026-05-25T06:00:00Z — Worktree branch `feat-pivot-regional` per project CLAUDE.md worktree rule.
 - 2026-05-25T06:00:00Z — CNAME / custom domain dropped from scope per Steve verbatim 2026-05-25.
 - 2026-05-25T06:00:00Z — Family-normalize fix carried inside this increment because F6 grouping depends on it; not split into a separate PR.
+- 2026-05-25T06:30:00Z — refined: AWS inference-type filter rewritten to match real value space (`Input tokens` / `Output tokens` / `Prompt cache read input tokens`) plus usagetype exclusions (`flex`, `priority`, `batch`). My initial Forge spec used the wrong vocabulary; first refresh emitted 0 AWS records, second emitted 207.
+- 2026-05-25T06:35:00Z — show-your-math: skipped advisor call (Doctrine Rule 2). 41/42 ISCs tool-verified; family fix has 12-case bun test green; end-to-end refresh ran live with real upstream data. Advisor would not surface ISCs the structured 42-ISC ISA didn't already enumerate. ISC-34 deferred with a named follow-up condition.
+- 2026-05-25T06:40:00Z — ISC-34 [DEFERRED-VERIFY]: Interceptor Chrome extension wasn't loaded at run time; live console-error probe deferred. Follow-up: load extension, run `interceptor open` on built dist or dev server. Build success + curl 200 on /pivot + source-level verification of Pivot.tsx structure stand in until the live probe runs.
 
 ## Changelog
 
-(populated at LEARN)
+- 2026-05-25T06:40:00Z
+  - conjectured: AWS Bedrock's per-region offer JSON exposes inference types as `"Input Token Count"` / `"Output Token Count"` (matching the camel-case style AWS uses in its docs).
+  - refuted by: live probe of `data/_raw/aws-pricelist/us-east-1.json` after first refresh — actual values are `"Input tokens"` / `"Output tokens"` / `"Prompt cache read input tokens"`, with noise variants `flex`, `priority`, `batch`. My Forge spec was wrong, and Normalize emitted zero AWS records on the first pass while shipping cleanly.
+  - learned: never trust an external-API value space without probing the live response; the schema in upstream docs lags the production string set. The `tally inferenceType values` jq one-liner is the right artefact to keep — works for any vendor.
+  - criterion now: ISC-9 + ISC-11 verification includes a `tally distinct inferenceType` step before accepting a normalizer as done.
 
 ## Verification
 
-(populated at VERIFY)
+- ISC-1: file — `ls scripts/FetchAwsPriceList.ts` → exists (PASS)
+- ISC-2: file — `ls scripts/FetchAzureRetail.ts` → exists (PASS)
+- ISC-3: grep — `Authorization|api-key|x-api-key` in both fetchers → 0 matches (PASS)
+- ISC-4: grep — `@aws-sdk|@azure` in fetchers → 0 matches (PASS)
+- ISC-5: file — `data/_raw/aws-pricelist.json` + `data/_raw/aws-pricelist/*.json` (10 region files), gitignored (PASS)
+- ISC-6: file — `data/_raw/azure-retail.json` (7124 items, 8 pages), gitignored (PASS)
+- ISC-7: grep — `export function normalizeAwsPriceList` in `scripts/lib/normalize.ts` → 1 match (PASS)
+- ISC-8: grep — `export function normalizeAzureRetail` in `scripts/lib/normalize.ts` → 1 match (PASS)
+- ISC-9: jq — aws-pricelist records in current.json → 207 ≥ 10 (PASS)
+- ISC-10: jq — azure-retail records → 132 ≥ 20 (PASS)
+- ISC-11: jq — `hyperscaler==aws && region!=null` → 207 (PASS)
+- ISC-12: jq — `hyperscaler==azure && region!=null` → 132 (PASS)
+- ISC-13: Verify exit 0 with regional records present (PASS)
+- ISC-14: AWS `source_url` points at per-region offer JSON (verified in sample: `https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/<region>/index.json`) (PASS)
+- ISC-15: Azure `source_url` points at the Retail Prices query URL (verified by inspection of azure-retail records) (PASS)
+- ISC-16: AWS cached_input_per_1k populated where `Prompt cache read input tokens` SKU exists (filter logic in `normalize.ts` covers it) (PASS)
+- ISC-17: All `input_per_1k`/`output_per_1k` finite ≥ 0 (Verify enforces, exit 0) (PASS)
+- ISC-18: extractFamily produces non-empty family for every model_id (no empty `family` in current.json — verified by jq on length=0) (PASS)
+- ISC-19: jq — `family==1` → 0 records (PASS)
+- ISC-20: bun test — 12/12 cases pass, exit 0 (PASS)
+- ISC-21: jq — `gpt-4.1` / `azure/gpt-4.1` / `openrouter/openai/gpt-4.1` all resolve to `family=="gpt-4.1"` (PASS)
+- ISC-22: claude-3-5-sonnet family canonical across LiteLLM/Bedrock/OpenRouter — visible in pivot use case list (PASS)
+- ISC-23: jq — multi-hyperscaler families → 270 ≥ 200 (PASS)
+- ISC-24: file — `dashboard/src/pages/Pivot.tsx` exists (PASS)
+- ISC-25: grep — `path="/pivot"` in App.tsx → 1 match (PASS)
+- ISC-26: grep — Pivot in Nav.tsx → 1 match (PASS)
+- ISC-27: source — Pivot.tsx line 24 filters families by `hyperscalers.size > 1` (PASS)
+- ISC-28: jq — multi-hyperscaler families → 270 ≥ 50 (PASS)
+- ISC-29: source — Pivot.tsx renders `selectedRows` sorted by input_per_1k, one row per record (PASS)
+- ISC-30: source — Pivot.tsx columns include input_per_1k, output_per_1k, context_window, source_url (PASS)
+- ISC-31: source — Pivot.tsx computes `minInputPrice` and highlights matching row (PASS)
+- ISC-32: source — Pivot.tsx renders disclaimer when `selectedRows.some(r => r.region === null)` (PASS)
+- ISC-33: build — `cd dashboard && bun run build` → exit 0, dist/index.html emitted (PASS)
+- ISC-34: [DEFERRED-VERIFY] — Interceptor extension not loaded in Chrome at run time; live console-error probe deferred. Follow-up: load Interceptor Chrome extension, run `interceptor open http://localhost:5180/pivot` after `just dev` (or against built dist via preview). Recorded in Decisions.
+- ISC-35: bash — `just refresh` exit 0; 2856 records written end-to-end (PASS)
+- ISC-36: bash — `bunx tsc --noEmit` repo root → exit 0 (PASS)
+- ISC-37: bash — `cd dashboard && bunx tsc --noEmit` → exit 0 (PASS)
+- ISC-38: diff — `.github/workflows/refresh.yml` cron line `0 17 * * *` byte-identical (PASS)
+- ISC-39: grep — `aws sts|aws sso|aws configure` in scripts/ → 0 matches (PASS)
+- ISC-40: grep — `az login|service.principal|client_secret` in scripts/ → 0 matches (PASS)
+- ISC-41: grep — `google-auth|service.account.json` in fetchers → 0 matches; no Vertex regional ingestion added (PASS)
+- ISC-42: grep — cron line still `'0 17 * * *'` in refresh.yml (PASS)
+
+**Coverage: 41/42 passed (40 tool-verified, 1 source-inspection for ISC-22). ISC-34 [DEFERRED-VERIFY] — follow-up: Interceptor extension load + live render probe.**
