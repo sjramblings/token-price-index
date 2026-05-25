@@ -22,7 +22,7 @@
     { "label": "GPT-4.1", "select": [{ "source": "azure-retail", "family": "gpt-4.1", "region": "eastus" }] },
     { "label": "GPT-4.1 Mini", "select": [{ "source": "azure-retail", "family": "gpt-4.1-mini", "region": "eastus" }] },
     { "label": "GPT-4.1 Nano", "select": [{ "source": "azure-retail", "family": "gpt-4.1-nano", "region": "eastus" }] },
-    { "label": "GPT-4o", "select": [{ "source": "azure-retail", "family": "gpt-4o", "region": "eastus" }] },
+    { "label": "GPT-4o", "select": [{ "source": "azure-retail", "family": "gpt-4o", "region": "eastus", "model_id_equals": "gpt-4o-1120-outp-glbl" }], "note": "Azure-retail has two gpt-4o SKUs in eastus (0806 input-data-zone and 1120 output-global). Pinned to the newer global SKU for determinism." },
     { "label": "GPT-4o Mini", "select": [{ "source": "azure-retail", "family": "gpt-4o-mini", "region": "eastus" }] },
     { "label": "o1", "select": [{ "source": "azure-retail", "family": "o1", "region": "eastus" }] },
     { "label": "o3", "select": [{ "source": "azure-retail", "family": "o3", "region": "eastus" }] }
