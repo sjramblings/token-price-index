@@ -13,10 +13,7 @@
   "bugs": {
     "url": "https://github.com/sjramblings/token-price-index/issues"
   },
-  "scripts": {
-    "dev": "echo 'PR #4 will fill this in'",
-    "build": "echo 'PR #4 will fill this in'"
-  },
+  "scripts": {},
   "engines": {
     "bun": ">=1.1.0"
   },
