@@ -22,7 +22,7 @@
     { "label": "GPT-4.1", "select": [{ "source": "azure-retail", "family": "gpt-4.1", "region": "westeurope" }] },
     { "label": "GPT-4.1 Mini", "select": [{ "source": "azure-retail", "family": "gpt-4.1-mini", "region": "westeurope" }] },
     { "label": "GPT-4.1 Nano", "select": [{ "source": "azure-retail", "family": "gpt-4.1-nano", "region": "westeurope" }] },
-    { "label": "GPT-4o", "select": [{ "source": "azure-retail", "family": "gpt-4o", "region": "westeurope" }] },
+    { "label": "GPT-4o", "select": [{ "source": "azure-retail", "family": "gpt-4o", "region": "westeurope", "model_id_equals": "gpt-4o-1120-inp-data-zone" }], "note": "Azure-retail has two gpt-4o SKUs in westeurope (0806 output-data-zone and 1120 input-data-zone). Pinned to the newer 1120 SKU for determinism — without the pin the EU index resolves to the older, more expensive 0806 record by record order." },
     { "label": "GPT-4o Mini", "select": [{ "source": "azure-retail", "family": "gpt-4o-mini", "region": "westeurope" }] },
     { "label": "o1", "select": [{ "source": "azure-retail", "family": "o1", "region": "westeurope" }] },
     { "label": "o3", "select": [{ "source": "azure-retail", "family": "o3", "region": "westeurope" }] }

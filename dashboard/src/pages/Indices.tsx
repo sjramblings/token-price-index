@@ -10,39 +10,39 @@ type DisplayLabel = { title: string; tagline: string };
 const DISPLAY_LABELS: Record<string, DisplayLabel> = {
   'atpi-replica': {
     title: 'ATPI Replica',
-    tagline: 'Replication of tokenpriceindex.com on our open catalog — 16 members, geometric mean.',
+    tagline: 'Computed from our catalog using tokenpriceindex.com’s 16 members and 70/30 input/output blend.',
   },
   'tpi-frontier': {
     title: 'TPI Frontier',
-    tagline: 'ATPI members with blended ≥ $5/M tokens — the cutting-edge cost frontier.',
+    tagline: 'Reference members with blended ≥ $5/M tokens — the cutting-edge cost frontier.',
   },
   'tpi-mid': {
     title: 'TPI Mid',
-    tagline: 'ATPI members at $1–$5/M tokens — the everyday production range.',
+    tagline: 'Reference members at $1–$5/M tokens — the everyday production range.',
   },
   'tpi-fast': {
     title: 'TPI Fast',
-    tagline: 'ATPI members under $1/M tokens — the cost-optimised edge.',
+    tagline: 'Reference members under $1/M tokens — the cost-optimised edge.',
   },
   'tpi-channel-direct': {
     title: 'TPI Direct',
-    tagline: "Same 16 members, provider's first-party API only.",
+    tagline: 'Reference members invoked through their provider’s first-party API.',
   },
   'tpi-channel-aggregator': {
     title: 'TPI Aggregator',
-    tagline: 'Same 16 members, OpenRouter / Vercel AI Gateway / Together / Novita.',
+    tagline: 'Reference members invoked through OpenRouter / Vercel AI Gateway / Together / Novita.',
   },
   'tpi-channel-bedrock': {
     title: 'TPI Bedrock',
-    tagline: 'Same 16 members, AWS Bedrock only — the major-cloud Anthropic + Mistral footprint.',
+    tagline: 'Reference members invoked through AWS Bedrock — Anthropic + Mistral footprint.',
   },
   'tpi-channel-azure': {
     title: 'TPI Azure',
-    tagline: 'Same 16 members, Azure OpenAI + AI Foundry — OpenAI + Anthropic + Mistral.',
+    tagline: 'Reference members invoked through Azure OpenAI + AI Foundry — OpenAI + Anthropic + Mistral.',
   },
   'tpi-region-useast': {
     title: 'TPI US East',
-    tagline: 'AWS us-east-1 + Azure eastus — frontier-shaped Bedrock + Azure OpenAI families.',
+    tagline: 'AWS us-east-1 + Azure eastus — 19 frontier-shaped Bedrock + Azure OpenAI families.',
   },
   'tpi-region-eu': {
     title: 'TPI EU',
@@ -50,7 +50,7 @@ const DISPLAY_LABELS: Record<string, DisplayLabel> = {
   },
   'tpi-region-apac': {
     title: 'TPI APAC',
-    tagline: 'AWS ap-southeast-1 + Azure southeastasia — coverage thinner; the gap is the story.',
+    tagline: 'AWS ap-southeast-1 + Azure southeastasia — regional availability is currently thinner.',
   },
 };
 
@@ -395,11 +395,20 @@ export default function Indices(): JSX.Element {
         <p className="h-eyebrow mb-3">indices</p>
         <h1 className="h-section">The frontier of inference, priced eleven ways.</h1>
         <p className="mt-4 max-w-2xl text-ink-600">
-          Eleven indices over one open catalog: ATPI's frontier set projected through tier and
-          channel lenses, plus three regional indices over a different 19-member set chosen for
-          per-region pricing. The geometric-mean formula and 70/30 input/output blend are the
-          same in every index — only the membership filter changes. Click any card to inspect
-          the resolved members and per-member divergence against published prices.
+          Eleven indices over one open catalog. Built on{' '}
+          <a
+            href="https://tokenpriceindex.com/methodology"
+            target="_blank"
+            rel="noreferrer"
+            className="text-accent-500 underline-offset-2 transition hover:underline"
+          >
+            tokenpriceindex.com&rsquo;s methodology
+          </a>{' '}
+          — the same 16-member curation and 70/30 input/output blend — and extended with
+          additional lenses (tier, channel, region) reproducible from our public catalog. The
+          geometric-mean formula is the same in every index; only the membership filter changes.
+          Click any card to inspect the resolved members and the per-member divergence against
+          published prices.
         </p>
       </header>
 
@@ -408,7 +417,7 @@ export default function Indices(): JSX.Element {
           <GroupHeader
             eyebrow="reference index"
             title="ATPI Replica"
-            description="Our reproduction of tokenpriceindex.com's published index on the same 16 members and 70/30 input/output blend. Validates that our catalog produces the right answer when the inputs match."
+            description="Computes tokenpriceindex.com’s index from our catalog using their published 16 members and 70/30 input/output blend. Shipped first so the dataset can be checked against an external reference point; the other ten indices reuse the same methodology with different membership filters."
           />
           <IndexCard
             index={atpi}
@@ -423,7 +432,7 @@ export default function Indices(): JSX.Element {
         <GroupHeader
           eyebrow="by capability tier"
           title="Tier indices"
-          description="ATPI's 16 members partitioned by published blended price — no editorial judgement, just a price threshold. Frontier (≥ $5/M), Mid ($1–$5/M), Fast (< $1/M)."
+          description="The same 16 members partitioned by their published blended price — a mechanical price-threshold split rather than an editorial one, so the partition is reproducible. Frontier (≥ $5/M), Mid ($1–$5/M), Fast (< $1/M)."
         />
         <div className="space-y-3">
           {grouped.tier.map((index) => (
@@ -442,7 +451,7 @@ export default function Indices(): JSX.Element {
         <GroupHeader
           eyebrow="by deployment channel"
           title="Channel indices"
-          description="Same 16 members, hyperscaler filter applied. Surfaces the deployment-channel gap ATPI structurally cannot show: cloud channels are 50–90% more expensive than aggregators and cover less than half of ATPI's frontier set."
+          description="The same 16 members, filtered by deployment channel — aggregator, provider-direct, AWS Bedrock, Azure OpenAI. A lens that extends the reference index along the channel dimension our catalog carries: cloud channels run roughly 50–90% above aggregator pricing in the data we currently have, and host fewer than half of the 16 reference members today."
         />
         <div className="space-y-3">
           {grouped.channel.map((index) => (
@@ -461,7 +470,7 @@ export default function Indices(): JSX.Element {
         <GroupHeader
           eyebrow="by cloud region"
           title="Regional indices"
-          description="Different member set — 19 frontier-shaped families with per-region pricing in aws-pricelist or azure-retail (ATPI's 16 don't carry regional pricing). Three canonical region pairs: AWS us-east-1 + Azure eastus, AWS eu-west-1 + Azure westeurope, AWS ap-southeast-1 + Azure southeastasia. Member resolution count surfaces the regional capability gap: full coverage in US East, thinner in EU, materially limited in APAC."
+          description="A different 19-member set — frontier-shaped families that carry per-region pricing in our aws-pricelist and azure-retail sources. Three canonical region pairs: AWS us-east-1 + Azure eastus, AWS eu-west-1 + Azure westeurope, AWS ap-southeast-1 + Azure southeastasia. Member resolution per card surfaces how regional capability availability varies: full coverage in US East, slightly thinner in EU, more limited in APAC."
         />
         <div className="space-y-3">
           {grouped.region.map((index) => (
@@ -469,24 +478,6 @@ export default function Indices(): JSX.Element {
               key={index.name}
               index={index}
               history={histories.get(index.name)}
-              expanded={expanded.has(index.name)}
-              onToggle={() => toggle(index.name)}
-            />
-          ))}
-        </div>
-      </section>
-
-      <section className="mb-12">
-        <GroupHeader
-          eyebrow="by cloud region"
-          title="Regional indices"
-          description="Different member set — 19 frontier-shaped families with per-region pricing in aws-pricelist or azure-retail (ATPI's 16 don't carry regional pricing). Three canonical region pairs: AWS us-east-1 + Azure eastus, AWS eu-west-1 + Azure westeurope, AWS ap-southeast-1 + Azure southeastasia. Member resolution count surfaces the regional capability gap: full coverage in US East, thinner in EU, materially limited in APAC."
-        />
-        <div className="space-y-3">
-          {grouped.region.map((index) => (
-            <IndexCard
-              key={index.name}
-              index={index}
               expanded={expanded.has(index.name)}
               onToggle={() => toggle(index.name)}
             />
