@@ -72,13 +72,25 @@ export default function Pivot(): JSX.Element {
     }
   }, [families, family]);
 
+  // Many upstream sources expose multiple identifiers for the same model on
+  // the same deployment channel (LiteLLM alone lists ~12 IDs for Claude Opus
+  // 4.7 — bedrock regional profiles, dated direct variants, vertex aliases).
+  // The pivot view's promise is "same model across channels," so collapse
+  // duplicates per (hyperscaler, region) and keep the cheapest input price.
   const selectedRows = useMemo(() => {
     if (family === null) {
       return [];
     }
-    return records
-      .filter((record) => record.family === family)
-      .sort((left, right) => left.input_per_1k - right.input_per_1k);
+    const candidates = records.filter((record) => record.family === family);
+    const byChannel = new Map<string, PriceRecord>();
+    for (const candidate of candidates) {
+      const key = `${candidate.hyperscaler}|${candidate.region ?? ''}`;
+      const incumbent = byChannel.get(key);
+      if (incumbent === undefined || candidate.input_per_1k < incumbent.input_per_1k) {
+        byChannel.set(key, candidate);
+      }
+    }
+    return [...byChannel.values()].sort((left, right) => left.input_per_1k - right.input_per_1k);
   }, [records, family]);
 
   const lowestInput = useMemo(() => {

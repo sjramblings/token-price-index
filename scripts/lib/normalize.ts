@@ -22,15 +22,75 @@ function stripSubstratePrefix(modelId: string): string {
   return modelId;
 }
 
-export function inferHyperscalerFromLitellm(modelId: string): Hyperscaler {
+// Hyperscaler classification is keyed on LiteLLM's own `litellm_provider`
+// metadata field, NOT on string-matching the model identifier. The field is
+// LiteLLM's authoritative provenance label — values are enumerated in
+// model_prices_and_context_window.json and stay stable across releases.
+//
+// Adding a new LiteLLM provider here is a one-line change with a paired test.
+// The previous string-prefix heuristic mis-classified bedrock_converse and
+// azure_ai entries (which don't carry a `bedrock/` or `azure/` key prefix)
+// as 'direct', producing visibly wrong rows in the Pivot view.
+const HYPERSCALER_BY_LITELLM_PROVIDER: ReadonlyMap<string, Hyperscaler> = new Map([
+  // AWS — Bedrock + SageMaker + Amazon-native model paths
+  ['bedrock', 'aws'],
+  ['bedrock_converse', 'aws'],
+  ['bedrock_mantle', 'aws'],
+  ['amazon_nova', 'aws'],
+  ['sagemaker', 'aws'],
+  // Azure
+  ['azure', 'azure'],
+  ['azure_ai', 'azure'],
+  ['azure_text', 'azure'],
+  // GCP — Vertex AI + Gemini direct + legacy palm
+  ['vertex_ai', 'gcp'],
+  ['gemini', 'gcp'],
+  ['palm', 'gcp'],
+  // Aggregator
+  ['openrouter', 'aggregator'],
+  ['vercel_ai_gateway', 'aggregator'],
+  ['llamagate', 'aggregator'],
+  ['together_ai', 'aggregator'],
+  ['aiml', 'aggregator'],
+  ['novita', 'aggregator'],
+  // Note: every other LiteLLM provider (anthropic, openai, mistral,
+  // deepseek, perplexity, cohere, …) is treated as 'direct'.
+]);
+
+export function inferHyperscalerFromLitellm(modelId: string, litellmProvider?: string): Hyperscaler {
+  if (typeof litellmProvider === 'string' && litellmProvider.length > 0) {
+    const normalized = litellmProvider.toLowerCase();
+    const direct = HYPERSCALER_BY_LITELLM_PROVIDER.get(normalized);
+    if (direct !== undefined) {
+      return direct;
+    }
+    // vertex_ai-anthropic_models, vertex_ai-llama_models, vertex_ai-mistral_models, …
+    if (normalized.startsWith('vertex_ai')) {
+      return 'gcp';
+    }
+    if (normalized.startsWith('bedrock')) {
+      return 'aws';
+    }
+    if (normalized.startsWith('azure')) {
+      return 'azure';
+    }
+    return 'direct';
+  }
+
+  // Fallback only when LiteLLM omitted the provider tag (rare — the field is
+  // populated on every real entry as of 2026-05). Pre-existing string-prefix
+  // heuristic preserved here so we degrade gracefully rather than mis-class.
   if (modelId.startsWith('bedrock/')) {
     return 'aws';
   }
-  if (modelId.startsWith('azure/')) {
+  if (modelId.startsWith('azure/') || modelId.startsWith('azure_ai/')) {
     return 'azure';
   }
   if (modelId.startsWith('vertex_ai/')) {
     return 'gcp';
+  }
+  if (modelId.startsWith('openrouter/')) {
+    return 'aggregator';
   }
 
   return 'direct';
@@ -71,6 +131,8 @@ export function extractFamily(modelId: string): string {
   );
   family = family.replace(/-v\d+:\d+$/, '');
   family = family.replace(/-\d{8}$/, '');
+  family = family.replace(/-\d{4}$/, '');
+  family = family.replace(/^gpt-35-/, 'gpt-3.5-');
 
   if (family.startsWith('claude') || family.startsWith('gemini')) {
     family = family.replace(/(\d)\.(\d)/g, '$1-$2');
@@ -111,7 +173,7 @@ export function normalizeLitellm(
       provider: inferProviderFromLitellm(modelId, entry.litellm_provider),
       model_id: modelId,
       family: extractFamily(modelId),
-      hyperscaler: inferHyperscalerFromLitellm(modelId),
+      hyperscaler: inferHyperscalerFromLitellm(modelId, entry.litellm_provider),
       region: null,
       input_per_1k: inputCost * 1000,
       output_per_1k: outputCost * 1000,
@@ -232,6 +294,12 @@ function providerForAwsModel(modelName: string): string {
   }
   if (normalized.includes('ray')) {
     return 'luma';
+  }
+  if (normalized.includes('kimi')) {
+    return 'moonshot';
+  }
+  if (normalized.includes('minimax')) {
+    return 'minimax';
   }
 
   return 'unknown';
@@ -369,6 +437,13 @@ function isExcludedAzureMeter(meterName: string, allowCachedInput: boolean): boo
     /audio/i,
     /fine/i,
     /provisioned/i,
+    /-cached\b/i,
+    /-cchd\b/i,
+    /datazone/i,
+    /realtimeprvw/i,
+    /-aud-/i,
+    /-rt-/i,
+    /-rt\b/i,
   ];
 
   if (!allowCachedInput && /cached input/i.test(meterName)) {
