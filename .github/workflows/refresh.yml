@@ -54,23 +54,27 @@ jobs:
         run: bun scripts/Diff.ts
 
       - name: Commit if data/ changed
-        id: commit
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           if git diff --quiet -- data/; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "[commit] no data/ changes -- skipping commit"
           else
             git add data/
             git commit -m "chore(data): refresh $(date -u +%Y-%m-%d)"
             git push
-            echo "changed=true" >> "$GITHUB_OUTPUT"
             echo "[commit] data/ updated -- pushed to main"
           fi
 
-      - name: Cut release if content changed
-        if: steps.commit.outputs.changed == 'true'
+      # Always run BuildRelease. Two internal gates handle the cases the workflow
+      # used to gate externally: (1) zero-content-change days short-circuit with
+      # "no content changes -- skipping release"; (2) same-day retries after a
+      # successful release short-circuit via releaseExists() with "already exists
+      # -- idempotent retry". Gating on the prior commit step's output blocked
+      # retry recovery after a partial-failure (commit landed but release didn't),
+      # since the retry would see no new data/ diff and skip release entirely.
+      # Codex P1 on PR #3.
+      - name: Cut release (idempotent — guarded inside BuildRelease.ts)
         env:
           GH_TOKEN: ${{ github.token }}
         run: bun scripts/BuildRelease.ts
