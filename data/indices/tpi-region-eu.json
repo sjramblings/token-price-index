@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-05-25T14:02:49.566Z",
+  "computed_at": "2026-05-25T14:34:20.151Z",
   "data_source": "data/current.json",
   "member_count": 19,
   "members_resolved": 17,
@@ -306,11 +306,11 @@
       "label": "GPT-4o",
       "resolved": {
         "provider": "openai",
-        "model_id": "gpt-4o-0806-outp-data-zone",
+        "model_id": "gpt-4o-1120-inp-data-zone",
         "family": "gpt-4o",
         "hyperscaler": "azure",
         "region": "westeurope",
-        "input_per_1k": 0.00275,
+        "input_per_1k": 0.0025,
         "output_per_1k": 0.011,
         "cached_input_per_1k": null,
         "image_per_1k": null,
@@ -320,8 +320,9 @@
         "fetched_at": "2026-05-25T11:15:42.600Z"
       },
       "selector_matched": 0,
-      "blended_per_million": 5.225,
-      "ln_blended": 1.6534547978508747
+      "blended_per_million": 5.05,
+      "ln_blended": 1.6193882432872684,
+      "note": "Azure-retail has two gpt-4o SKUs in westeurope (0806 output-data-zone and 1120 input-data-zone). Pinned to the newer 1120 SKU for determinism — without the pin the EU index resolves to the older, more expensive 0806 record by record order."
     },
     {
       "label": "GPT-4o Mini",
@@ -387,6 +388,6 @@
       "ln_blended": 1.430311246536665
     }
   ],
-  "geometric_mean_usd_per_million": 0.8750386713177449,
-  "arithmetic_mean_usd_per_million": 3.0562470588235295
+  "geometric_mean_usd_per_million": 0.8732869239837345,
+  "arithmetic_mean_usd_per_million": 3.0459529411764703
 }
