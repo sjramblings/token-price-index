@@ -21,3 +21,27 @@ export function formatContextWindow(tokens: number): string {
 export function formatRegion(region: string | null): string {
   return region ?? 'global';
 }
+
+export const fmt = new Intl.NumberFormat('en-US');
+
+export function fmtRelative(date: string): string {
+  const target = new Date(`${date}T00:00:00Z`);
+  if (Number.isNaN(target.getTime())) {
+    return date;
+  }
+  const now = new Date();
+  const days = Math.floor((now.getTime() - target.getTime()) / (1000 * 60 * 60 * 24));
+  if (days <= 0) return 'today';
+  if (days === 1) return 'yesterday';
+  if (days < 7) return `${days} days ago`;
+  if (days < 30) {
+    const weeks = Math.floor(days / 7);
+    return weeks === 1 ? '1 week ago' : `${weeks} weeks ago`;
+  }
+  if (days < 365) {
+    const months = Math.floor(days / 30);
+    return months === 1 ? '1 month ago' : `${months} months ago`;
+  }
+  const years = Math.floor(days / 365);
+  return years === 1 ? '1 year ago' : `${years} years ago`;
+}

@@ -1,42 +1,59 @@
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import type { SortingState } from '@tanstack/react-table';
+import { motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
+import { CountUp } from '../lib/CountUp';
+import { cn } from '../lib/cn';
 import { loadCurrent } from '../lib/data';
-import { formatContextWindow, formatPricePer1K, formatRegion } from '../lib/format';
-import type {
-  ExplorerFilterState,
-  Hyperscaler,
-  PriceRecord,
-  SortDirection,
-  SortKey,
-  Source,
-} from '../lib/types';
+import { fmt, fmtRelative, formatContextWindow, formatPricePer1K, formatRegion } from '../lib/format';
+import type { Hyperscaler, PriceRecord, Source } from '../lib/types';
 
-type Column = {
-  key: SortKey;
+type HyperscalerFilter = 'all' | Hyperscaler;
+type SourceFilter = 'all' | Source;
+
+interface StatCardProps {
   label: string;
-  render: (record: PriceRecord) => string;
-};
-
-const columns: Column[] = [
-  { key: 'provider', label: 'Provider', render: (record) => record.provider },
-  { key: 'model_id', label: 'Model ID', render: (record) => record.model_id },
-  { key: 'hyperscaler', label: 'Hyperscaler', render: (record) => record.hyperscaler },
-  { key: 'region', label: 'Region', render: (record) => formatRegion(record.region) },
-  { key: 'input_per_1k', label: 'Input $/1K', render: (record) => formatPricePer1K(record.input_per_1k) },
-  { key: 'output_per_1k', label: 'Output $/1K', render: (record) => formatPricePer1K(record.output_per_1k) },
-  { key: 'context_window', label: 'Context', render: (record) => formatContextWindow(record.context_window) },
-  { key: 'source', label: 'Source', render: (record) => record.source },
-];
-
-function compareValues(left: string | number | null, right: string | number | null): number {
-  if (typeof left === 'number' && typeof right === 'number') {
-    return left - right;
-  }
-
-  return String(left ?? '').localeCompare(String(right ?? ''));
+  value: number;
 }
 
-function compareDefaultOrder(left: PriceRecord, right: PriceRecord): number {
-  return left.provider.localeCompare(right.provider) || left.model_id.localeCompare(right.model_id);
+const hyperscalerFilters: HyperscalerFilter[] = ['all', 'aws', 'azure', 'gcp', 'direct', 'aggregator'];
+const columnHelper = createColumnHelper<PriceRecord>();
+
+function StatCard({ label, value }: StatCardProps): JSX.Element {
+  return (
+    <div className="card p-5 md:p-7">
+      <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-600">{label}</p>
+      <p className="text-3xl font-semibold tracking-tightest text-ink-900 md:text-5xl">
+        <CountUp to={value} />
+      </p>
+    </div>
+  );
+}
+
+function colorFor(hyperscaler: Hyperscaler): string {
+  const colors: Record<Hyperscaler, string> = {
+    aws: 'border-accent-500/40 text-accent-300',
+    azure: 'border-teal-500/40 text-teal-400',
+    gcp: 'border-purple-500/40 text-purple-300',
+    direct: 'border-ink-400/40 text-ink-700',
+    aggregator: 'border-ink-500/40 text-ink-600',
+  };
+  return colors[hyperscaler];
+}
+
+function isSourceFilter(value: string): value is SourceFilter {
+  return value === 'all'
+    || value === 'litellm'
+    || value === 'openrouter'
+    || value === 'aws-pricelist'
+    || value === 'azure-retail';
 }
 
 export default function Explorer(): JSX.Element {
@@ -44,13 +61,10 @@ export default function Explorer(): JSX.Element {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [requestAttempt, setRequestAttempt] = useState(0);
-  const [filter, setFilter] = useState<ExplorerFilterState>({
-    query: '',
-    hyperscalers: new Set<Hyperscaler>(),
-    source: 'all',
-  });
-  const [sortKey, setSortKey] = useState<SortKey | null>(null);
-  const [sortDir, setSortDir] = useState<SortDirection>(null);
+  const [search, setSearch] = useState('');
+  const [hyperscalerFilter, setHyperscalerFilter] = useState<HyperscalerFilter>('all');
+  const [sourceFilter, setSourceFilter] = useState<SourceFilter>('all');
+  const [sorting, setSorting] = useState<SortingState>([]);
 
   useEffect(() => {
     let active = true;
@@ -61,10 +75,6 @@ export default function Explorer(): JSX.Element {
       .then((currentRecords) => {
         if (active) {
           setRecords(currentRecords);
-          setFilter((currentFilter) => ({
-            ...currentFilter,
-            hyperscalers: new Set(currentRecords.map((record) => record.hyperscaler)),
-          }));
           setLoading(false);
         }
       })
@@ -80,135 +90,263 @@ export default function Explorer(): JSX.Element {
     };
   }, [requestAttempt]);
 
-  const hyperscalers = useMemo(
-    () => [...new Set(records.map((record) => record.hyperscaler))].sort(),
-    [records],
-  );
-  const sources = useMemo(
+  const sources = useMemo<Source[]>(
     () => [...new Set(records.map((record) => record.source))].sort(),
     [records],
   );
-  const sorted = useMemo(() => {
-    const query = filter.query.toLowerCase();
-    const filtered = records.filter((record) => record.model_id.toLowerCase().includes(query)
-      && filter.hyperscalers.has(record.hyperscaler)
-      && (filter.source === 'all' || record.source === filter.source));
-
-    return [...filtered].sort((left, right) => {
-      if (sortKey !== null && sortDir !== null) {
-        const primaryResult = compareValues(left[sortKey], right[sortKey]);
-        if (primaryResult !== 0) {
-          return sortDir === 'asc' ? primaryResult : -primaryResult;
-        }
+  const filtered = useMemo(() => {
+    const query = search.toLowerCase().trim();
+    return records.filter((record) => {
+      if (hyperscalerFilter !== 'all' && record.hyperscaler !== hyperscalerFilter) {
+        return false;
       }
-
-      return compareDefaultOrder(left, right);
+      if (sourceFilter !== 'all' && record.source !== sourceFilter) {
+        return false;
+      }
+      if (query
+        && !record.model_id.toLowerCase().includes(query)
+        && !record.provider.toLowerCase().includes(query)
+        && !record.hyperscaler.toLowerCase().includes(query)) {
+        return false;
+      }
+      return true;
     });
-  }, [filter, records, sortDir, sortKey]);
+  }, [hyperscalerFilter, records, search, sourceFilter]);
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor('provider', {
+        header: 'Provider',
+        cell: (info) => <span className="font-mono text-xs text-ink-700">{info.getValue()}</span>,
+      }),
+      columnHelper.accessor('model_id', {
+        header: 'Model ID',
+        cell: (info) => <span className="font-mono text-ink-900">{info.getValue()}</span>,
+      }),
+      columnHelper.accessor('hyperscaler', {
+        header: 'Hyperscaler',
+        cell: (info) => (
+          <span className={cn('pill !px-2 !py-0.5 text-[10px]', colorFor(info.getValue()))}>
+            {info.getValue()}
+          </span>
+        ),
+      }),
+      columnHelper.accessor('region', {
+        header: 'Region',
+        cell: (info) => <span className="font-mono text-xs text-ink-600">{formatRegion(info.getValue())}</span>,
+      }),
+      columnHelper.accessor('input_per_1k', {
+        header: 'Input $/1K',
+        cell: (info) => <span className="num-display text-xs text-ink-800">{formatPricePer1K(info.getValue())}</span>,
+      }),
+      columnHelper.accessor('output_per_1k', {
+        header: 'Output $/1K',
+        cell: (info) => <span className="num-display text-xs text-ink-800">{formatPricePer1K(info.getValue())}</span>,
+      }),
+      columnHelper.accessor('context_window', {
+        header: 'Context',
+        cell: (info) => <span className="num-display text-xs text-ink-800">{formatContextWindow(info.getValue())}</span>,
+      }),
+      columnHelper.accessor('source', {
+        header: 'Source',
+        cell: (info) => <span className="font-mono text-[11px] text-ink-600">{info.getValue()}</span>,
+      }),
+    ],
+    [],
+  );
+  const table = useReactTable({
+    data: filtered,
+    columns,
+    state: { sorting },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: { pagination: { pageSize: 25 } },
+  });
+  const today = new Date().toISOString().slice(0, 10);
 
   function retry(): void {
     setRequestAttempt((attempt) => attempt + 1);
   }
 
-  function toggleHyperscaler(hyperscaler: Hyperscaler): void {
-    setFilter((currentFilter) => {
-      const nextHyperscalers = new Set(currentFilter.hyperscalers);
-      if (nextHyperscalers.has(hyperscaler)) {
-        nextHyperscalers.delete(hyperscaler);
-      } else {
-        nextHyperscalers.add(hyperscaler);
-      }
-      return { ...currentFilter, hyperscalers: nextHyperscalers };
-    });
-  }
-
-  function toggleSort(nextKey: SortKey): void {
-    if (sortKey !== nextKey) {
-      setSortKey(nextKey);
-      setSortDir('asc');
-    } else if (sortDir === 'asc') {
-      setSortDir('desc');
-    } else if (sortDir === 'desc') {
-      setSortKey(null);
-      setSortDir(null);
-    } else {
-      setSortDir('asc');
-    }
-  }
-
   if (loading) {
-    return <div className="loading">Loading…</div>;
+    return (
+      <div className="flex items-center justify-center gap-3 py-24 text-ink-700">
+        <div className="h-2 w-2 animate-pulse rounded-full bg-accent-500" />
+        <span className="font-mono text-sm">loading pricing data…</span>
+      </div>
+    );
   }
 
   if (error !== null) {
-    return <div className="error">{error.message} <button onClick={retry}>Retry</button></div>;
+    return (
+      <div className="py-24 text-center">
+        <p className="h-eyebrow mb-2">failed to load</p>
+        <p className="mb-4 text-ink-600">{error.message}</p>
+        <button type="button" onClick={retry} className="pill transition hover:text-ink-900">retry</button>
+      </div>
+    );
   }
 
+  const statCards: StatCardProps[] = [
+    { label: 'Models', value: records.length },
+    { label: 'Providers', value: new Set(records.map((record) => record.provider)).size },
+    { label: 'Hyperscalers', value: new Set(records.map((record) => record.hyperscaler)).size },
+    { label: 'Daily snapshots', value: new Set(records.map((record) => record.fetched_at.slice(0, 10))).size },
+  ];
+
   return (
-    <section>
-      <h1>Explorer</h1>
-      <div className="filters">
-        <input
-          type="search"
-          aria-label="Filter by model ID"
-          placeholder="Filter model ID"
-          value={filter.query}
-          onChange={(event) => setFilter((current) => ({ ...current, query: event.target.value }))}
-        />
-        <div className="checkbox-group" aria-label="Hyperscaler filters">
-          {hyperscalers.map((hyperscaler) => (
-            <label key={hyperscaler}>
-              <input
-                type="checkbox"
-                checked={filter.hyperscalers.has(hyperscaler)}
-                onChange={() => toggleHyperscaler(hyperscaler)}
-              />
-              {hyperscaler}
-            </label>
-          ))}
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+      <section>
+        <p className="h-eyebrow">Every model · every substrate · captured daily</p>
+        <h1 className="mt-5 text-5xl font-semibold leading-[0.95] tracking-tightest text-ink-900 md:text-7xl lg:text-8xl">
+          LLM token pricing,
+          <br />
+          <span className="bg-gradient-to-r from-accent-500 to-teal-400 bg-clip-text text-transparent">
+            across providers and hyperscalers
+          </span>
+          <span className="text-accent-500">.</span>
+        </h1>
+        <p className="mt-7 max-w-2xl text-lg leading-relaxed text-ink-600 md:text-xl">
+          {fmt.format(records.length)} models from LiteLLM, OpenRouter, AWS Bedrock, Azure OpenAI, Vertex — normalized
+          into one machine-readable JSON, refreshed daily, free forever.
+        </p>
+        <div className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+          {statCards.map((stat) => <StatCard key={stat.label} label={stat.label} value={stat.value} />)}
         </div>
-        <select
-          aria-label="Filter by source"
-          value={filter.source}
-          onChange={(event) => setFilter((current) => ({
-            ...current,
-            source: event.target.value as Source | 'all',
-          }))}
-        >
-          <option value="all">all</option>
-          {sources.map((source) => <option key={source} value={source}>{source}</option>)}
-        </select>
-      </div>
-      <p>Showing {sorted.length} of {records.length} records</p>
-      {sorted.length === 0 ? (
-        <p className="empty">No records match the current filters.</p>
-      ) : (
-        <div className="table-container">
-          <table>
+        <div className="mt-6 flex flex-wrap items-center gap-2">
+          <span className="pill">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-teal-400" />
+            updated {fmtRelative(today)}
+          </span>
+          <span className="pill font-mono">source: litellm + openrouter</span>
+          <span className="pill">snapshot {today}</span>
+        </div>
+      </section>
+
+      <section className="card mt-12 p-4 md:p-6">
+        <div className="mb-4 flex flex-wrap items-center gap-3">
+          <input
+            type="search"
+            aria-label="Search pricing records"
+            placeholder="search model_id · provider · hyperscaler"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            className="min-w-[240px] flex-1 rounded-full border border-ink-300/30 bg-ink-100/30 px-4 py-2 font-mono text-sm text-ink-900 placeholder-ink-500 transition focus:border-accent-500/50 focus:outline-none focus:ring-1 focus:ring-accent-500/20"
+          />
+          <select
+            aria-label="Filter by source"
+            value={sourceFilter}
+            onChange={(event) => {
+              if (isSourceFilter(event.target.value)) {
+                setSourceFilter(event.target.value);
+              }
+            }}
+            className="rounded-full border border-ink-300/30 bg-ink-100/30 px-3 py-2 font-mono text-xs text-ink-700"
+          >
+            <option value="all">all sources</option>
+            {sources.map((source) => <option key={source} value={source}>{source}</option>)}
+          </select>
+          <div className="flex items-center gap-1 rounded-full border border-ink-300/30 bg-ink-100/30 p-0.5">
+            {hyperscalerFilters.map((hyperscaler) => (
+              <button
+                type="button"
+                key={hyperscaler}
+                onClick={() => setHyperscalerFilter(hyperscaler)}
+                className={cn(
+                  'rounded-full px-3 py-1 font-mono text-xs transition',
+                  hyperscalerFilter === hyperscaler
+                    ? 'bg-accent-500/15 text-accent-300'
+                    : 'text-ink-600 hover:text-ink-900',
+                )}
+              >
+                {hyperscaler}
+              </button>
+            ))}
+          </div>
+        </div>
+        <p className="mb-3 font-mono text-xs text-ink-600">
+          showing {fmt.format(filtered.length)} of {fmt.format(records.length)}
+        </p>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[900px]">
             <thead>
-              <tr>
-                {columns.map((column) => (
-                  <th key={column.key} scope="col">
-                    <button className="sortable" onClick={() => toggleSort(column.key)}>
-                      {column.label}
-                      {sortKey === column.key && sortDir !== null ? (
-                        <span className="sort-indicator">{sortDir === 'asc' ? '▲' : '▼'}</span>
-                      ) : null}
-                    </button>
-                  </th>
-                ))}
-              </tr>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    const sorted = header.column.getIsSorted();
+                    return (
+                      <th
+                        key={header.id}
+                        scope="col"
+                        className="cursor-pointer select-none px-3 py-2 text-left font-mono text-[10px] uppercase tracking-[0.18em] text-ink-600 hover:text-ink-900"
+                      >
+                        {header.isPlaceholder ? null : (
+                          <button
+                            type="button"
+                            onClick={header.column.getToggleSortingHandler()}
+                            className="inline-flex items-center gap-1.5"
+                          >
+                            {flexRender(header.column.columnDef.header, header.getContext())}
+                            {sorted === 'asc' ? <span className="text-accent-500">↑</span> : null}
+                            {sorted === 'desc' ? <span className="text-accent-500">↓</span> : null}
+                          </button>
+                        )}
+                      </th>
+                    );
+                  })}
+                </tr>
+              ))}
             </thead>
             <tbody>
-              {sorted.map((record, index) => (
-                <tr key={`${record.source}:${record.model_id}:${record.region ?? ''}:${index}`}>
-                  {columns.map((column) => <td key={column.key}>{column.render(record)}</td>)}
+              {table.getRowModel().rows.length === 0 ? (
+                <tr>
+                  <td colSpan={columns.length} className="px-3 py-10 text-center font-mono text-sm text-ink-600">
+                    no records match the current filters
+                  </td>
+                </tr>
+              ) : table.getRowModel().rows.map((row, index) => (
+                <tr
+                  key={row.id}
+                  className={cn(
+                    'border-b border-ink-300/15 transition hover:bg-ink-100/40',
+                    index % 2 === 1 && 'bg-ink-100/15',
+                  )}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className="px-3 py-3">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-      )}
-    </section>
+        <div className="mt-4 flex items-center justify-between font-mono text-xs text-ink-600">
+          <span>
+            page {table.getState().pagination.pageIndex + 1} of {Math.max(table.getPageCount(), 1)}
+          </span>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+              className="pill transition hover:text-ink-900 disabled:opacity-30"
+            >
+              prev
+            </button>
+            <button
+              type="button"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+              className="pill transition hover:text-ink-900 disabled:opacity-30"
+            >
+              next
+            </button>
+          </div>
+        </div>
+      </section>
+    </motion.div>
   );
 }
