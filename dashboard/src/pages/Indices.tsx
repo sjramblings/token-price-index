@@ -211,18 +211,41 @@ function IndexCard({ index, history, expanded, onToggle }: IndexCardProps): JSX.
           {history !== undefined && history.series.length > 0 && (
             <div className="mt-3 flex items-center gap-3">
               <Sparkline history={history} />
-              {history.pct_change_earliest_to_latest !== null && history.earliest_date !== null && history.latest_date !== null && (
+              {history.earliest_date !== null && history.latest_date !== null && (
                 <div className="font-mono text-[11px]">
-                  <span className={changeTone(history.pct_change_earliest_to_latest)}>
-                    {history.stable
-                      ? 'stable'
-                      : `${history.pct_change_earliest_to_latest >= 0 ? '+' : ''}${history.pct_change_earliest_to_latest.toFixed(2)}%`}
-                  </span>
-                  <span className="ml-2 text-ink-500">
-                    {history.earliest_date === history.latest_date
-                      ? history.latest_date
-                      : `${history.earliest_date} → ${history.latest_date}`}
-                  </span>
+                  {(() => {
+                    const finitePoints = history.series.filter(
+                      (point) => point.geometric_mean_usd_per_million !== null
+                        && Number.isFinite(point.geometric_mean_usd_per_million),
+                    ).length;
+                    // One finite point — calling it 'stable' is misleading; show
+                    // the snapshot count so it's obvious the time-series is just
+                    // starting (typically the regional indices, which only began
+                    // accumulating regional data once aws-pricelist + azure-retail
+                    // ingestion landed).
+                    if (finitePoints < 2) {
+                      return (
+                        <>
+                          <span className="text-ink-600">{finitePoints} snapshot</span>
+                          <span className="ml-2 text-ink-500">{history.latest_date}</span>
+                        </>
+                      );
+                    }
+                    return (
+                      <>
+                        <span className={changeTone(history.pct_change_earliest_to_latest)}>
+                          {history.stable
+                            ? 'stable'
+                            : `${(history.pct_change_earliest_to_latest ?? 0) >= 0 ? '+' : ''}${(history.pct_change_earliest_to_latest ?? 0).toFixed(2)}%`}
+                        </span>
+                        <span className="ml-2 text-ink-500">
+                          {history.earliest_date === history.latest_date
+                            ? history.latest_date
+                            : `${history.earliest_date} → ${history.latest_date}`}
+                        </span>
+                      </>
+                    );
+                  })()}
                 </div>
               )}
             </div>
