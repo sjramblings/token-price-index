@@ -119,6 +119,10 @@ export type IndexHistory = {
   stable: boolean;
 };
 
+function isNullableNumber(value: unknown): value is number | null {
+  return value === null || typeof value === 'number';
+}
+
 function isIndexHistory(value: unknown): value is IndexHistory {
   if (!isObject(value)) {
     return false;
@@ -130,6 +134,9 @@ function isIndexHistory(value: unknown): value is IndexHistory {
     && Array.isArray(value.series)
     && (value.earliest_date === null || typeof value.earliest_date === 'string')
     && (value.latest_date === null || typeof value.latest_date === 'string')
+    && isNullableNumber(value.earliest_value)
+    && isNullableNumber(value.latest_value)
+    && isNullableNumber(value.pct_change_earliest_to_latest)
     && typeof value.stable === 'boolean';
 }
 
@@ -149,16 +156,31 @@ export async function loadIndexHistory(slug: string): Promise<IndexHistory | nul
 }
 
 export async function loadAllIndexHistories(): Promise<Map<string, IndexHistory>> {
-  const entries = await Promise.all(
+  // History is optional decoration (sparkline). A single malformed history
+  // JSON or a transient 5xx must not take down the entire /indices page —
+  // base indices loaded successfully. Use allSettled so each history is
+  // independent: failures are logged and treated identically to a 404
+  // (the index simply renders without a sparkline).
+  const settled = await Promise.allSettled(
     INDEX_MANIFEST.map(async (entry) => {
       const history = await loadIndexHistory(entry.slug);
       return [entry.slug, history] as const;
     }),
   );
   const map = new Map<string, IndexHistory>();
-  for (const [slug, history] of entries) {
-    if (history !== null) {
-      map.set(slug, history);
+  for (let i = 0; i < settled.length; i += 1) {
+    const result = settled[i];
+    if (result === undefined) {
+      continue;
+    }
+    if (result.status === 'fulfilled') {
+      const [slug, history] = result.value;
+      if (history !== null) {
+        map.set(slug, history);
+      }
+    } else {
+      const slug = INDEX_MANIFEST[i]?.slug ?? 'unknown';
+      console.warn(`failed to load history for ${slug}:`, result.reason);
     }
   }
   return map;
