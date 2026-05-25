@@ -39,6 +39,18 @@ const DISPLAY_LABELS: Record<string, DisplayLabel> = {
     title: 'TPI Azure',
     tagline: 'Same 16 members, Azure OpenAI + AI Foundry — OpenAI + Anthropic + Mistral.',
   },
+  'tpi-region-useast': {
+    title: 'TPI US East',
+    tagline: 'AWS us-east-1 + Azure eastus — frontier-shaped Bedrock + Azure OpenAI families.',
+  },
+  'tpi-region-eu': {
+    title: 'TPI EU',
+    tagline: 'AWS eu-west-1 + Azure westeurope — same 19-member candidate set as US East.',
+  },
+  'tpi-region-apac': {
+    title: 'TPI APAC',
+    tagline: 'AWS ap-southeast-1 + Azure southeastasia — coverage thinner; the gap is the story.',
+  },
 };
 
 function formatIndexValue(value: number | null): string {
@@ -244,9 +256,12 @@ export default function Indices(): JSX.Element {
 
   const grouped = useMemo(() => {
     const reference = indices.filter((index) => index.name === 'atpi-replica');
-    const tier = indices.filter((index) => index.name.startsWith('tpi-') && !index.name.startsWith('tpi-channel-'));
+    const tier = indices.filter((index) => index.name.startsWith('tpi-')
+      && !index.name.startsWith('tpi-channel-')
+      && !index.name.startsWith('tpi-region-'));
     const channel = indices.filter((index) => index.name.startsWith('tpi-channel-'));
-    return { reference, tier, channel };
+    const region = indices.filter((index) => index.name.startsWith('tpi-region-'));
+    return { reference, tier, channel, region };
   }, [indices]);
 
   function toggle(slug: string): void {
@@ -290,12 +305,13 @@ export default function Indices(): JSX.Element {
     <div>
       <header className="mb-10">
         <p className="h-eyebrow mb-3">indices</p>
-        <h1 className="h-section">The frontier of inference, priced eight ways.</h1>
+        <h1 className="h-section">The frontier of inference, priced eleven ways.</h1>
         <p className="mt-4 max-w-2xl text-ink-600">
-          The same 16 frontier-tier models, projected through tier, channel, and (soon) regional
-          lenses. The geometric-mean formula and 70/30 input/output blend are the same in every
-          index — only the membership filter changes. Click any card to inspect the resolved
-          members and per-member divergence against published prices.
+          Eleven indices over one open catalog: ATPI's frontier set projected through tier and
+          channel lenses, plus three regional indices over a different 19-member set chosen for
+          per-region pricing. The geometric-mean formula and 70/30 input/output blend are the
+          same in every index — only the membership filter changes. Click any card to inspect
+          the resolved members and per-member divergence against published prices.
         </p>
       </header>
 
@@ -340,6 +356,24 @@ export default function Indices(): JSX.Element {
         />
         <div className="space-y-3">
           {grouped.channel.map((index) => (
+            <IndexCard
+              key={index.name}
+              index={index}
+              expanded={expanded.has(index.name)}
+              onToggle={() => toggle(index.name)}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section className="mb-12">
+        <GroupHeader
+          eyebrow="by cloud region"
+          title="Regional indices"
+          description="Different member set — 19 frontier-shaped families with per-region pricing in aws-pricelist or azure-retail (ATPI's 16 don't carry regional pricing). Three canonical region pairs: AWS us-east-1 + Azure eastus, AWS eu-west-1 + Azure westeurope, AWS ap-southeast-1 + Azure southeastasia. Member resolution count surfaces the regional capability gap: full coverage in US East, thinner in EU, materially limited in APAC."
+        />
+        <div className="space-y-3">
+          {grouped.region.map((index) => (
             <IndexCard
               key={index.name}
               index={index}

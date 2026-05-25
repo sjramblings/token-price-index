@@ -39,7 +39,7 @@ export type IndexResult = {
 // A future enhancement is to publish data/indices/_manifest.json so the
 // dashboard discovers them automatically — for now an explicit list keeps
 // the page deterministic and survives renaming events on the data side.
-export const INDEX_MANIFEST: ReadonlyArray<{ slug: string; group: 'reference' | 'tier' | 'channel' }> = [
+export const INDEX_MANIFEST: ReadonlyArray<{ slug: string; group: 'reference' | 'tier' | 'channel' | 'region' }> = [
   { slug: 'atpi-replica', group: 'reference' },
   { slug: 'tpi-frontier', group: 'tier' },
   { slug: 'tpi-mid', group: 'tier' },
@@ -48,6 +48,9 @@ export const INDEX_MANIFEST: ReadonlyArray<{ slug: string; group: 'reference' | 
   { slug: 'tpi-channel-direct', group: 'channel' },
   { slug: 'tpi-channel-azure', group: 'channel' },
   { slug: 'tpi-channel-bedrock', group: 'channel' },
+  { slug: 'tpi-region-useast', group: 'region' },
+  { slug: 'tpi-region-eu', group: 'region' },
+  { slug: 'tpi-region-apac', group: 'region' },
 ];
 
 function isObject(value: unknown): value is Record<string, unknown> {
@@ -88,7 +91,7 @@ export async function loadAllIndices(): Promise<IndexResult[]> {
   return results;
 }
 
-export function groupForIndex(slug: string): 'reference' | 'tier' | 'channel' | 'unknown' {
+export function groupForIndex(slug: string): 'reference' | 'tier' | 'channel' | 'region' | 'unknown' {
   const found = INDEX_MANIFEST.find((entry) => entry.slug === slug);
   return found?.group ?? 'unknown';
 }

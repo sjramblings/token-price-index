@@ -1,0 +1,416 @@
+{
+  "name": "tpi-region-useast",
+  "description": "Regional index for US East — frontier-shaped models available in AWS us-east-1 (Bedrock) and Azure eastus (OpenAI Service). 19 members spanning Amazon Nova, Mistral, Meta Llama, DeepSeek, GLM, Kimi, Qwen, OpenAI GPT-OSS / GPT-4.1 / GPT-4o / o1 / o3. Departs from ATPI's 16: ATPI's frontier set is mostly direct-provider API models (GPT-5.x, Claude 4.x, Gemini, Grok) which have no per-region pricing in our catalog — so regional indices need a regionally-available frontier set.",
+  "blend": {
+    "input": 0.7,
+    "output": 0.3
+  },
+  "computed_at": "2026-05-25T14:02:49.590Z",
+  "data_source": "data/current.json",
+  "member_count": 19,
+  "members_resolved": 19,
+  "members_with_invalid_price": 0,
+  "members": [
+    {
+      "label": "Nova Pro",
+      "resolved": {
+        "provider": "amazon",
+        "model_id": "nova-pro",
+        "family": "nova-pro",
+        "hyperscaler": "aws",
+        "region": "us-east-1",
+        "input_per_1k": 0.0008,
+        "output_per_1k": 0.0032,
+        "cached_input_per_1k": 0.0002,
+        "image_per_1k": null,
+        "context_window": 300000,
+        "source": "aws-pricelist",
+        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/us-east-1/index.json",
+        "fetched_at": "2026-05-25T11:15:37.463Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 1.52,
+      "ln_blended": 0.41871033485818504
+    },
+    {
+      "label": "Nova Lite",
+      "resolved": {
+        "provider": "amazon",
+        "model_id": "nova-lite",
+        "family": "nova-lite",
+        "hyperscaler": "aws",
+        "region": "us-east-1",
+        "input_per_1k": 0.00006,
+        "output_per_1k": 0.00024,
+        "cached_input_per_1k": 0.000015,
+        "image_per_1k": null,
+        "context_window": 300000,
+        "source": "aws-pricelist",
+        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/us-east-1/index.json",
+        "fetched_at": "2026-05-25T11:15:37.463Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.11400000000000002,
+      "ln_blended": -2.1715568305876416
+    },
+    {
+      "label": "Nova Micro",
+      "resolved": {
+        "provider": "amazon",
+        "model_id": "nova-micro",
+        "family": "nova-micro",
+        "hyperscaler": "aws",
+        "region": "us-east-1",
+        "input_per_1k": 0.000035,
+        "output_per_1k": 0.00014,
+        "cached_input_per_1k": 0.00000875,
+        "image_per_1k": null,
+        "context_window": 128000,
+        "source": "aws-pricelist",
+        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/us-east-1/index.json",
+        "fetched_at": "2026-05-25T11:15:37.463Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.06649999999999999,
+      "ln_blended": -2.710553331320329
+    },
+    {
+      "label": "Mistral Large 3",
+      "resolved": {
+        "provider": "mistral",
+        "model_id": "mistral-large-3",
+        "family": "mistral-large-3",
+        "hyperscaler": "aws",
+        "region": "us-east-1",
+        "input_per_1k": 0.0005,
+        "output_per_1k": 0.0015,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 262144,
+        "source": "aws-pricelist",
+        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/us-east-1/index.json",
+        "fetched_at": "2026-05-25T11:15:37.463Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.7999999999999999,
+      "ln_blended": -0.22314355131420985
+    },
+    {
+      "label": "Mistral Small",
+      "resolved": {
+        "provider": "mistral",
+        "model_id": "mistral-small",
+        "family": "mistral-small",
+        "hyperscaler": "aws",
+        "region": "us-east-1",
+        "input_per_1k": 0.001,
+        "output_per_1k": 0.003,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 262144,
+        "source": "aws-pricelist",
+        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/us-east-1/index.json",
+        "fetched_at": "2026-05-25T11:15:37.463Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 1.5999999999999999,
+      "ln_blended": 0.47000362924573547
+    },
+    {
+      "label": "Llama 3.3 70B",
+      "resolved": {
+        "provider": "meta",
+        "model_id": "llama-3.3-70b",
+        "family": "llama-3.3-70b",
+        "hyperscaler": "aws",
+        "region": "us-east-1",
+        "input_per_1k": 0.00072,
+        "output_per_1k": 0.00072,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 128000,
+        "source": "aws-pricelist",
+        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/us-east-1/index.json",
+        "fetched_at": "2026-05-25T11:15:37.463Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.72,
+      "ln_blended": -0.3285040669720361
+    },
+    {
+      "label": "Llama 3.2 3B",
+      "resolved": {
+        "provider": "meta",
+        "model_id": "llama-3.2-3b",
+        "family": "llama-3.2-3b",
+        "hyperscaler": "aws",
+        "region": "us-east-1",
+        "input_per_1k": 0.00015,
+        "output_per_1k": 0.00015,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 131072,
+        "source": "aws-pricelist",
+        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/us-east-1/index.json",
+        "fetched_at": "2026-05-25T11:15:37.463Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.15,
+      "ln_blended": -1.8971199848858813
+    },
+    {
+      "label": "DeepSeek v3.2",
+      "resolved": {
+        "provider": "deepseek",
+        "model_id": "deepseek-v3.2",
+        "family": "deepseek-v3.2",
+        "hyperscaler": "aws",
+        "region": "us-east-1",
+        "input_per_1k": 0.00062,
+        "output_per_1k": 0.00185,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 163840,
+        "source": "aws-pricelist",
+        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/us-east-1/index.json",
+        "fetched_at": "2026-05-25T11:15:37.463Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.9890000000000001,
+      "ln_blended": -0.011060947359424835
+    },
+    {
+      "label": "GLM 4.7",
+      "resolved": {
+        "provider": "z-ai",
+        "model_id": "glm-4.7",
+        "family": "glm-4.7",
+        "hyperscaler": "aws",
+        "region": "us-east-1",
+        "input_per_1k": 0.0006,
+        "output_per_1k": 0.0022,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 202752,
+        "source": "aws-pricelist",
+        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/us-east-1/index.json",
+        "fetched_at": "2026-05-25T11:15:37.463Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 1.08,
+      "ln_blended": 0.0769610411361284
+    },
+    {
+      "label": "Kimi K2 Thinking",
+      "resolved": {
+        "provider": "moonshot",
+        "model_id": "kimi-k2-thinking",
+        "family": "kimi-k2-thinking",
+        "hyperscaler": "aws",
+        "region": "us-east-1",
+        "input_per_1k": 0.0006,
+        "output_per_1k": 0.0025,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 262144,
+        "source": "aws-pricelist",
+        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/us-east-1/index.json",
+        "fetched_at": "2026-05-25T11:15:37.463Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 1.17,
+      "ln_blended": 0.1570037488096647
+    },
+    {
+      "label": "Qwen3 32B",
+      "resolved": {
+        "provider": "qwen",
+        "model_id": "qwen3-32b",
+        "family": "qwen3-32b",
+        "hyperscaler": "aws",
+        "region": "us-east-1",
+        "input_per_1k": 0.00015,
+        "output_per_1k": 0.0006,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 131072,
+        "source": "aws-pricelist",
+        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/us-east-1/index.json",
+        "fetched_at": "2026-05-25T11:15:37.463Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.285,
+      "ln_blended": -1.2552660987134867
+    },
+    {
+      "label": "GPT-OSS 120B",
+      "resolved": {
+        "provider": "openai",
+        "model_id": "gpt-oss-120b",
+        "family": "gpt-oss-120b",
+        "hyperscaler": "aws",
+        "region": "us-east-1",
+        "input_per_1k": 0.00015,
+        "output_per_1k": 0.0006,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 131072,
+        "source": "aws-pricelist",
+        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/us-east-1/index.json",
+        "fetched_at": "2026-05-25T11:15:37.463Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.285,
+      "ln_blended": -1.2552660987134867
+    },
+    {
+      "label": "GPT-4.1",
+      "resolved": {
+        "provider": "openai",
+        "model_id": "gpt-4.1-inp-regnl",
+        "family": "gpt-4.1",
+        "hyperscaler": "azure",
+        "region": "eastus",
+        "input_per_1k": 0.002,
+        "output_per_1k": 0.008,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 1047576,
+        "source": "azure-retail",
+        "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
+        "fetched_at": "2026-05-25T11:15:42.600Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 3.8,
+      "ln_blended": 1.33500106673234
+    },
+    {
+      "label": "GPT-4.1 Mini",
+      "resolved": {
+        "provider": "openai",
+        "model_id": "gpt-4.1-mini-outp-regnl",
+        "family": "gpt-4.1-mini",
+        "hyperscaler": "azure",
+        "region": "eastus",
+        "input_per_1k": 0.00044,
+        "output_per_1k": 0.0016,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 1047576,
+        "source": "azure-retail",
+        "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
+        "fetched_at": "2026-05-25T11:15:42.600Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.788,
+      "ln_blended": -0.2382571891242579
+    },
+    {
+      "label": "GPT-4.1 Nano",
+      "resolved": {
+        "provider": "openai",
+        "model_id": "gpt-4.1-nano-inp-data-zone",
+        "family": "gpt-4.1-nano",
+        "hyperscaler": "azure",
+        "region": "eastus",
+        "input_per_1k": 0.0001,
+        "output_per_1k": 0.00044,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 1047576,
+        "source": "azure-retail",
+        "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
+        "fetched_at": "2026-05-25T11:15:42.600Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.202,
+      "ln_blended": -1.5994875815809322
+    },
+    {
+      "label": "GPT-4o",
+      "resolved": {
+        "provider": "openai",
+        "model_id": "gpt-4o-0806-inp-data-zone",
+        "family": "gpt-4o",
+        "hyperscaler": "azure",
+        "region": "eastus",
+        "input_per_1k": 0.00275,
+        "output_per_1k": 0.011,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 128000,
+        "source": "azure-retail",
+        "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
+        "fetched_at": "2026-05-25T11:15:42.600Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 5.225,
+      "ln_blended": 1.6534547978508747
+    },
+    {
+      "label": "GPT-4o Mini",
+      "resolved": {
+        "provider": "openai",
+        "model_id": "gpt-4o-mini-0718-outp-data-zone",
+        "family": "gpt-4o-mini",
+        "hyperscaler": "azure",
+        "region": "eastus",
+        "input_per_1k": 0.000165,
+        "output_per_1k": 0.00066,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 128000,
+        "source": "azure-retail",
+        "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
+        "fetched_at": "2026-05-25T11:15:42.600Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 0.3135,
+      "ln_blended": -1.1599559189091617
+    },
+    {
+      "label": "o1",
+      "resolved": {
+        "provider": "openai",
+        "model_id": "o1-1217-inp-regnl",
+        "family": "o1",
+        "hyperscaler": "azure",
+        "region": "eastus",
+        "input_per_1k": 0.0165,
+        "output_per_1k": 0.066,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 200000,
+        "source": "azure-retail",
+        "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
+        "fetched_at": "2026-05-25T11:15:42.600Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 31.35,
+      "ln_blended": 3.4452142670789296
+    },
+    {
+      "label": "o3",
+      "resolved": {
+        "provider": "openai",
+        "model_id": "o3-0416-outp-regnl",
+        "family": "o3",
+        "hyperscaler": "azure",
+        "region": "eastus",
+        "input_per_1k": 0.0022,
+        "output_per_1k": 0.008,
+        "cached_input_per_1k": null,
+        "image_per_1k": null,
+        "context_window": 200000,
+        "source": "azure-retail",
+        "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
+        "fetched_at": "2026-05-25T11:15:42.600Z"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 3.94,
+      "ln_blended": 1.3711807233098425
+    }
+  ],
+  "geometric_mean_usd_per_million": 0.8134629953123289,
+  "arithmetic_mean_usd_per_million": 2.863052631578947
+}

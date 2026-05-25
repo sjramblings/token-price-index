@@ -32,7 +32,7 @@ The same script, three orthogonal dimensions, all reproducible from the same dat
 |-----------|---------|-----|------------------------|
 | **Tier** | TPI-Frontier, TPI-Mid, TPI-Fast | #12 — ✅ SHIPPED | Configuration only — anyone could do this if they had the data |
 | **Channel** | TPI-Direct, TPI-Aggregator, TPI-Bedrock, TPI-Azure | #13 — ✅ SHIPPED | Requires multi-hyperscaler coverage — ATPI doesn't have it |
-| **Region** | TPI-USEast, TPI-EU, TPI-APAC | #14 (deferred — see below) | Requires per-region pricing — ATPI doesn't have it |
+| **Region** | TPI-USEast, TPI-EU, TPI-APAC | #15 — ✅ SHIPPED | Requires per-region pricing — ATPI doesn't have it |
 
 **Phase 1.1 result** (data refresh 2026-05-25):
 
@@ -56,21 +56,27 @@ Frontier capability runs ~20× the price of Fast tier; Mid is ~4× cheaper than 
 
 The story ATPI structurally cannot tell: **cloud channels are 50–90% more expensive than aggregators and cover less than half of ATPI's frontier set.** Bedrock has just 4 of the 16 ATPI members invocable (3 Claude + Mistral Large 3); Azure has 8 (4 GPT-5.x + 3 Claude + Mistral Large 3). The 12 unresolved Bedrock and 8 unresolved Azure members are documented per-spec — this is the regional deployment gap made legible.
 
-**Phase 1.3 — Regional indices (deferred to PR #14)**
+**Phase 1.3 result** (data refresh 2026-05-26):
 
-A first-pass attempt at regional indices using ATPI's 16 members revealed that only `mistral-large-3` has actual per-region pricing across our 11 AWS regions and 30 Azure regions in `aws-pricelist` / `azure-retail`. The other 15 ATPI members are LiteLLM baselines with `region: null`. A 1-member regional index isn't a useful index.
+| Index | Members resolved | Geometric mean | What it shows |
+|-------|------------------|----------------|---------------|
+| TPI-USEast | 19/19 | $0.81/M tokens | Full frontier-set coverage in AWS us-east-1 + Azure eastus |
+| TPI-EU | 17/19 | $0.88/M tokens | Near-full; missing Mistral Small + Llama 3.3 70B in eu-west-1 |
+| TPI-APAC | 8/19 | $0.63/M tokens | Materially limited; only Amazon Nova + Azure GPT-4.x available |
 
-The fix is broader curation: build regional indices from the models that actually carry regional pricing in our catalog. `aws-pricelist` has ~31 families per region (DeepSeek v3.x, GLM 4.7/5, GPT-OSS series, Kimi K2 Thinking/2.5, Llama 3.x, MiniMax M2.x, Mistral, Nova, Qwen3); `azure-retail` has the GPT-4.1/4o/o1/o3 series. The right shape is regionally-curated frontier-capable member sets, not ATPI's 16 squashed into a regional view. Deferring to PR #14 so it gets its own attention.
+Different member set than tier/channel because ATPI's 16 frontier members are mostly direct-provider API models (GPT-5.x, Claude 4.x, Gemini, Grok) — none of which carry per-region pricing in our catalog. Regional indices use a 19-member frontier-shaped set drawn from `aws-pricelist` + `azure-retail`: 12 Bedrock families (Amazon Nova, Mistral, Meta Llama, DeepSeek, GLM, Kimi, Qwen, GPT-OSS) + 7 Azure OpenAI families (GPT-4.1 series, GPT-4o series, o1, o3).
 
-### Phase 2 — Historical reconstruction (PR #14)
+The headline story is a counter-intuitive one: **APAC's index value ($0.63/M) looks cheaper than US East ($0.81/M), but only because the expensive frontier models (o1 at $33/M, o3 at $4.4/M) aren't available in Azure southeastasia** and most Bedrock third-party models aren't in ap-southeast-1. A regional index without unresolved-member visibility would mislead — ours surfaces the gap explicitly.
+
+### Phase 2 — Historical reconstruction (PR #16)
 
 Walk `data/history/YYYY-MM-DD.json`, apply current methodology to each snapshot, emit a time-series for each index. Render on a new `/index` dashboard page as a line chart, with channel + region overlays. We can rebuild what any index would have shown on day X, retroactively — because the data substrate is git-versioned.
 
-### Phase 3 — Open the calculation as a package (PR #15)
+### Phase 3 — Open the calculation as a package (PR #17)
 
 Publish `@sjramblings/token-price-index` on npm — pure TypeScript function `computeIndex(records, members, blend)` taking our `PriceRecord[]` shape. Anyone (including ATPI themselves) can install and compute their own index from our data. The README ships the four-line example that reproduces ATPI's $2.08 with their own published members.
 
-### Phase 4 — The feed (PR #16)
+### Phase 4 — The feed (PR #18)
 
 Daily index values published as `feeds/indices.atom` + `feeds/indices.json`. Each refresh produces feed entries. Plug into `feed-system-aws` as a curated source: when TPI-Bedrock-APAC moves >2% in a day, the Sunday newsletter digest catches it.
 
