@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-05-25T22:59:06.488Z",
+  "computed_at": "2026-05-26T19:14:00.224Z",
   "data_source": "data/current.json",
   "member_count": 16,
   "members_resolved": 4,
@@ -36,7 +36,7 @@
         "context_window": 1000000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-05-25"
+        "fetched_at": "2026-05-26"
       },
       "selector_matched": 0,
       "blended_per_million": 11,
@@ -59,7 +59,7 @@
         "context_window": 1000000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-05-25"
+        "fetched_at": "2026-05-26"
       },
       "selector_matched": 0,
       "blended_per_million": 6.6,
@@ -122,11 +122,11 @@
         "context_window": 200000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-05-25"
+        "fetched_at": "2026-05-26"
       },
       "selector_matched": 0,
       "blended_per_million": 2.6399999999999997,
-      "ln_blended": 0.9707789171582246,
+      "ln_blended": 0.9707789171582247,
       "published_blended_per_million": 2.2,
       "divergence_pct": 19.999999999999975
     },
@@ -185,7 +185,7 @@
         "context_window": 262144,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/us-east-1/index.json",
-        "fetched_at": "2026-05-25T18:23:01.202Z"
+        "fetched_at": "2026-05-26T19:13:52.888Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.7999999999999999,
@@ -224,6 +224,6 @@
       "excluded_reason": "unresolved"
     }
   ],
-  "geometric_mean_usd_per_million": 3.5189057398478085,
+  "geometric_mean_usd_per_million": 3.5189057398478094,
   "arithmetic_mean_usd_per_million": 5.260000000000001
 }
