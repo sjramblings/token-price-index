@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-05-26T19:14:00.224Z",
+  "computed_at": "2026-05-27T19:19:28.322Z",
   "data_source": "data/current.json",
   "member_count": 16,
   "members_resolved": 4,
@@ -36,7 +36,7 @@
         "context_window": 1000000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-05-26"
+        "fetched_at": "2026-05-27"
       },
       "selector_matched": 0,
       "blended_per_million": 11,
@@ -59,7 +59,7 @@
         "context_window": 1000000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-05-26"
+        "fetched_at": "2026-05-27"
       },
       "selector_matched": 0,
       "blended_per_million": 6.6,
@@ -122,7 +122,7 @@
         "context_window": 200000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-05-26"
+        "fetched_at": "2026-05-27"
       },
       "selector_matched": 0,
       "blended_per_million": 2.6399999999999997,
@@ -185,7 +185,7 @@
         "context_window": 262144,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260522211404/us-east-1/index.json",
-        "fetched_at": "2026-05-26T19:13:52.888Z"
+        "fetched_at": "2026-05-27T19:19:24.146Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.7999999999999999,
