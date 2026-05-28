@@ -1,11 +1,10 @@
 {
   "name": "atpi-replica",
-  "description": "Replicates tokenpriceindex.com's published index from our catalog. Members and methodology copied verbatim from https://tokenpriceindex.com/methodology as of 2026-05-25. Used to validate that our substrate produces the same number ATPI publishes.",
   "blend": {
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-05-27T19:19:28.213Z",
+  "computed_at": "2026-05-28T11:49:39.936Z",
   "data_source": "data/current.json",
   "member_count": 16,
   "members_resolved": 16,
