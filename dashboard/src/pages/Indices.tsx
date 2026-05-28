@@ -10,7 +10,7 @@ type DisplayLabel = { title: string; tagline: string };
 const DISPLAY_LABELS: Record<string, DisplayLabel> = {
   'atpi-replica': {
     title: 'ATPI Replica',
-    tagline: 'Computed from our catalog using tokenpriceindex.com’s 16 members and 70/30 input/output blend.',
+    tagline: 'The 16-member, 70/30 input/output reference index.',
   },
   'tpi-frontier': {
     title: 'TPI Frontier',
@@ -440,7 +440,7 @@ export default function Indices(): JSX.Element {
           <GroupHeader
             eyebrow="reference index"
             title="ATPI Replica"
-            description="Computes tokenpriceindex.com’s index from our catalog using their published 16 members and 70/30 input/output blend. Shipped first so the dataset can be checked against an external reference point; the other ten indices reuse the same methodology with different membership filters."
+            description="The reference index against which the other ten are derived — same geometric-mean formula, different membership filters."
           />
           <IndexCard
             index={atpi}
