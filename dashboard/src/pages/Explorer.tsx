@@ -11,7 +11,8 @@ import { motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
 import { CountUp } from '../lib/CountUp';
 import { cn } from '../lib/cn';
-import { loadCurrent } from '../lib/data';
+import type { HistoryManifest } from '../lib/data';
+import { loadCurrent, loadHistoryManifest } from '../lib/data';
 import { fmt, fmtRelative, formatContextWindow, formatPricePer1K, formatRegion } from '../lib/format';
 import type { Hyperscaler, PriceRecord, Source } from '../lib/types';
 
@@ -58,6 +59,7 @@ function isSourceFilter(value: string): value is SourceFilter {
 
 export default function Explorer(): JSX.Element {
   const [records, setRecords] = useState<PriceRecord[]>([]);
+  const [historyManifest, setHistoryManifest] = useState<HistoryManifest | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [requestAttempt, setRequestAttempt] = useState(0);
@@ -71,10 +73,11 @@ export default function Explorer(): JSX.Element {
     setLoading(true);
     setError(null);
 
-    void loadCurrent()
-      .then((currentRecords) => {
+    void Promise.all([loadCurrent(), loadHistoryManifest().catch(() => null)])
+      .then(([currentRecords, manifest]) => {
         if (active) {
           setRecords(currentRecords);
+          setHistoryManifest(manifest);
           setLoading(false);
         }
       })
@@ -192,7 +195,12 @@ export default function Explorer(): JSX.Element {
     { label: 'Models', value: records.length },
     { label: 'Providers', value: new Set(records.map((record) => record.provider)).size },
     { label: 'Hyperscalers', value: new Set(records.map((record) => record.hyperscaler)).size },
-    { label: 'Daily snapshots', value: new Set(records.map((record) => record.fetched_at.slice(0, 10))).size },
+    {
+      label: 'Daily snapshots',
+      value: historyManifest === null
+        ? new Set(records.map((record) => record.fetched_at.slice(0, 10))).size
+        : historyManifest.dates.length,
+    },
   ];
 
   return (

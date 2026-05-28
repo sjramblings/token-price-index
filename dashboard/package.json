@@ -3,9 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "predev": "mkdir -p public && rm -rf public/data && cp -r ../data public/data",
+    "predev": "bun ../scripts/BuildHistoryManifest.ts && mkdir -p public && rm -rf public/data && cp -r ../data public/data",
     "dev": "vite",
-    "prebuild": "mkdir -p public && rm -rf public/data && cp -r ../data public/data",
+    "prebuild": "bun ../scripts/BuildHistoryManifest.ts && mkdir -p public && rm -rf public/data && cp -r ../data public/data",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },
