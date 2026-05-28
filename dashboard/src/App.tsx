@@ -3,6 +3,7 @@ import { Nav } from './components/Nav';
 import Compare from './pages/Compare';
 import Explorer from './pages/Explorer';
 import Indices from './pages/Indices';
+import Landscape from './pages/Landscape';
 import Methodology from './pages/Methodology';
 import Pivot from './pages/Pivot';
 import Simulator from './pages/Simulator';
@@ -18,6 +19,7 @@ export default function App(): JSX.Element {
           <Route path="/indices" element={<Indices />} />
           <Route path="/compare" element={<Compare />} />
           <Route path="/pivot" element={<Pivot />} />
+          <Route path="/landscape" element={<Landscape />} />
           <Route path="/simulator" element={<Simulator />} />
           <Route path="/timeline" element={<Timeline />} />
           <Route path="/methodology" element={<Methodology />} />
