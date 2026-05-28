@@ -120,6 +120,17 @@ export function extractFamily(modelId: string): string {
     }
   }
 
+  // Databricks ships Anthropic SKUs under a `databricks-` re-brand prefix
+  // (e.g. `databricks-claude-opus-4-1`). The canonical family is the same as
+  // the un-rebranded form, so strip the prefix before the vendor-dot pass.
+  family = family.replace(/^databricks-/, '');
+
+  // Bedrock cross-region inference profiles prepend an AWS regional segment
+  // (`eu.anthropic.X`, `us.anthropic.X`, `global.anthropic.X`, etc.) on top of
+  // the vendor-dot form. Strip the regional segment first so the existing
+  // vendor-dot regex below catches `anthropic.` cleanly.
+  family = family.replace(/^(eu|us|global|au|apac|ca|me|sa)\./, '');
+
   const slashIndex = family.indexOf('/');
   if (slashIndex > 0 && !family.slice(0, slashIndex).includes('.')) {
     family = family.slice(slashIndex + 1);
@@ -129,7 +140,24 @@ export function extractFamily(modelId: string): string {
     /^(anthropic|amazon|meta|mistral|mistralai|cohere|ai21|stability|deepseek|writer|openai|google|qwen|microsoft|huggingface|z-ai|zhipu)\./,
     '',
   );
-  family = family.replace(/-v\d+:\d+$/, '');
+
+  // Dashed Anthropic re-export form (`anthropic-claude-3-opus`,
+  // `anthropic-claude-3.5-sonnet`) collapses to the canonical claude-* family.
+  // Lookahead constraint keeps this from over-matching hypothetical
+  // `anthropic-` prefixes on non-claude SKUs.
+  family = family.replace(/^anthropic-(?=claude-)/, '');
+
+  // LiteLLM aliasing variants — `claude-opus-4-1@20250805`,
+  // `claude-opus-4-7@default`. The `@...` suffix is upstream's way of pinning
+  // a specific snapshot; the canonical family is what comes before.
+  family = family.replace(/@.*$/, '');
+
+  // Bedrock versioned aliases. The existing rule handled `-v\d+:\d+$` only
+  // (e.g. `-v2:0`). The bare `-v\d+$` form (e.g. `claude-opus-4-6-v1`) shows
+  // up on the bedrock_converse provider records — same canonical family as
+  // the un-versioned form. Merge both into one regex.
+  family = family.replace(/-v\d+(:\d+)?$/, '');
+
   family = family.replace(/-\d{8}$/, '');
   family = family.replace(/-\d{4}$/, '');
   family = family.replace(/^gpt-35-/, 'gpt-3.5-');

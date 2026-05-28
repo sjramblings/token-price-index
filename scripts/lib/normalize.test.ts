@@ -25,6 +25,31 @@ describe('extractFamily', () => {
     ['o3-0416', 'o3'],
     ['gpt-35-turbo', 'gpt-3.5-turbo'],
     ['gpt-35-turbo-16k', 'gpt-3.5-turbo-16k'],
+    // Bedrock cross-region inference profiles (regional prefix + vendor-dot)
+    ['eu.anthropic.claude-opus-4-7', 'claude-opus-4-7'],
+    ['us.anthropic.claude-opus-4-1', 'claude-opus-4-1'],
+    ['global.anthropic.claude-opus-4-5', 'claude-opus-4-5'],
+    ['au.anthropic.claude-opus-4-6-v1', 'claude-opus-4-6'],
+    ['apac.anthropic.claude-3-5-sonnet', 'claude-3-5-sonnet'],
+    // Bedrock bare -v\d+ versioned aliases (no :0 suffix)
+    ['claude-opus-4-6-v1', 'claude-opus-4-6'],
+    ['claude-opus-4-7-v2', 'claude-opus-4-7'],
+    // LiteLLM @-suffix snapshot pins
+    ['claude-opus-4-1@20250805', 'claude-opus-4-1'],
+    ['claude-opus-4-7@default', 'claude-opus-4-7'],
+    ['claude-opus-4@20250514', 'claude-opus-4'],
+    // Databricks-rebranded Anthropic SKUs
+    ['databricks-claude-opus-4', 'claude-opus-4'],
+    ['databricks-claude-opus-4-1', 'claude-opus-4-1'],
+    ['databricks-claude-opus-4-5', 'claude-opus-4-5'],
+    // Dashed anthropic- re-export form
+    ['anthropic-claude-3-opus', 'claude-3-opus'],
+    ['anthropic-claude-3.5-sonnet', 'claude-3-5-sonnet'],
+    ['anthropic-claude-3.5-haiku', 'claude-3-5-haiku'],
+    ['anthropic-claude-3.7-sonnet', 'claude-3-7-sonnet'],
+    // Stacked: regional prefix + Bedrock versioned alias collapses to canonical
+    ['eu.anthropic.claude-opus-4-6-v1', 'claude-opus-4-6'],
+    ['global.anthropic.claude-opus-4-7-v1', 'claude-opus-4-7'],
   ];
 
   test.each(familyCases)('%s maps to %s', (modelId: string, expected: string) => {
@@ -54,6 +79,51 @@ describe('extractFamily', () => {
   test('does not eat dotted suffixes that look like vendors but are not — ollama/llama3.1', () => {
     expect(extractFamily('ollama/llama3.1')).not.toBe('1');
     expect(extractFamily('ollama/llama3.1').length).toBeGreaterThan(1);
+  });
+
+  // Convergence guarantees — every aliasing form of the same model collapses
+  // to one family. Before this change the dashboard counted five separate
+  // "claude-opus-4-7" families because of LiteLLM's identifier proliferation.
+  test('every Claude Opus 4.7 alias converges to claude-opus-4-7', () => {
+    const expected = 'claude-opus-4-7';
+    const variants = [
+      'claude-opus-4-7',
+      'claude-opus-4-7@default',
+      'claude-opus-4-7@20260416',
+      'anthropic/claude-opus-4.7',
+      'openrouter/anthropic/claude-opus-4.7',
+      'bedrock/anthropic.claude-opus-4-7-v1:0',
+      'anthropic.claude-opus-4-7',
+      'eu.anthropic.claude-opus-4-7',
+      'us.anthropic.claude-opus-4-7',
+      'global.anthropic.claude-opus-4-7',
+      'au.anthropic.claude-opus-4-7',
+      'eu.anthropic.claude-opus-4-7-v1',
+      'databricks-claude-opus-4-7',
+    ];
+    for (const variant of variants) {
+      expect(extractFamily(variant)).toBe(expected);
+    }
+  });
+
+  // The Bedrock '-v1' bare suffix is distinct from the '-v\d+:\d+' tagged form
+  // — both must drop. Before this change, only the ':0' form was stripped, so
+  // every `-v1` SKU survived as a separate family.
+  test('-v\\d+ and -v\\d+:\\d+ both strip', () => {
+    expect(extractFamily('claude-opus-4-6-v1')).toBe('claude-opus-4-6');
+    expect(extractFamily('claude-opus-4-6-v1:0')).toBe('claude-opus-4-6');
+    expect(extractFamily('claude-opus-4-6-v2')).toBe('claude-opus-4-6');
+    expect(extractFamily('claude-opus-4-6-v2:1')).toBe('claude-opus-4-6');
+  });
+
+  // '@' suffix strip must not leak into model-id bodies that contain '@'
+  // elsewhere. (None do today across the four upstream sources, but the
+  // regex is `@.*$` so as long as the '@' is followed by suffix-y content
+  // this remains a clean prefix-of-tail strip.)
+  test('@-suffix strip removes everything from @ to end', () => {
+    expect(extractFamily('claude-opus-4-1@20250805')).toBe('claude-opus-4-1');
+    expect(extractFamily('claude-opus-4-7@default')).toBe('claude-opus-4-7');
+    expect(extractFamily('gpt-4o@stable')).toBe('gpt-4o');
   });
 });
 
