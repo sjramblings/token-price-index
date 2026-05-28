@@ -82,6 +82,14 @@ jobs:
       - name: Compute index history
         run: bun scripts/ComputeIndexHistory.ts --all
 
+      # Enumerate data/history/*.json into data/history-manifest.json so the
+      # splash "Daily snapshots" stat can read the true count of accumulated
+      # daily snapshots. Without this, the dashboard derives the count from
+      # `new Set(fetched_at.slice(0,10))` over current.json, which is always
+      # exactly 1 (all records in one Normalize run share one fetched_at).
+      - name: Build history manifest
+        run: bun scripts/BuildHistoryManifest.ts
+
       - name: Commit if data/ changed
         run: |
           git config user.name  "github-actions[bot]"

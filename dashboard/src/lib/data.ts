@@ -72,6 +72,49 @@ export async function loadCurrent(): Promise<PriceRecord[]> {
   return parseResponse(response, 'current.json');
 }
 
+export interface HistoryManifest {
+  dates: string[];
+  count: number;
+}
+
+export function isHistoryManifest(value: unknown): value is HistoryManifest {
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+
+  const manifest = value as Record<string, unknown>;
+  if (!Array.isArray(manifest.dates) || typeof manifest.count !== 'number') {
+    return false;
+  }
+
+  return manifest.dates.every((date: unknown): boolean => typeof date === 'string');
+}
+
+export async function loadHistoryManifest(): Promise<HistoryManifest | null> {
+  const response = await fetch(`${BASE_URL}data/history-manifest.json`);
+
+  if (response.status === 404) {
+    return null;
+  }
+
+  if (!response.ok) {
+    throw new Error(`history-manifest.json request failed with HTTP ${response.status}`);
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = await response.json() as unknown;
+  } catch {
+    throw new Error('history-manifest.json could not be parsed as JSON');
+  }
+
+  if (!isHistoryManifest(parsed)) {
+    throw new Error('history-manifest.json failed shape validation');
+  }
+
+  return parsed;
+}
+
 export async function loadHistory(date: string): Promise<PriceRecord[] | null> {
   const response = await fetch(`${BASE_URL}data/history/${date}.json`);
 
