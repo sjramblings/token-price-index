@@ -6,27 +6,113 @@ import type { PriceRecord } from '../lib/types';
 
 const DEFAULT_FAMILY = 'claude-3-5-sonnet';
 
+// First-party model-maker providers. Single-channel families pass the dropdown
+// gate only when at least one of their records names one of these as the
+// `provider` field. Aggregator-only catalog families (fireworks_ai, novita,
+// vercel_ai_gateway, deepinfra, etc. hosting community / open-source SKUs)
+// stay out — they are not cross-channel comparable in any meaningful sense
+// and otherwise flood the dropdown with 1,000+ noise entries.
+const FIRST_PARTY_PROVIDERS: ReadonlySet<string> = new Set([
+  'anthropic',
+  'openai',
+  'google',
+  'gemini',
+  'mistral',
+  'mistralai',
+  'meta',
+  'meta-llama',
+  'xai',
+  'x-ai',
+  'cohere',
+  'deepseek',
+  'qwen',
+  'moonshot',
+  'moonshotai',
+  'microsoft',
+  'ai21',
+  'writer',
+  'voyage',
+  'perplexity',
+  'amazon',
+  'amazon_nova',
+  'z-ai',
+  'zai',
+  'nvidia',
+  'stability',
+]);
+
+// Family-naming noise we filter out of the single-channel admission pool. These
+// patterns are LiteLLM aliasing artefacts — regional Bedrock inference profiles
+// (`eu.anthropic.X`, `global.anthropic.X`), date suffixes (`@20251101`),
+// `@default`, Bedrock versioned aliases (`-v1`), Databricks-hosted re-brands
+// (`databricks-claude-X`), and the slash- / dash- prefixed Anthropic re-exports
+// (`anthropic/claude-X.Y`, `anthropic-claude-X`). The canonical name for the
+// same model exists alongside; admitting the noise variants just duplicates.
+const NOISE_FAMILY_RE = /^(eu|us|global|au|apac|ca|me|sa)\.|@|-v\d+$|^databricks-|^anthropic-claude-|^anthropic\//i;
+
 function rowKey(record: PriceRecord): string {
   return `${record.hyperscaler}:${record.region ?? 'null'}:${record.source}:${record.model_id}`;
 }
 
-function multiHyperscalerFamilyList(records: PriceRecord[]): string[] {
-  const byFamily = new Map<string, Set<string>>();
+interface PivotFamilies {
+  readonly families: readonly string[];
+  readonly singleChannelFamilies: ReadonlySet<string>;
+}
+
+// Multi-channel families always admitted. Single-channel families admitted only
+// when the model is from a first-party model-maker (FIRST_PARTY_PROVIDERS) AND
+// the family name is canonical (does not match NOISE_FAMILY_RE). This keeps the
+// dropdown ~80-100 entries on a typical day instead of ~1,650 — newly-released
+// models like `claude-opus-4-8` (provider=anthropic, single-channel on
+// release day) appear immediately; aggregator catalog noise stays out.
+function pivotFamilyList(records: readonly PriceRecord[]): PivotFamilies {
+  interface FamilyAggregate {
+    readonly hyperscalers: Set<string>;
+    readonly providers: Set<string>;
+  }
+
+  const byFamily = new Map<string, FamilyAggregate>();
   for (const record of records) {
     if (record.family.length === 0) {
       continue;
     }
-    const set = byFamily.get(record.family) ?? new Set<string>();
-    set.add(record.hyperscaler);
-    byFamily.set(record.family, set);
+    let entry = byFamily.get(record.family);
+    if (entry === undefined) {
+      entry = { hyperscalers: new Set<string>(), providers: new Set<string>() };
+      byFamily.set(record.family, entry);
+    }
+    entry.hyperscalers.add(record.hyperscaler);
+    entry.providers.add(record.provider);
   }
-  return [...byFamily.entries()]
-    .filter(([, hyperscalers]) => hyperscalers.size > 1)
-    .map(([family]) => family)
-    .sort((left, right) => left.localeCompare(right));
+
+  const families: string[] = [];
+  const singleChannelFamilies = new Set<string>();
+  for (const [family, entry] of byFamily) {
+    if (entry.hyperscalers.size > 1) {
+      families.push(family);
+      continue;
+    }
+    if (NOISE_FAMILY_RE.test(family)) {
+      continue;
+    }
+    let firstParty = false;
+    for (const provider of entry.providers) {
+      if (FIRST_PARTY_PROVIDERS.has(provider)) {
+        firstParty = true;
+        break;
+      }
+    }
+    if (!firstParty) {
+      continue;
+    }
+    families.push(family);
+    singleChannelFamilies.add(family);
+  }
+  families.sort((left, right) => left.localeCompare(right));
+  return { families, singleChannelFamilies };
 }
 
-function pickInitialFamily(families: string[]): string | null {
+function pickInitialFamily(families: readonly string[]): string | null {
   if (families.length === 0) {
     return null;
   }
@@ -39,6 +125,7 @@ export default function Pivot(): JSX.Element {
   const [error, setError] = useState<Error | null>(null);
   const [requestAttempt, setRequestAttempt] = useState(0);
   const [family, setFamily] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     let active = true;
@@ -64,7 +151,21 @@ export default function Pivot(): JSX.Element {
     };
   }, [requestAttempt]);
 
-  const families = useMemo(() => multiHyperscalerFamilyList(records), [records]);
+  const { families, singleChannelFamilies } = useMemo(
+    () => pivotFamilyList(records),
+    [records],
+  );
+
+  // Search narrows what the dropdown renders without losing the selected
+  // value. The currently-selected family is always rendered even when the
+  // search filters it out, so users never see an empty/inconsistent picker.
+  const filteredFamilies = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    if (query.length === 0) {
+      return families;
+    }
+    return families.filter((candidate) => candidate.toLowerCase().includes(query));
+  }, [families, search]);
 
   useEffect(() => {
     if (family === null && families.length > 0) {
@@ -131,14 +232,16 @@ export default function Pivot(): JSX.Element {
   if (families.length === 0) {
     return (
       <div className="py-24 text-center">
-        <p className="h-eyebrow mb-2">no pivot candidates</p>
+        <p className="h-eyebrow mb-2">no families loaded</p>
         <p className="text-ink-600">
-          No model family is currently priced across more than one hyperscaler. Once AWS Bedrock and
-          Azure OpenAI regional data lands, multi-hyperscaler families will appear here.
+          The current pricing snapshot did not parse into any model families. Check the latest
+          refresh ran cleanly.
         </p>
       </div>
     );
   }
+
+  const selectedIsSingleChannel = family !== null && singleChannelFamilies.has(family);
 
   return (
     <div>
@@ -152,6 +255,17 @@ export default function Pivot(): JSX.Element {
       </header>
 
       <section className="card mb-6 p-5">
+        <label className="mb-2 block font-mono text-[10px] uppercase tracking-[0.18em] text-ink-600" htmlFor="pivot-search">
+          search families
+        </label>
+        <input
+          id="pivot-search"
+          type="search"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          placeholder="type to filter — e.g. opus, sonnet, gemini, gpt-4"
+          className="mb-4 w-full rounded-full border border-ink-300/30 bg-ink-100/30 px-4 py-2 font-mono text-sm text-ink-900 transition focus:border-accent-500/50 focus:outline-none focus:ring-1 focus:ring-accent-500/20"
+        />
         <label className="mb-2 block font-mono text-[10px] uppercase tracking-[0.18em] text-ink-600" htmlFor="pivot-family">
           model family
         </label>
@@ -161,14 +275,44 @@ export default function Pivot(): JSX.Element {
           onChange={(event) => setFamily(event.target.value)}
           className="w-full rounded-full border border-ink-300/30 bg-ink-100/30 px-4 py-2 font-mono text-sm text-ink-900 transition focus:border-accent-500/50 focus:outline-none focus:ring-1 focus:ring-accent-500/20"
         >
-          {families.map((candidate) => (
-            <option key={candidate} value={candidate}>{candidate}</option>
+          {/* Always render the selected family so the picker stays consistent
+              when search filters it out of the visible list. */}
+          {family !== null && !filteredFamilies.includes(family) ? (
+            <option key={family} value={family}>
+              {family}
+              {singleChannelFamilies.has(family) ? '  ·  single-channel' : ''}
+              {'  ·  (selected, outside search)'}
+            </option>
+          ) : null}
+          {filteredFamilies.map((candidate) => (
+            <option key={candidate} value={candidate}>
+              {candidate}
+              {singleChannelFamilies.has(candidate) ? '  ·  single-channel' : ''}
+            </option>
           ))}
         </select>
         <p className="mt-2 font-mono text-[11px] text-ink-600">
-          {families.length} families span more than one hyperscaler
+          {search.trim().length > 0 ? (
+            <>
+              {filteredFamilies.length} of {families.length} families match &ldquo;{search.trim()}&rdquo;
+            </>
+          ) : (
+            <>
+              {families.length} families · {families.length - singleChannelFamilies.size} multi-channel · {singleChannelFamilies.size} single-channel (emerging or first-party channel-exclusive)
+            </>
+          )}
         </p>
       </section>
+
+      {selectedIsSingleChannel ? (
+        <aside className="card mb-4 border-l-4 border-accent-500/40 p-4">
+          <p className="font-mono text-xs text-ink-700">
+            <span className="font-bold text-ink-900">single-channel</span> — this family is currently
+            priced on only one hyperscaler. Either it is newly released and other channels have not
+            yet listed it, or it is exclusive to this channel by design.
+          </p>
+        </aside>
+      ) : null}
 
       {hasBaselineRow ? (
         <aside className="card mb-4 border-l-4 border-amber-500/40 p-4">
