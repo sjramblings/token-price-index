@@ -10,7 +10,18 @@ function rowKey(record: PriceRecord): string {
   return `${record.hyperscaler}:${record.region ?? 'null'}:${record.source}:${record.model_id}`;
 }
 
-function multiHyperscalerFamilyList(records: PriceRecord[]): string[] {
+interface PivotFamilies {
+  readonly families: readonly string[];
+  readonly singleChannelFamilies: ReadonlySet<string>;
+}
+
+// Every family with at least one price record qualifies for the pivot dropdown.
+// Earlier iterations filtered to families spanning >1 hyperscaler, but that hid
+// brand-new models like `claude-opus-4.8` (released 2026-05-29) that ship on a
+// single channel for hours/days before Bedrock + Vertex + direct catch up.
+// "Same model, every channel" reads truthfully with 1 channel too — the table
+// just renders one row, which is itself the answer to "where is this listed?".
+function pivotFamilyList(records: readonly PriceRecord[]): PivotFamilies {
   const byFamily = new Map<string, Set<string>>();
   for (const record of records) {
     if (record.family.length === 0) {
@@ -20,13 +31,17 @@ function multiHyperscalerFamilyList(records: PriceRecord[]): string[] {
     set.add(record.hyperscaler);
     byFamily.set(record.family, set);
   }
-  return [...byFamily.entries()]
-    .filter(([, hyperscalers]) => hyperscalers.size > 1)
-    .map(([family]) => family)
-    .sort((left, right) => left.localeCompare(right));
+  const families = [...byFamily.keys()].sort((left, right) => left.localeCompare(right));
+  const singleChannelFamilies = new Set<string>();
+  for (const [family, hyperscalers] of byFamily) {
+    if (hyperscalers.size === 1) {
+      singleChannelFamilies.add(family);
+    }
+  }
+  return { families, singleChannelFamilies };
 }
 
-function pickInitialFamily(families: string[]): string | null {
+function pickInitialFamily(families: readonly string[]): string | null {
   if (families.length === 0) {
     return null;
   }
@@ -64,7 +79,10 @@ export default function Pivot(): JSX.Element {
     };
   }, [requestAttempt]);
 
-  const families = useMemo(() => multiHyperscalerFamilyList(records), [records]);
+  const { families, singleChannelFamilies } = useMemo(
+    () => pivotFamilyList(records),
+    [records],
+  );
 
   useEffect(() => {
     if (family === null && families.length > 0) {
@@ -131,14 +149,16 @@ export default function Pivot(): JSX.Element {
   if (families.length === 0) {
     return (
       <div className="py-24 text-center">
-        <p className="h-eyebrow mb-2">no pivot candidates</p>
+        <p className="h-eyebrow mb-2">no families loaded</p>
         <p className="text-ink-600">
-          No model family is currently priced across more than one hyperscaler. Once AWS Bedrock and
-          Azure OpenAI regional data lands, multi-hyperscaler families will appear here.
+          The current pricing snapshot did not parse into any model families. Check the latest
+          refresh ran cleanly.
         </p>
       </div>
     );
   }
+
+  const selectedIsSingleChannel = family !== null && singleChannelFamilies.has(family);
 
   return (
     <div>
@@ -162,13 +182,26 @@ export default function Pivot(): JSX.Element {
           className="w-full rounded-full border border-ink-300/30 bg-ink-100/30 px-4 py-2 font-mono text-sm text-ink-900 transition focus:border-accent-500/50 focus:outline-none focus:ring-1 focus:ring-accent-500/20"
         >
           {families.map((candidate) => (
-            <option key={candidate} value={candidate}>{candidate}</option>
+            <option key={candidate} value={candidate}>
+              {candidate}
+              {singleChannelFamilies.has(candidate) ? '  ·  single-channel' : ''}
+            </option>
           ))}
         </select>
         <p className="mt-2 font-mono text-[11px] text-ink-600">
-          {families.length} families span more than one hyperscaler
+          {families.length} families · {families.length - singleChannelFamilies.size} multi-channel · {singleChannelFamilies.size} single-channel (emerging or channel-exclusive)
         </p>
       </section>
+
+      {selectedIsSingleChannel ? (
+        <aside className="card mb-4 border-l-4 border-accent-500/40 p-4">
+          <p className="font-mono text-xs text-ink-700">
+            <span className="font-bold text-ink-900">single-channel</span> — this family is currently
+            priced on only one hyperscaler. Either it is newly released and other channels have not
+            yet listed it, or it is exclusive to this channel by design.
+          </p>
+        </aside>
+      ) : null}
 
       {hasBaselineRow ? (
         <aside className="card mb-4 border-l-4 border-amber-500/40 p-4">
