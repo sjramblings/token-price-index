@@ -1,9 +1,43 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ChevronRight } from 'lucide-react';
-import { Line, LineChart, ResponsiveContainer, Tooltip } from 'recharts';
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 import { cn } from '../lib/cn';
+import { iterateRecentDates, loadHistory } from '../lib/data';
 import { loadAllIndexHistories, loadAllIndices } from '../lib/indices';
 import type { IndexHistory, IndexMember, IndexResult } from '../lib/indices';
+import { buildProviderShareSeries } from '../lib/landscape';
+import type { ProviderShareSeries } from '../lib/landscape';
+
+const PROVIDER_PALETTE: Record<string, string> = {
+  anthropic: '#F59E0B',
+  openai: '#10B981',
+  google: '#0EA5E9',
+  meta: '#8B5CF6',
+  mistral: '#F43F5E',
+  cohere: '#06B6D4',
+  amazon: '#F97316',
+  microsoft: '#3B82F6',
+  xai: '#EC4899',
+  deepseek: '#6366F1',
+  alibaba: '#14B8A6',
+  nvidia: '#84CC16',
+};
+const PROVIDER_FALLBACK_PALETTE = ['#9CA3AF', '#A8A29E', '#71717A', '#737373', '#52525B'];
+
+function colorForProvider(provider: string, fallbackIndex: number): string {
+  return PROVIDER_PALETTE[provider]
+    ?? PROVIDER_FALLBACK_PALETTE[fallbackIndex % PROVIDER_FALLBACK_PALETTE.length];
+}
 
 type DisplayLabel = { title: string; tagline: string };
 
@@ -332,9 +366,84 @@ function GroupHeader({ eyebrow, title, description }: GroupHeaderProps): JSX.Ele
   );
 }
 
+function ProviderShareChart({ series }: { series: ProviderShareSeries }): JSX.Element {
+  return (
+    <div className="card p-5 md:p-7">
+      <div className="mb-5 flex flex-wrap items-baseline justify-between gap-2">
+        <p className="h-eyebrow">share by model count</p>
+        <p className="font-mono text-[11px] text-ink-600">
+          {series.points.length} days · {series.providers.length} providers
+        </p>
+      </div>
+      <div className="h-72 md:h-96">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart
+            data={series.points}
+            margin={{ top: 8, right: 16, bottom: 8, left: 0 }}
+            stackOffset="expand"
+          >
+            <CartesianGrid stroke="rgb(58 70 84 / 0.25)" strokeDasharray="2 4" vertical={false} />
+            <XAxis
+              dataKey="date"
+              tickFormatter={(value: string) => value.slice(5)}
+              stroke="rgb(139 149 164)"
+              tick={{ fontSize: 11 }}
+              minTickGap={28}
+            />
+            <YAxis
+              tickFormatter={(value: number) => `${Math.round(value * 100)}%`}
+              stroke="rgb(139 149 164)"
+              tick={{ fontSize: 11 }}
+              width={42}
+              domain={[0, 1]}
+            />
+            <Tooltip
+              contentStyle={{
+                background: 'rgba(11, 15, 20, 0.95)',
+                border: '1px solid rgb(58 70 84 / 0.4)',
+                borderRadius: 6,
+                fontSize: 11,
+                fontFamily: 'Geist Mono, monospace',
+              }}
+              labelStyle={{ color: 'rgb(229 231 235)' }}
+              itemStyle={{ color: 'rgb(229 231 235)' }}
+              formatter={(value: number, name: string) => [`${(value * 100).toFixed(1)}%`, name]}
+            />
+            {series.providers.map((provider, index) => (
+              <Area
+                key={provider}
+                type="monotone"
+                dataKey={provider}
+                stackId="1"
+                stroke={colorForProvider(provider, index)}
+                fill={colorForProvider(provider, index)}
+                fillOpacity={0.7}
+                strokeWidth={0.5}
+                isAnimationActive={false}
+              />
+            ))}
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2">
+        {series.providers.map((provider, index) => (
+          <div key={provider} className="flex items-center gap-2">
+            <span
+              className="h-2.5 w-2.5 rounded-sm"
+              style={{ background: colorForProvider(provider, index) }}
+            />
+            <span className="font-mono text-[11px] text-ink-700">{provider}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Indices(): JSX.Element {
   const [indices, setIndices] = useState<IndexResult[]>([]);
   const [histories, setHistories] = useState<Map<string, IndexHistory>>(new Map());
+  const [providerShare, setProviderShare] = useState<ProviderShareSeries | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [requestAttempt, setRequestAttempt] = useState(0);
@@ -357,6 +466,33 @@ export default function Indices(): JSX.Element {
         if (active) {
           setError(reason instanceof Error ? reason : new Error('Unable to load indices'));
           setLoading(false);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [requestAttempt]);
+
+  useEffect(() => {
+    let active = true;
+    const dates = iterateRecentDates(30).reverse();
+
+    void Promise.all(dates.map((date) => loadHistory(date).then((records) => ({ date, records }))))
+      .then((results) => {
+        if (!active) {
+          return;
+        }
+        const snapshots = results
+          .filter((entry): entry is { date: string; records: NonNullable<typeof entry.records> } => entry.records !== null);
+        if (snapshots.length === 0) {
+          return;
+        }
+        setProviderShare(buildProviderShareSeries(snapshots));
+      })
+      .catch(() => {
+        if (active) {
+          setProviderShare(null);
         }
       });
 
@@ -434,6 +570,17 @@ export default function Indices(): JSX.Element {
           published prices.
         </p>
       </header>
+
+      {providerShare !== null && providerShare.points.length > 1 && (
+        <section className="mb-12">
+          <GroupHeader
+            eyebrow="catalog composition"
+            title="Provider share over time"
+            description="Each provider's share of the catalog by unique-model count across the last 30 daily snapshots. The bands show who's expanding their footprint in the dataset and who's holding steady. Stacked to 100% — the y-axis is share, not absolute count."
+          />
+          <ProviderShareChart series={providerShare} />
+        </section>
+      )}
 
       {atpi !== undefined && (
         <section className="mb-12">

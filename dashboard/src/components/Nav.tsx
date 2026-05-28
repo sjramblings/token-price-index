@@ -13,6 +13,7 @@ const routes: NavRoute[] = [
   { to: "/indices", label: "Indices" },
   { to: "/compare", label: "Compare" },
   { to: "/pivot", label: "Pivot" },
+  { to: "/landscape", label: "Landscape" },
   { to: "/simulator", label: "Simulator" },
   { to: "/timeline", label: "Timeline" },
   { to: "/methodology", label: "Methodology" },
