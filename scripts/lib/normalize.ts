@@ -152,11 +152,33 @@ export function extractFamily(modelId: string): string {
   // a specific snapshot; the canonical family is what comes before.
   family = family.replace(/@.*$/, '');
 
-  // Bedrock versioned aliases. The existing rule handled `-v\d+:\d+$` only
-  // (e.g. `-v2:0`). The bare `-v\d+$` form (e.g. `claude-opus-4-6-v1`) shows
-  // up on the bedrock_converse provider records — same canonical family as
-  // the un-versioned form. Merge both into one regex.
-  family = family.replace(/-v\d+(:\d+)?$/, '');
+  // Bedrock versioned aliases — three narrowly-scoped rules to avoid eating
+  // canonical `-v\d+` that's part of the real model name (Codex P1 on this PR):
+  //   `deepseek-v3`           → must stay `deepseek-v3` (model version is v3)
+  //   `j2-mid-v1`             → must stay `j2-mid-v1`  (AI21 Jamba 2 v1)
+  //   `anthropic.claude-v1`   → after vendor-dot strip: `claude-v1` (canonical
+  //                              old Anthropic SKU; stripping would yield bare
+  //                              `claude` which is a family prefix, not a model)
+  //   `claude-instant-v1`     → canonical Anthropic SKU; keep as-is
+  //   `titan-embed-image-v1`  → canonical Amazon SKU; v1 is part of the name
+  //
+  // The patterns we DO want to strip are Bedrock cross-region inference-profile
+  // aliases that always sit on top of a version-numbered base family:
+  //   `claude-opus-4-6-v1`    → `claude-opus-4-6`  (Anthropic, digit base)
+  //   `claude-opus-4-7-v1`    → `claude-opus-4-7`
+  //   `nova-lite-v1`          → `nova-lite`        (Amazon Nova)
+  //   `nova-2-lite-v1`        → `nova-2-lite`
+  //   `…-v1:0` (tagged form)  → strip the alias entirely (was the prior rule)
+  //
+  // Rule 1: tagged Bedrock alias — full `-v\d+:\d+$` always strips
+  family = family.replace(/-v\d+:\d+$/, '');
+  // Rule 2: Anthropic Claude bare `-v\d+$` — only when there's at least one
+  // hyphen-separated digit segment before the `-v` (rules out `claude-v1`
+  // and `claude-instant-v1` which lack a numeric base)
+  family = family.replace(/^(claude(?:-[a-z]+)*-\d+(?:-\d+)*)-v\d+$/, '$1');
+  // Rule 3: Amazon Nova bare `-v\d+$` — explicit family-prefix scoping so we
+  // don't touch `titan-embed-image-v1` or other Amazon SKUs that keep v1
+  family = family.replace(/^(nova(?:-\d+)?-[a-z]+)-v\d+$/, '$1');
 
   family = family.replace(/-\d{8}$/, '');
   family = family.replace(/-\d{4}$/, '');
