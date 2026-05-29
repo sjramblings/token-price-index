@@ -27,7 +27,16 @@ function isNotFoundError(error: unknown): boolean {
   );
 }
 
-async function readRecords(path: string, requireNonEmpty: boolean): Promise<PriceRecord[]> {
+// `enforceFamilyShape` is true only for current.json — historical snapshots
+// predate the latest extractFamily rules and the family-shape guard would
+// false-positive on every legacy regional / @-suffix / -v1 family that the
+// snapshot was frozen with (Codex P1 on PR #24). Schema invariants still
+// run on history; only the shape guard is scoped out.
+async function readRecords(
+  path: string,
+  requireNonEmpty: boolean,
+  enforceFamilyShape: boolean,
+): Promise<PriceRecord[]> {
   const value = await readJson<unknown>(path);
   if (!Array.isArray(value) || (requireNonEmpty && value.length === 0)) {
     throw new Error(`${path} must contain a non-empty JSON array of price records`);
@@ -42,7 +51,7 @@ async function readRecords(path: string, requireNonEmpty: boolean): Promise<Pric
   }
 
   const records = value as PriceRecord[];
-  if (!validateAll(records).ok) {
+  if (!validateAll(records, { enforceFamilyShape }).ok) {
     throw new Error(`${path} contains invalid price records`);
   }
 
@@ -71,7 +80,8 @@ async function historyFiles(): Promise<string[]> {
 }
 
 async function main(): Promise<void> {
-  const current = await readRecords(CURRENT_PATH, true);
+  // current.json is freshly normalized — enforce the family-shape guard.
+  const current = await readRecords(CURRENT_PATH, true, true);
   const todayFile = `${todayISO()}.json`;
   const priorFile = (await historyFiles()).find((name: string): boolean => name !== todayFile);
 
@@ -90,7 +100,12 @@ async function main(): Promise<void> {
     process.exit(0);
   }
 
-  const prior = await readRecords(`${HISTORY_PATH}/${priorFile}`, false);
+  // History snapshots are frozen evidence of what the dataset looked like on
+  // that date — they predate the latest extractFamily rules and naturally
+  // contain pre-canonicalization family names (regional Bedrock prefixes,
+  // @-suffixes, etc.). Skip the family-shape guard; schema invariants still
+  // run. (Codex P1 on PR #24.)
+  const prior = await readRecords(`${HISTORY_PATH}/${priorFile}`, false, false);
   const currentByKey = new Map(
     current.map((record: PriceRecord): [string, PriceRecord] => [recordKey(record), record]),
   );
