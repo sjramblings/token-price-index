@@ -25,6 +25,52 @@ describe('extractFamily', () => {
     ['o3-0416', 'o3'],
     ['gpt-35-turbo', 'gpt-3.5-turbo'],
     ['gpt-35-turbo-16k', 'gpt-3.5-turbo-16k'],
+    // Bedrock cross-region inference profiles (regional prefix + vendor-dot)
+    ['eu.anthropic.claude-opus-4-7', 'claude-opus-4-7'],
+    ['us.anthropic.claude-opus-4-1', 'claude-opus-4-1'],
+    ['global.anthropic.claude-opus-4-5', 'claude-opus-4-5'],
+    ['au.anthropic.claude-opus-4-6-v1', 'claude-opus-4-6'],
+    ['apac.anthropic.claude-3-5-sonnet', 'claude-3-5-sonnet'],
+    // Bedrock bare -v\d+ versioned aliases (no :0 suffix) — narrowly scoped:
+    // Anthropic Claude with a digit-numbered base, and Amazon Nova explicitly.
+    ['claude-opus-4-6-v1', 'claude-opus-4-6'],
+    ['claude-opus-4-7-v2', 'claude-opus-4-7'],
+    ['claude-opus-4-v1', 'claude-opus-4'],
+    ['nova-lite-v1', 'nova-lite'],
+    ['nova-micro-v1', 'nova-micro'],
+    ['nova-pro-v1', 'nova-pro'],
+    ['nova-premier-v1', 'nova-premier'],
+    ['nova-2-lite-v1', 'nova-2-lite'],
+    // Negative cases (Codex P1) — canonical `-v\d+` suffixes that MUST be
+    // preserved. Stripping them would collapse distinct upstream SKUs into
+    // wrong families (e.g. titan-embed-image-v1 vs a hypothetical -v2 in
+    // the future, or claude-v1 → bare "claude" which is a family prefix).
+    ['titan-embed-image-v1', 'titan-embed-image-v1'],
+    ['titan-text-express-v1', 'titan-text-express-v1'],
+    ['titan-text-lite-v1', 'titan-text-lite-v1'],
+    ['titan-embed-text-v1', 'titan-embed-text-v1'],
+    ['claude-v1', 'claude-v1'],
+    ['claude-instant-v1', 'claude-instant-v1'],
+    ['j2-mid-v1', 'j2-mid-v1'],
+    ['j2-ultra-v1', 'j2-ultra-v1'],
+    ['deepseek-v3', 'deepseek-v3'],
+    ['azure_ai/deepseek-v3', 'deepseek-v3'],
+    // LiteLLM @-suffix snapshot pins
+    ['claude-opus-4-1@20250805', 'claude-opus-4-1'],
+    ['claude-opus-4-7@default', 'claude-opus-4-7'],
+    ['claude-opus-4@20250514', 'claude-opus-4'],
+    // Databricks-rebranded Anthropic SKUs
+    ['databricks-claude-opus-4', 'claude-opus-4'],
+    ['databricks-claude-opus-4-1', 'claude-opus-4-1'],
+    ['databricks-claude-opus-4-5', 'claude-opus-4-5'],
+    // Dashed anthropic- re-export form
+    ['anthropic-claude-3-opus', 'claude-3-opus'],
+    ['anthropic-claude-3.5-sonnet', 'claude-3-5-sonnet'],
+    ['anthropic-claude-3.5-haiku', 'claude-3-5-haiku'],
+    ['anthropic-claude-3.7-sonnet', 'claude-3-7-sonnet'],
+    // Stacked: regional prefix + Bedrock versioned alias collapses to canonical
+    ['eu.anthropic.claude-opus-4-6-v1', 'claude-opus-4-6'],
+    ['global.anthropic.claude-opus-4-7-v1', 'claude-opus-4-7'],
   ];
 
   test.each(familyCases)('%s maps to %s', (modelId: string, expected: string) => {
@@ -54,6 +100,73 @@ describe('extractFamily', () => {
   test('does not eat dotted suffixes that look like vendors but are not — ollama/llama3.1', () => {
     expect(extractFamily('ollama/llama3.1')).not.toBe('1');
     expect(extractFamily('ollama/llama3.1').length).toBeGreaterThan(1);
+  });
+
+  // Convergence guarantees — every aliasing form of the same model collapses
+  // to one family. Before this change the dashboard counted five separate
+  // "claude-opus-4-7" families because of LiteLLM's identifier proliferation.
+  test('every Claude Opus 4.7 alias converges to claude-opus-4-7', () => {
+    const expected = 'claude-opus-4-7';
+    const variants = [
+      'claude-opus-4-7',
+      'claude-opus-4-7@default',
+      'claude-opus-4-7@20260416',
+      'anthropic/claude-opus-4.7',
+      'openrouter/anthropic/claude-opus-4.7',
+      'bedrock/anthropic.claude-opus-4-7-v1:0',
+      'anthropic.claude-opus-4-7',
+      'eu.anthropic.claude-opus-4-7',
+      'us.anthropic.claude-opus-4-7',
+      'global.anthropic.claude-opus-4-7',
+      'au.anthropic.claude-opus-4-7',
+      'eu.anthropic.claude-opus-4-7-v1',
+      'databricks-claude-opus-4-7',
+    ];
+    for (const variant of variants) {
+      expect(extractFamily(variant)).toBe(expected);
+    }
+  });
+
+  // The Bedrock '-v\d+' bare suffix is narrowly scoped per Codex P1:
+  // Anthropic Claude (with a numeric base) and Amazon Nova strip it; bare
+  // `claude-v1`, `claude-instant-v1`, `titan-embed-image-v1`, `j2-mid-v1`,
+  // `deepseek-v3` all preserve. The '-v\d+:\d+' tagged form always strips.
+  test('-v\\d+ and -v\\d+:\\d+ both strip on Claude with numeric base', () => {
+    expect(extractFamily('claude-opus-4-6-v1')).toBe('claude-opus-4-6');
+    expect(extractFamily('claude-opus-4-6-v1:0')).toBe('claude-opus-4-6');
+    expect(extractFamily('claude-opus-4-6-v2')).toBe('claude-opus-4-6');
+    expect(extractFamily('claude-opus-4-6-v2:1')).toBe('claude-opus-4-6');
+  });
+
+  test('-v\\d+ bare preserves canonical SKUs (Codex P1)', () => {
+    // Amazon Titan: v1 is part of the official model name
+    expect(extractFamily('titan-embed-image-v1')).toBe('titan-embed-image-v1');
+    expect(extractFamily('titan-text-express-v1')).toBe('titan-text-express-v1');
+    // Old Anthropic SKUs: claude-v1 / claude-instant-v1 — v1 IS the version
+    expect(extractFamily('claude-v1')).toBe('claude-v1');
+    expect(extractFamily('claude-instant-v1')).toBe('claude-instant-v1');
+    // AI21 Jamba 2: -v1 is part of the canonical model name
+    expect(extractFamily('j2-mid-v1')).toBe('j2-mid-v1');
+    // DeepSeek: version IS in the family name (deepseek-v3)
+    expect(extractFamily('deepseek-v3')).toBe('deepseek-v3');
+    expect(extractFamily('azure_ai/deepseek-v3')).toBe('deepseek-v3');
+  });
+
+  test('-v\\d+ bare strips on Amazon Nova family', () => {
+    expect(extractFamily('nova-lite-v1')).toBe('nova-lite');
+    expect(extractFamily('nova-micro-v1')).toBe('nova-micro');
+    expect(extractFamily('nova-pro-v1')).toBe('nova-pro');
+    expect(extractFamily('nova-2-lite-v1')).toBe('nova-2-lite');
+  });
+
+  // '@' suffix strip must not leak into model-id bodies that contain '@'
+  // elsewhere. (None do today across the four upstream sources, but the
+  // regex is `@.*$` so as long as the '@' is followed by suffix-y content
+  // this remains a clean prefix-of-tail strip.)
+  test('@-suffix strip removes everything from @ to end', () => {
+    expect(extractFamily('claude-opus-4-1@20250805')).toBe('claude-opus-4-1');
+    expect(extractFamily('claude-opus-4-7@default')).toBe('claude-opus-4-7');
+    expect(extractFamily('gpt-4o@stable')).toBe('gpt-4o');
   });
 });
 

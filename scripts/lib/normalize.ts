@@ -120,6 +120,17 @@ export function extractFamily(modelId: string): string {
     }
   }
 
+  // Databricks ships Anthropic SKUs under a `databricks-` re-brand prefix
+  // (e.g. `databricks-claude-opus-4-1`). The canonical family is the same as
+  // the un-rebranded form, so strip the prefix before the vendor-dot pass.
+  family = family.replace(/^databricks-/, '');
+
+  // Bedrock cross-region inference profiles prepend an AWS regional segment
+  // (`eu.anthropic.X`, `us.anthropic.X`, `global.anthropic.X`, etc.) on top of
+  // the vendor-dot form. Strip the regional segment first so the existing
+  // vendor-dot regex below catches `anthropic.` cleanly.
+  family = family.replace(/^(eu|us|global|au|apac|ca|me|sa)\./, '');
+
   const slashIndex = family.indexOf('/');
   if (slashIndex > 0 && !family.slice(0, slashIndex).includes('.')) {
     family = family.slice(slashIndex + 1);
@@ -129,7 +140,46 @@ export function extractFamily(modelId: string): string {
     /^(anthropic|amazon|meta|mistral|mistralai|cohere|ai21|stability|deepseek|writer|openai|google|qwen|microsoft|huggingface|z-ai|zhipu)\./,
     '',
   );
+
+  // Dashed Anthropic re-export form (`anthropic-claude-3-opus`,
+  // `anthropic-claude-3.5-sonnet`) collapses to the canonical claude-* family.
+  // Lookahead constraint keeps this from over-matching hypothetical
+  // `anthropic-` prefixes on non-claude SKUs.
+  family = family.replace(/^anthropic-(?=claude-)/, '');
+
+  // LiteLLM aliasing variants — `claude-opus-4-1@20250805`,
+  // `claude-opus-4-7@default`. The `@...` suffix is upstream's way of pinning
+  // a specific snapshot; the canonical family is what comes before.
+  family = family.replace(/@.*$/, '');
+
+  // Bedrock versioned aliases — three narrowly-scoped rules to avoid eating
+  // canonical `-v\d+` that's part of the real model name (Codex P1 on this PR):
+  //   `deepseek-v3`           → must stay `deepseek-v3` (model version is v3)
+  //   `j2-mid-v1`             → must stay `j2-mid-v1`  (AI21 Jamba 2 v1)
+  //   `anthropic.claude-v1`   → after vendor-dot strip: `claude-v1` (canonical
+  //                              old Anthropic SKU; stripping would yield bare
+  //                              `claude` which is a family prefix, not a model)
+  //   `claude-instant-v1`     → canonical Anthropic SKU; keep as-is
+  //   `titan-embed-image-v1`  → canonical Amazon SKU; v1 is part of the name
+  //
+  // The patterns we DO want to strip are Bedrock cross-region inference-profile
+  // aliases that always sit on top of a version-numbered base family:
+  //   `claude-opus-4-6-v1`    → `claude-opus-4-6`  (Anthropic, digit base)
+  //   `claude-opus-4-7-v1`    → `claude-opus-4-7`
+  //   `nova-lite-v1`          → `nova-lite`        (Amazon Nova)
+  //   `nova-2-lite-v1`        → `nova-2-lite`
+  //   `…-v1:0` (tagged form)  → strip the alias entirely (was the prior rule)
+  //
+  // Rule 1: tagged Bedrock alias — full `-v\d+:\d+$` always strips
   family = family.replace(/-v\d+:\d+$/, '');
+  // Rule 2: Anthropic Claude bare `-v\d+$` — only when there's at least one
+  // hyphen-separated digit segment before the `-v` (rules out `claude-v1`
+  // and `claude-instant-v1` which lack a numeric base)
+  family = family.replace(/^(claude(?:-[a-z]+)*-\d+(?:-\d+)*)-v\d+$/, '$1');
+  // Rule 3: Amazon Nova bare `-v\d+$` — explicit family-prefix scoping so we
+  // don't touch `titan-embed-image-v1` or other Amazon SKUs that keep v1
+  family = family.replace(/^(nova(?:-\d+)?-[a-z]+)-v\d+$/, '$1');
+
   family = family.replace(/-\d{8}$/, '');
   family = family.replace(/-\d{4}$/, '');
   family = family.replace(/^gpt-35-/, 'gpt-3.5-');
