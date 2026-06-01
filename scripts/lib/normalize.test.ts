@@ -71,6 +71,23 @@ describe('extractFamily', () => {
     // Stacked: regional prefix + Bedrock versioned alias collapses to canonical
     ['eu.anthropic.claude-opus-4-6-v1', 'claude-opus-4-6'],
     ['global.anthropic.claude-opus-4-7-v1', 'claude-opus-4-7'],
+    // Databricks-hosted SKUs carrying the `databricks/` provider path AND the
+    // inner `databricks-` rebrand prefix — the slash strip must run before the
+    // dash strip so both peel off.
+    ['databricks/databricks-claude-opus-4-1', 'claude-opus-4-1'],
+    ['databricks/databricks-claude-sonnet-4-5', 'claude-sonnet-4-5'],
+    ['databricks/databricks-gpt-5', 'gpt-5'],
+    ['databricks/databricks-gpt-5-mini', 'gpt-5-mini'],
+    ['databricks/databricks-gemini-2-5-pro', 'gemini-2-5-pro'],
+    ['databricks/databricks-gemma-3-12b', 'gemma-3-12b'],
+    ['databricks/databricks-bge-large-en', 'bge-large-en'],
+    // Cloudflare Workers AI: `cloudflare/@cf/<org>/<model>` and the HuggingFace
+    // mirror `cloudflare/@hf/<org>/<model>`. The `@cf/`/`@hf/` segment must be
+    // peeled before the `@.*$` snapshot rule, then the org segment collapses.
+    ['cloudflare/@cf/meta/llama-2-7b-chat-fp16', 'llama-2-7b-chat-fp16'],
+    ['cloudflare/@cf/meta/llama-2-7b-chat-int8', 'llama-2-7b-chat-int8'],
+    ['cloudflare/@cf/mistral/mistral-7b-instruct-v0.1', 'mistral-7b-instruct-v0.1'],
+    ['cloudflare/@hf/thebloke/codellama-7b-instruct-awq', 'codellama-7b-instruct-awq'],
   ];
 
   test.each(familyCases)('%s maps to %s', (modelId: string, expected: string) => {
