@@ -186,7 +186,27 @@ export function findFamilyNoise(family: string): FamilyNoisePattern | null {
 export function extractFamily(modelId: string): string {
   let family = modelId.toLowerCase();
 
-  const substratePrefixes = ['bedrock/', 'azure/', 'vertex_ai/', 'openrouter/'];
+  // Provider-path prefixes stripped repeatedly, BEFORE the dash-prefix and
+  // @-snapshot rules below. Ordering matters:
+  //   - `databricks/databricks-claude-opus-4-1`: stripping `databricks/` here
+  //     leaves `databricks-claude-opus-4-1`, which the `^databricks-` rule
+  //     (further down) then canonicalizes. Without this, the generic slash
+  //     collapse ran AFTER the dash strip and the inner prefix survived.
+  //   - `cloudflare/@cf/meta/llama-2-7b-chat-fp16` and `.../@hf/thebloke/...`:
+  //     stripping `cloudflare/` then `@cf/` / `@hf/` here means the `@.*$`
+  //     snapshot rule never sees the `@` (it would otherwise nuke the family
+  //     to empty and fall back to the raw id). The slash collapse then drops
+  //     the remaining org segment (`meta/`, `thebloke/`).
+  const substratePrefixes = [
+    'bedrock/',
+    'azure/',
+    'vertex_ai/',
+    'openrouter/',
+    'databricks/',
+    'cloudflare/',
+    '@cf/',
+    '@hf/',
+  ];
   let changed = true;
   while (changed) {
     changed = false;
