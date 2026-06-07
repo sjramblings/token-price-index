@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-06-06T18:02:15.784Z",
+  "computed_at": "2026-06-07T18:00:10.304Z",
   "data_source": "data/current.json",
   "member_count": 19,
   "members_resolved": 17,
@@ -26,7 +26,7 @@
         "context_window": 300000,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260605122051/eu-west-1/index.json",
-        "fetched_at": "2026-06-06T18:02:13.010Z"
+        "fetched_at": "2026-06-07T18:00:08.705Z"
       },
       "selector_matched": 0,
       "blended_per_million": 1.7480000000000002,
@@ -47,7 +47,7 @@
         "context_window": 300000,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260605122051/eu-west-1/index.json",
-        "fetched_at": "2026-06-06T18:02:13.010Z"
+        "fetched_at": "2026-06-07T18:00:08.705Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.13109999999999997,
@@ -68,7 +68,7 @@
         "context_window": 128000,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260605122051/eu-west-1/index.json",
-        "fetched_at": "2026-06-06T18:02:13.010Z"
+        "fetched_at": "2026-06-07T18:00:08.705Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.076,
@@ -89,7 +89,7 @@
         "context_window": 262144,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260605122051/eu-west-1/index.json",
-        "fetched_at": "2026-06-06T18:02:13.010Z"
+        "fetched_at": "2026-06-07T18:00:08.705Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.96,
@@ -128,7 +128,7 @@
         "context_window": 131072,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260605122051/eu-west-1/index.json",
-        "fetched_at": "2026-06-06T18:02:13.010Z"
+        "fetched_at": "2026-06-07T18:00:08.705Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.16999999999999998,
@@ -149,7 +149,7 @@
         "context_window": 163840,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260605122051/eu-west-1/index.json",
-        "fetched_at": "2026-06-06T18:02:13.010Z"
+        "fetched_at": "2026-06-07T18:00:08.705Z"
       },
       "selector_matched": 0,
       "blended_per_million": 1.1840000000000002,
@@ -170,7 +170,7 @@
         "context_window": 202752,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260605122051/eu-west-1/index.json",
-        "fetched_at": "2026-06-06T18:02:13.010Z"
+        "fetched_at": "2026-06-07T18:00:08.705Z"
       },
       "selector_matched": 0,
       "blended_per_million": 1.296,
@@ -191,7 +191,7 @@
         "context_window": 262144,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260605122051/eu-west-1/index.json",
-        "fetched_at": "2026-06-06T18:02:13.010Z"
+        "fetched_at": "2026-06-07T18:00:08.705Z"
       },
       "selector_matched": 0,
       "blended_per_million": 1.404,
@@ -212,7 +212,7 @@
         "context_window": 131072,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260605122051/eu-west-1/index.json",
-        "fetched_at": "2026-06-06T18:02:13.010Z"
+        "fetched_at": "2026-06-07T18:00:08.705Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.33599999999999997,
@@ -233,7 +233,7 @@
         "context_window": 131072,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260605122051/eu-west-1/index.json",
-        "fetched_at": "2026-06-06T18:02:13.010Z"
+        "fetched_at": "2026-06-07T18:00:08.705Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.33599999999999997,
@@ -254,7 +254,7 @@
         "context_window": 1047576,
         "source": "azure-retail",
         "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
-        "fetched_at": "2026-06-06T18:02:15.142Z"
+        "fetched_at": "2026-06-07T18:00:09.665Z"
       },
       "selector_matched": 0,
       "blended_per_million": 3.94,
@@ -269,17 +269,17 @@
         "hyperscaler": "azure",
         "region": "westeurope",
         "input_per_1k": 0.000528,
-        "output_per_1k": 0.0016,
+        "output_per_1k": 0.00176,
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 1047576,
         "source": "azure-retail",
         "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
-        "fetched_at": "2026-06-06T18:02:15.142Z"
+        "fetched_at": "2026-06-07T18:00:09.665Z"
       },
       "selector_matched": 0,
-      "blended_per_million": 0.8495999999999999,
-      "ln_blended": -0.16298962849446277
+      "blended_per_million": 0.8976,
+      "ln_blended": -0.10803074421370523
     },
     {
       "label": "GPT-4.1 Nano",
@@ -296,7 +296,7 @@
         "context_window": 1047576,
         "source": "azure-retail",
         "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
-        "fetched_at": "2026-06-06T18:02:15.142Z"
+        "fetched_at": "2026-06-07T18:00:09.665Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.20900000000000002,
@@ -310,18 +310,18 @@
         "family": "gpt-4o",
         "hyperscaler": "azure",
         "region": "westeurope",
-        "input_per_1k": 0.00275,
+        "input_per_1k": 0.0025,
         "output_per_1k": 0.011,
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 128000,
         "source": "azure-retail",
         "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
-        "fetched_at": "2026-06-06T18:02:15.142Z"
+        "fetched_at": "2026-06-07T18:00:09.665Z"
       },
       "selector_matched": 0,
-      "blended_per_million": 5.225,
-      "ln_blended": 1.6534547978508747,
+      "blended_per_million": 5.05,
+      "ln_blended": 1.6193882432872684,
       "note": "Azure-retail has two gpt-4o SKUs in westeurope (0806 output-data-zone and 1120 input-data-zone). Pinned to the newer 1120 SKU for determinism — without the pin the EU index resolves to the older, more expensive 0806 record by record order."
     },
     {
@@ -339,7 +339,7 @@
         "context_window": 128000,
         "source": "azure-retail",
         "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
-        "fetched_at": "2026-06-06T18:02:15.142Z"
+        "fetched_at": "2026-06-07T18:00:09.665Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.3135,
@@ -360,7 +360,7 @@
         "context_window": 200000,
         "source": "azure-retail",
         "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
-        "fetched_at": "2026-06-06T18:02:15.142Z"
+        "fetched_at": "2026-06-07T18:00:09.665Z"
       },
       "selector_matched": 0,
       "blended_per_million": 29.549999999999997,
@@ -375,19 +375,19 @@
         "hyperscaler": "azure",
         "region": "westeurope",
         "input_per_1k": 0.0022,
-        "output_per_1k": 0.008,
+        "output_per_1k": 0.0088,
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 200000,
         "source": "azure-retail",
         "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
-        "fetched_at": "2026-06-06T18:02:15.142Z"
+        "fetched_at": "2026-06-07T18:00:09.665Z"
       },
       "selector_matched": 0,
-      "blended_per_million": 3.94,
-      "ln_blended": 1.3711807233098425
+      "blended_per_million": 4.18,
+      "ln_blended": 1.430311246536665
     }
   ],
-  "geometric_mean_usd_per_million": 0.8691858244826001,
-  "arithmetic_mean_usd_per_million": 3.039305882352941
+  "geometric_mean_usd_per_million": 0.8732869239837345,
+  "arithmetic_mean_usd_per_million": 3.0459529411764703
 }

@@ -5,21 +5,35 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-06-06T18:02:15.575Z",
+  "computed_at": "2026-06-07T18:00:10.098Z",
   "data_source": "data/current.json",
   "member_count": 16,
-  "members_resolved": 4,
+  "members_resolved": 6,
   "members_with_invalid_price": 0,
   "members": [
     {
       "label": "GPT-5.5",
-      "resolved": null,
-      "selector_matched": -1,
-      "blended_per_million": null,
-      "ln_blended": null,
+      "resolved": {
+        "provider": "bedrock_mantle",
+        "model_id": "bedrock_mantle/openai.gpt-5.5",
+        "family": "gpt-5.5",
+        "hyperscaler": "aws",
+        "region": null,
+        "input_per_1k": 0.0055,
+        "output_per_1k": 0.033,
+        "cached_input_per_1k": 0.00055,
+        "image_per_1k": null,
+        "context_window": 272000,
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
+        "fetched_at": "2026-06-07"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 13.75,
+      "ln_blended": 2.6210388241125804,
       "published_blended_per_million": 12.5,
-      "note": "Not available on Bedrock — OpenAI exclusive to Azure on cloud channels. Expected unresolved.",
-      "excluded_reason": "unresolved"
+      "divergence_pct": 10,
+      "note": "Not available on Bedrock — OpenAI exclusive to Azure on cloud channels. Expected unresolved."
     },
     {
       "label": "Claude Opus 4.7",
@@ -36,7 +50,7 @@
         "context_window": 1000000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-06-06"
+        "fetched_at": "2026-06-07"
       },
       "selector_matched": 0,
       "blended_per_million": 11,
@@ -59,7 +73,7 @@
         "context_window": 1000000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-06-06"
+        "fetched_at": "2026-06-07"
       },
       "selector_matched": 0,
       "blended_per_million": 6.6,
@@ -69,13 +83,27 @@
     },
     {
       "label": "GPT-5.4",
-      "resolved": null,
-      "selector_matched": -1,
-      "blended_per_million": null,
-      "ln_blended": null,
+      "resolved": {
+        "provider": "bedrock_mantle",
+        "model_id": "bedrock_mantle/openai.gpt-5.4",
+        "family": "gpt-5.4",
+        "hyperscaler": "aws",
+        "region": null,
+        "input_per_1k": 0.00275,
+        "output_per_1k": 0.0165,
+        "cached_input_per_1k": 0.000275,
+        "image_per_1k": null,
+        "context_window": 272000,
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
+        "fetched_at": "2026-06-07"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 6.875,
+      "ln_blended": 1.927891643552635,
       "published_blended_per_million": 6.25,
-      "note": "Not available on Bedrock. Expected unresolved.",
-      "excluded_reason": "unresolved"
+      "divergence_pct": 10,
+      "note": "Not available on Bedrock. Expected unresolved."
     },
     {
       "label": "Gemini 2.5 Pro",
@@ -122,7 +150,7 @@
         "context_window": 200000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-06-06"
+        "fetched_at": "2026-06-07"
       },
       "selector_matched": 0,
       "blended_per_million": 2.6399999999999997,
@@ -185,7 +213,7 @@
         "context_window": 262144,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260605122051/us-east-1/index.json",
-        "fetched_at": "2026-06-06T18:02:13.010Z"
+        "fetched_at": "2026-06-07T18:00:08.705Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.7999999999999999,
@@ -224,6 +252,6 @@
       "excluded_reason": "unresolved"
     }
   ],
-  "geometric_mean_usd_per_million": 3.5189057398478094,
-  "arithmetic_mean_usd_per_million": 5.260000000000001
+  "geometric_mean_usd_per_million": 4.937809404945441,
+  "arithmetic_mean_usd_per_million": 6.944166666666667
 }
