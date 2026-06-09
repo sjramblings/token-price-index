@@ -4,7 +4,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-06-08T19:17:23.883Z",
+  "computed_at": "2026-06-09T19:10:21.799Z",
   "data_source": "data/current.json",
   "member_count": 16,
   "members_resolved": 16,
@@ -25,7 +25,7 @@
         "context_window": 1050000,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-06-08"
+        "fetched_at": "2026-06-09"
       },
       "selector_matched": 0,
       "blended_per_million": 12.5,
@@ -48,7 +48,7 @@
         "context_window": 1000000,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-06-08"
+        "fetched_at": "2026-06-09"
       },
       "selector_matched": 0,
       "blended_per_million": 11,
@@ -71,7 +71,7 @@
         "context_window": 1000000,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-06-08"
+        "fetched_at": "2026-06-09"
       },
       "selector_matched": 0,
       "blended_per_million": 6.6,
@@ -94,7 +94,7 @@
         "context_window": 1050000,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-06-08"
+        "fetched_at": "2026-06-09"
       },
       "selector_matched": 0,
       "blended_per_million": 6.25,
@@ -117,7 +117,7 @@
         "context_window": 1000000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-06-08"
+        "fetched_at": "2026-06-09"
       },
       "selector_matched": 0,
       "blended_per_million": 3.875,
@@ -140,7 +140,7 @@
         "context_window": 1048576,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-06-08"
+        "fetched_at": "2026-06-09"
       },
       "selector_matched": 0,
       "blended_per_million": 1.25,
@@ -164,7 +164,7 @@
         "context_window": 202752,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-06-08"
+        "fetched_at": "2026-06-09"
       },
       "selector_matched": 0,
       "blended_per_million": 1.6099999999999999,
@@ -187,7 +187,7 @@
         "context_window": 200000,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-06-08"
+        "fetched_at": "2026-06-09"
       },
       "selector_matched": 0,
       "blended_per_million": 2.2,
@@ -210,7 +210,7 @@
         "context_window": 400000,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-06-08"
+        "fetched_at": "2026-06-09"
       },
       "selector_matched": 0,
       "blended_per_million": 1.8750000000000002,
@@ -233,7 +233,7 @@
         "context_window": 262144,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-06-08"
+        "fetched_at": "2026-06-09"
       },
       "selector_matched": 0,
       "blended_per_million": 1.8649999999999998,
@@ -256,7 +256,7 @@
         "context_window": 1000000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-06-08"
+        "fetched_at": "2026-06-09"
       },
       "selector_matched": 0,
       "blended_per_million": 1.625,
@@ -279,7 +279,7 @@
         "context_window": 1000000,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-06-08"
+        "fetched_at": "2026-06-09"
       },
       "selector_matched": 0,
       "blended_per_million": 0.41600000000000004,
@@ -303,7 +303,7 @@
         "context_window": 262144,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-06-08"
+        "fetched_at": "2026-06-09"
       },
       "selector_matched": 0,
       "blended_per_million": 0.7999999999999999,
@@ -320,20 +320,20 @@
         "family": "minimax-m2.7",
         "hyperscaler": "aggregator",
         "region": null,
-        "input_per_1k": 0.000279,
-        "output_per_1k": 0.0012,
+        "input_per_1k": 0.00027,
+        "output_per_1k": 0.00108,
         "cached_input_per_1k": null,
         "image_per_1k": null,
-        "context_window": 196608,
+        "context_window": 204800,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-06-08"
+        "fetched_at": "2026-06-09"
       },
       "selector_matched": 0,
-      "blended_per_million": 0.5553,
-      "ln_blended": -0.5882467707345755,
+      "blended_per_million": 0.513,
+      "ln_blended": -0.6674794338113675,
       "published_blended_per_million": 0.57,
-      "divergence_pct": -2.5789473684210416
+      "divergence_pct": -9.999999999999991
     },
     {
       "label": "GPT-5.4 Nano",
@@ -350,7 +350,7 @@
         "context_window": 400000,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-06-08"
+        "fetched_at": "2026-06-09"
       },
       "selector_matched": 0,
       "blended_per_million": 0.515,
@@ -373,7 +373,7 @@
         "context_window": 1048576,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-06-08"
+        "fetched_at": "2026-06-09"
       },
       "selector_matched": 0,
       "blended_per_million": 0.12779,
@@ -382,8 +382,8 @@
       "divergence_pct": -29.785714285714292
     }
   ],
-  "geometric_mean_usd_per_million": 1.7347288180140392,
-  "arithmetic_mean_usd_per_million": 3.316505625,
+  "geometric_mean_usd_per_million": 1.7261596040790415,
+  "arithmetic_mean_usd_per_million": 3.3138618749999997,
   "published_value_usd_per_million": 2.08,
-  "index_divergence_pct": -16.599576057017348
+  "index_divergence_pct": -17.011557496199934
 }
