@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-06-09T19:10:22.316Z",
+  "computed_at": "2026-06-10T19:30:10.568Z",
   "member_count": 16,
   "series": [
     {
@@ -105,10 +105,17 @@
       "arithmetic_mean_usd_per_million": 4.845000000000001,
       "members_resolved": 9,
       "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-06-10",
+      "geometric_mean_usd_per_million": 2.96993815791972,
+      "arithmetic_mean_usd_per_million": 4.845000000000001,
+      "members_resolved": 9,
+      "members_with_invalid_price": 0
     }
   ],
   "earliest_date": "2026-05-25",
-  "latest_date": "2026-06-09",
+  "latest_date": "2026-06-10",
   "earliest_value": 3.1477916390444767,
   "latest_value": 2.96993815791972,
   "pct_change_earliest_to_latest": -5.650103358770747,
