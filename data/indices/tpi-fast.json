@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-06-11T19:30:20.304Z",
+  "computed_at": "2026-06-12T19:00:48.553Z",
   "data_source": "data/current.json",
   "member_count": 4,
   "members_resolved": 4,
@@ -26,7 +26,7 @@
         "context_window": 262144,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-06-11"
+        "fetched_at": "2026-06-12"
       },
       "selector_matched": 0,
       "blended_per_million": 0.7999999999999999,
@@ -43,20 +43,20 @@
         "family": "minimax-m2.7",
         "hyperscaler": "aggregator",
         "region": null,
-        "input_per_1k": 0.00027,
-        "output_per_1k": 0.00108,
+        "input_per_1k": 0.00025,
+        "output_per_1k": 0.001,
         "cached_input_per_1k": null,
         "image_per_1k": null,
-        "context_window": 204800,
+        "context_window": 196608,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-06-11"
+        "fetched_at": "2026-06-12"
       },
       "selector_matched": 0,
-      "blended_per_million": 0.513,
-      "ln_blended": -0.6674794338113675,
+      "blended_per_million": 0.475,
+      "ln_blended": -0.7444404749474959,
       "published_blended_per_million": 0.57,
-      "divergence_pct": -9.999999999999991
+      "divergence_pct": -16.666666666666664
     },
     {
       "label": "GPT-5.4 Nano",
@@ -73,7 +73,7 @@
         "context_window": 400000,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-06-11"
+        "fetched_at": "2026-06-12"
       },
       "selector_matched": 0,
       "blended_per_million": 0.515,
@@ -89,22 +89,22 @@
         "family": "deepseek-v4-flash",
         "hyperscaler": "aggregator",
         "region": null,
-        "input_per_1k": 0.0000983,
-        "output_per_1k": 0.0001966,
+        "input_per_1k": 0.00009800000000000001,
+        "output_per_1k": 0.00019600000000000002,
         "cached_input_per_1k": null,
         "image_per_1k": null,
-        "context_window": 1048576,
+        "context_window": 1048575,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-06-11"
+        "fetched_at": "2026-06-12"
       },
       "selector_matched": 0,
-      "blended_per_million": 0.12779,
-      "ln_blended": -2.057366987361525,
+      "blended_per_million": 0.12739999999999999,
+      "ln_blended": -2.060423535844074,
       "published_blended_per_million": 0.182,
-      "divergence_pct": -29.785714285714292
+      "divergence_pct": -30.000000000000004
     }
   ],
-  "geometric_mean_usd_per_million": 0.40539450981154024,
-  "arithmetic_mean_usd_per_million": 0.4889475
+  "geometric_mean_usd_per_million": 0.39736541330274827,
+  "arithmetic_mean_usd_per_million": 0.47935
 }
