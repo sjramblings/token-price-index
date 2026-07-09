@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-07-08T18:14:04.227Z",
+  "computed_at": "2026-07-09T18:46:45.059Z",
   "data_source": "data/current.json",
   "member_count": 4,
   "members_resolved": 4,
@@ -26,7 +26,7 @@
         "context_window": 262144,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-07-08"
+        "fetched_at": "2026-07-09"
       },
       "selector_matched": 0,
       "blended_per_million": 0.7999999999999999,
@@ -43,20 +43,20 @@
         "family": "minimax-m2.7",
         "hyperscaler": "aggregator",
         "region": null,
-        "input_per_1k": 0.00017999999999999998,
-        "output_per_1k": 0.0007199999999999999,
+        "input_per_1k": 0.00023999999999999998,
+        "output_per_1k": 0.0009599999999999999,
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 196608,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-07-08"
+        "fetched_at": "2026-07-09"
       },
       "selector_matched": 0,
-      "blended_per_million": 0.34199999999999997,
-      "ln_blended": -1.072944541919532,
+      "blended_per_million": 0.45599999999999996,
+      "ln_blended": -0.785262469467751,
       "published_blended_per_million": 0.57,
-      "divergence_pct": -40
+      "divergence_pct": -20
     },
     {
       "label": "GPT-5.4 Nano",
@@ -73,7 +73,7 @@
         "context_window": 400000,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-07-08"
+        "fetched_at": "2026-07-09"
       },
       "selector_matched": 0,
       "blended_per_million": 0.515,
@@ -96,7 +96,7 @@
         "context_window": 1048576,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-07-08"
+        "fetched_at": "2026-07-09"
       },
       "selector_matched": 0,
       "blended_per_million": 0.11699999999999999,
@@ -105,6 +105,6 @@
       "divergence_pct": -35.714285714285715
     }
   ],
-  "geometric_mean_usd_per_million": 0.3583251538069998,
-  "arithmetic_mean_usd_per_million": 0.4435
+  "geometric_mean_usd_per_million": 0.38504543609704794,
+  "arithmetic_mean_usd_per_million": 0.472
 }
