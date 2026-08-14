@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-08-13T17:52:33.189Z",
+  "computed_at": "2026-08-14T17:46:04.985Z",
   "data_source": "data/current.json",
   "member_count": 8,
   "members_resolved": 8,
@@ -26,7 +26,7 @@
         "context_window": 1000000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-08-13"
+        "fetched_at": "2026-08-14"
       },
       "selector_matched": 0,
       "blended_per_million": 3.875,
@@ -49,7 +49,7 @@
         "context_window": 1048576,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-08-13"
+        "fetched_at": "2026-08-14"
       },
       "selector_matched": 0,
       "blended_per_million": 1.25,
@@ -66,20 +66,20 @@
         "family": "glm-5.1",
         "hyperscaler": "aggregator",
         "region": null,
-        "input_per_1k": 0.0009519999999999999,
-        "output_per_1k": 0.002992,
+        "input_per_1k": 0.0014,
+        "output_per_1k": 0.0044,
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 202752,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-08-13"
+        "fetched_at": "2026-08-14"
       },
       "selector_matched": 0,
-      "blended_per_million": 1.5639999999999998,
-      "ln_blended": 0.4472466421231192,
+      "blended_per_million": 2.3,
+      "ln_blended": 0.8329091229351039,
       "published_blended_per_million": 2.3,
-      "divergence_pct": -32
+      "divergence_pct": 0
     },
     {
       "label": "Claude Haiku 4.5",
@@ -96,7 +96,7 @@
         "context_window": 200000,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-08-13"
+        "fetched_at": "2026-08-14"
       },
       "selector_matched": 0,
       "blended_per_million": 2.2,
@@ -119,7 +119,7 @@
         "context_window": 400000,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-08-13"
+        "fetched_at": "2026-08-14"
       },
       "selector_matched": 0,
       "blended_per_million": 1.8750000000000002,
@@ -142,7 +142,7 @@
         "context_window": 262144,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-08-13"
+        "fetched_at": "2026-08-14"
       },
       "selector_matched": 0,
       "blended_per_million": 1.8649999999999998,
@@ -165,7 +165,7 @@
         "context_window": 1000000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-08-13"
+        "fetched_at": "2026-08-14"
       },
       "selector_matched": 0,
       "blended_per_million": 1.625,
@@ -188,7 +188,7 @@
         "context_window": 1000000,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-08-13"
+        "fetched_at": "2026-08-14"
       },
       "selector_matched": 0,
       "blended_per_million": 0.41600000000000004,
@@ -198,6 +198,6 @@
       "note": "ATPI labels this Qwen 3.6 Plus; closest match in our catalog is qwen-plus (Alibaba's flagship general-purpose)."
     }
   ],
-  "geometric_mean_usd_per_million": 1.5828271614674159,
-  "arithmetic_mean_usd_per_million": 1.83375
+  "geometric_mean_usd_per_million": 1.6610009471748508,
+  "arithmetic_mean_usd_per_million": 1.92575
 }
