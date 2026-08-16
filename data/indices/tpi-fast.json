@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-08-15T17:14:38.749Z",
+  "computed_at": "2026-08-16T17:13:48.794Z",
   "data_source": "data/current.json",
   "member_count": 4,
   "members_resolved": 4,
@@ -26,7 +26,7 @@
         "context_window": 262144,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-08-15"
+        "fetched_at": "2026-08-16"
       },
       "selector_matched": 0,
       "blended_per_million": 0.7999999999999999,
@@ -50,7 +50,7 @@
         "context_window": 204800,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-08-15"
+        "fetched_at": "2026-08-16"
       },
       "selector_matched": 0,
       "blended_per_million": 0.57,
@@ -73,7 +73,7 @@
         "context_window": 400000,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-08-15"
+        "fetched_at": "2026-08-16"
       },
       "selector_matched": 0,
       "blended_per_million": 0.515,
@@ -89,22 +89,22 @@
         "family": "deepseek-v4-flash",
         "hyperscaler": "aggregator",
         "region": null,
-        "input_per_1k": 0.00006426,
-        "output_per_1k": 0.00012852,
+        "input_per_1k": 0.00006146,
+        "output_per_1k": 0.00012292,
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 1024000,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-08-15"
+        "fetched_at": "2026-08-16"
       },
       "selector_matched": 0,
-      "blended_per_million": 0.083538,
-      "ln_blended": -2.4824536608269336,
+      "blended_per_million": 0.079898,
+      "ln_blended": -2.5270044578123074,
       "published_blended_per_million": 0.182,
-      "divergence_pct": -54.1
+      "divergence_pct": -56.10000000000001
     }
   ],
-  "geometric_mean_usd_per_million": 0.37425191935694785,
-  "arithmetic_mean_usd_per_million": 0.4921344999999999
+  "geometric_mean_usd_per_million": 0.37010674076315664,
+  "arithmetic_mean_usd_per_million": 0.49122449999999995
 }
