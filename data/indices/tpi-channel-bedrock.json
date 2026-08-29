@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-08-29T00:49:11.955Z",
+  "computed_at": "2026-08-29T19:34:51.992Z",
   "data_source": "data/current.json",
   "member_count": 16,
   "members_resolved": 6,
@@ -213,7 +213,7 @@
         "context_window": 262144,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260826181919/us-east-1/index.json",
-        "fetched_at": "2026-08-29T00:49:10.556Z"
+        "fetched_at": "2026-08-29T19:34:49.072Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.7999999999999999,

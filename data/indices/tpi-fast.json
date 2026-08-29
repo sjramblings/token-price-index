@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-08-29T00:49:11.999Z",
+  "computed_at": "2026-08-29T19:34:52.038Z",
   "data_source": "data/current.json",
   "member_count": 4,
   "members_resolved": 4,
@@ -89,8 +89,8 @@
         "family": "deepseek-v4-flash",
         "hyperscaler": "aggregator",
         "region": null,
-        "input_per_1k": 0.00008624,
-        "output_per_1k": 0.00017248,
+        "input_per_1k": 0.00008232,
+        "output_per_1k": 0.00016464,
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 1024000,
@@ -99,12 +99,12 @@
         "fetched_at": "2026-08-29"
       },
       "selector_matched": 0,
-      "blended_per_million": 0.11211199999999999,
-      "ln_blended": -2.188256907353959,
+      "blended_per_million": 0.107016,
+      "ln_blended": -2.2347769229888517,
       "published_blended_per_million": 0.182,
-      "divergence_pct": -38.400000000000006
+      "divergence_pct": -41.199999999999996
     }
   ],
-  "geometric_mean_usd_per_million": 0.40281537893684544,
-  "arithmetic_mean_usd_per_million": 0.49927799999999994
+  "geometric_mean_usd_per_million": 0.3981577710022761,
+  "arithmetic_mean_usd_per_million": 0.49800399999999995
 }
