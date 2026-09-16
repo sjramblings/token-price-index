@@ -10,19 +10,19 @@ const sources: SourceRow[] = [
     source: 'LiteLLM',
     url: 'raw.githubusercontent.com/BerriAI/litellm',
     auth: 'none',
-    scope: '~2,700 models, hand-curated by LiteLLM maintainers from public pricing pages. Carries a litellm_provider field that tells us which deployment channel each entry belongs to.',
+    scope: '~4,000 upstream entries, hand-curated by LiteLLM maintainers from public pricing pages; ~3,200 survive normalization. Carries a litellm_provider field that tells us which deployment channel each entry belongs to.',
   },
   {
     source: 'OpenRouter',
     url: 'openrouter.ai/api/v1/models',
     auth: 'none',
-    scope: '~360 models, live aggregator pricing.',
+    scope: '~440 catalog entries, live aggregator pricing; ~360 ingested after dropping batch-tier SKUs and unpriced meta-routers.',
   },
   {
     source: 'AWS Price List Bulk',
     url: 'pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock',
     auth: 'none',
-    scope: 'Per-region Bedrock SKUs across 10 GA regions. The billing engine’s published catalog — not the model registry the Bedrock runtime reads.',
+    scope: 'Per-region Bedrock SKUs across 11 GA regions. The billing engine’s published catalog — not the model registry the Bedrock runtime reads.',
   },
   {
     source: 'Azure Retail Prices',
@@ -178,6 +178,42 @@ export default function Methodology(): JSX.Element {
       </section>
 
       <section className="mb-12">
+        <h2 className="text-xl font-semibold tracking-tight text-ink-900 mb-4">What is measured, and what is derived</h2>
+        <p className="max-w-2xl text-ink-600">
+          Prices are always as published. Three other fields are not, and every record says
+          so explicitly rather than leaving you to guess.
+        </p>
+        <ul className="mt-3 list-disc space-y-2 pl-6 text-ink-600">
+          <li>
+            <code className="font-mono text-ink-700">context_window_estimated</code> — the AWS
+            Price List and Azure Retail APIs are billing catalogs and publish no context
+            length. Those rows inherit the largest context window seen for the same family in
+            LiteLLM or OpenRouter, which is an upper bound, not a per-deployment limit. Every
+            AWS and Azure row carries this flag, and the tables mark it with a{' '}
+            <span className="font-mono text-ink-700">~</span>.
+          </li>
+          <li>
+            <code className="font-mono text-ink-700">pricing_varies</code> — OpenRouter
+            publishes weekday/weekend and hour-window price schedules for part of its
+            catalog. We ingest the published base rate; a flagged record can bill at a
+            different rate inside an override window.
+          </li>
+          <li>
+            <code className="font-mono text-ink-700">alias_of</code> — OpenRouter ships{' '}
+            <code className="font-mono text-ink-700">~vendor/model-latest</code> pointers that
+            redirect to another catalog entry. They are kept (they are callable IDs with real
+            prices) but marked, so model counts can skip them instead of double counting.
+          </li>
+          <li>
+            <code className="font-mono text-ink-700">cached_input_per_1k</code> is populated
+            wherever the upstream publishes a prompt-cache read price, and{' '}
+            <code className="font-mono text-ink-700">null</code> where it does not.{' '}
+            <code className="font-mono text-ink-700">null</code> means unknown, never free.
+          </li>
+        </ul>
+      </section>
+
+      <section className="mb-12">
         <h2 className="text-xl font-semibold tracking-tight text-ink-900 mb-4">Regional precision</h2>
         <div className="card overflow-x-auto p-0">
           <table className="w-full min-w-[640px]">
@@ -214,6 +250,13 @@ export default function Methodology(): JSX.Element {
           No hourly polling, no real-time. Upstream APIs don’t change sub-daily; faster
           cadence would just write near-identical commits and pollute the time-series signal.
         </p>
+        <p className="mt-3 max-w-2xl text-ink-600">
+          GitHub does not start scheduled jobs on time — observed delays on this repo run
+          from two to eight hours, and one 17:00 slot did not begin until 01:14 UTC the
+          next day. A snapshot is therefore dated by the <em>slot it belongs to</em>, not
+          by the clock when the runner happened to execute, so a late run still lands on
+          the right day instead of skipping one.
+        </p>
       </section>
 
       <section className="mb-12">
@@ -225,6 +268,14 @@ export default function Methodology(): JSX.Element {
           <li>No Vertex AI regional pricing — no public no-auth Google source exists today.</li>
           <li>No private price sheets, billing-account discounts, or per-customer rates.</li>
           <li>No write operations against any upstream system.</li>
+          <li>
+            No batch-tier or fine-tuned SKU pricing. Every record is an on-demand list
+            price.
+          </li>
+          <li>
+            No prompt-cache <em>write</em> surcharges, and no time-of-day price schedules —
+            where an upstream publishes one, we carry the base rate and flag the record.
+          </li>
         </ul>
       </section>
 

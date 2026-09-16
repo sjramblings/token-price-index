@@ -358,7 +358,17 @@ export default function Pivot(): JSX.Element {
                       {isCheapest ? <span className="ml-2 text-accent-500">▼</span> : null}
                     </td>
                     <td className="num-display px-4 py-3 text-right text-xs text-ink-800">{formatPricePer1K(record.output_per_1k)}</td>
-                    <td className="num-display px-4 py-3 text-right text-xs text-ink-800">{formatContextWindow(record.context_window)}</td>
+                    <td className="num-display px-4 py-3 text-right text-xs text-ink-800">
+                      {formatContextWindow(record.context_window)}
+                      {record.context_window_estimated && (
+                        <span
+                          className="ml-0.5 cursor-help text-ink-500"
+                          title="Estimated — this source publishes no context length; inherited from the family maximum in LiteLLM / OpenRouter"
+                        >
+                          ~
+                        </span>
+                      )}
+                    </td>
                     <td className="px-4 py-3">
                       <a
                         href={record.source_url}

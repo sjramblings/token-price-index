@@ -44,7 +44,12 @@ export default function Simulator(): JSX.Element {
     void loadCurrent()
       .then((currentRecords) => {
         if (active) {
+          // Skip alias pointers (`~vendor/model-latest`). Under ICU collation
+          // `~` sorts ahead of letters, so the simulator used to open on
+          // `~anthropic/claude-fable-latest` — a redirect entry — as its
+          // default model.
           const firstRecord = [...currentRecords]
+            .filter((record) => record.alias_of === null)
             .sort((left, right) => left.model_id.localeCompare(right.model_id))[0] ?? null;
           setRecords(currentRecords);
           setSelected((current) => current ?? firstRecord);

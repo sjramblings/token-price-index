@@ -18,8 +18,8 @@ This repo fills the gap as both dashboard and dataset. The public JSON files are
 
 | Source | URL | Auth | Scope |
 |--------|-----|------|-------|
-| LiteLLM | `https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json` | None | ~1500 models, MIT-licensed |
-| OpenRouter | `https://openrouter.ai/api/v1/models` | None | ~300 models, live API pricing |
+| LiteLLM | `https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json` | None | ~4000 models, MIT-licensed |
+| OpenRouter | `https://openrouter.ai/api/v1/models` | None | ~440 models, live API pricing |
 | AWS Price List Bulk API | `https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/region_index.json` | None | Bedrock per-region |
 | Azure Retail Prices API | `https://prices.azure.com/api/retail/prices` | None | Azure OpenAI per-region |
 

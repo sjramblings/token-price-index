@@ -90,17 +90,26 @@ jobs:
       - name: Build history manifest
         run: bun scripts/BuildHistoryManifest.ts
 
+      # `git diff` only sees TRACKED files, so a day whose prices did not move
+      # could still have an untracked data/history/<date>.json that this gate
+      # silently dropped. `git add -A` first, then diff the INDEX, so a new
+      # snapshot file always counts as a change.
+      #
+      # The commit message uses the snapshot slot Normalize.ts chose, not
+      # `date -u`, so a run that crosses UTC midnight labels its commit with the
+      # day it actually refreshed.
       - name: Commit if data/ changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- data/; then
+          snapshot="$(ls data/history/*.json | sort | tail -1 | xargs basename | sed 's/\.json$//')"
+          git add -A data/
+          if git diff --cached --quiet -- data/; then
             echo "[commit] no data/ changes -- skipping commit"
           else
-            git add data/
-            git commit -m "chore(data): refresh $(date -u +%Y-%m-%d)"
+            git commit -m "chore(data): refresh ${snapshot}"
             git push
-            echo "[commit] data/ updated -- pushed to main"
+            echo "[commit] data/ updated for ${snapshot} -- pushed to main"
           fi
 
       # Always run BuildRelease. Two internal gates handle the cases the workflow
@@ -124,3 +133,42 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run deploy.yml --ref main
+
+  # A failed refresh leaves a permanent hole in the time series — git history IS
+  # the database, so there is no backfill without a manual re-run. Three runs
+  # failed silently (2026-08-04, 08-06, 08-12) and nobody noticed, while the
+  # dashboard kept reporting the data as current. Open an issue so a failure is
+  # visible and, once fixed, re-runnable against the missed slot.
+  report-failure:
+    name: Open an issue when the refresh fails
+    needs: refresh
+    if: failure()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: File or update the failure issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          REPO: ${{ github.repository }}
+        run: |
+          title="Daily refresh failed"
+          existing="$(gh issue list --repo "$REPO" --state open --label refresh-failure \
+            --json number --jq '.[0].number // empty')"
+          body=$(printf '%s\n\n%s\n\n%s\n' \
+            "The scheduled refresh failed on $(date -u +%Y-%m-%dT%H:%M:%SZ)." \
+            "Run: ${RUN_URL}" \
+            "Re-run it with \`TPI_SNAPSHOT_DATE=<missed-date>\` set so the snapshot lands in the slot it missed, otherwise that day is lost from data/history/ permanently.")
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --repo "$REPO" --body "$body"
+            echo "[alert] commented on existing issue #${existing}"
+          else
+            gh label create refresh-failure --repo "$REPO" --color B60205 \
+              --description "Daily data refresh failed" 2>/dev/null || true
+            gh issue create --repo "$REPO" --title "$title" \
+              --label refresh-failure --body "$body"
+            echo "[alert] opened a new failure issue"
+          fi

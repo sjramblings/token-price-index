@@ -1,4 +1,4 @@
-import { readJson, todayISO, writeJson } from './lib/io.ts';
+import { readJson, snapshotDateISO, writeJson } from './lib/io.ts';
 import {
   normalizeAwsPriceList,
   normalizeAzureRetail,
@@ -28,7 +28,7 @@ const OPENROUTER_URL = 'https://openrouter.ai/api/v1/models';
 
 type NormalizationResult = {
   records: PriceRecord[];
-  skipped: { zeroContext: number; missingPrice: number };
+  skipped: { zeroContext: number; missingPrice: number; excludedTier: number };
 };
 
 function messageForError(error: unknown): string {
@@ -186,10 +186,10 @@ function compareRecords(a: PriceRecord, b: PriceRecord): number {
 }
 
 function emptyNormalizationResult(): NormalizationResult {
-  return { records: [], skipped: { zeroContext: 0, missingPrice: 0 } };
+  return { records: [], skipped: { zeroContext: 0, missingPrice: 0, excludedTier: 0 } };
 }
 
-async function normalizeAvailableAwsRaw(): Promise<NormalizationResult> {
+async function normalizeAvailableAwsRaw(fetchedAt: string): Promise<NormalizationResult> {
   if (!(await Bun.file(AWS_INDEX_PATH).exists())) {
     console.warn(`[Normalize] WARN -- ${AWS_INDEX_PATH} absent; skipping AWS regional prices`);
     return emptyNormalizationResult();
@@ -217,17 +217,21 @@ async function normalizeAvailableAwsRaw(): Promise<NormalizationResult> {
     });
   }
 
-  return normalizeAwsPriceList(regionOffers, index.fetchedAt);
+  // The raw bundle's own fetchedAt is the wall clock when FetchAwsPriceList
+  // ran. Every record in one snapshot carries the snapshot slot instead, so
+  // `fetched_at` means the same thing across all four sources. The wall-clock
+  // value stays in data/_raw/ for provenance.
+  return normalizeAwsPriceList(regionOffers, fetchedAt);
 }
 
-async function normalizeAvailableAzureRaw(): Promise<NormalizationResult> {
+async function normalizeAvailableAzureRaw(fetchedAt: string): Promise<NormalizationResult> {
   if (!(await Bun.file(AZURE_PATH).exists())) {
     console.warn(`[Normalize] WARN -- ${AZURE_PATH} absent; skipping Azure regional prices`);
     return emptyNormalizationResult();
   }
 
   const bundle = requireAzureShape(await readJson<unknown>(AZURE_PATH));
-  return normalizeAzureRetail(bundle.items, bundle.fetchedAt, bundle.sourceUrl);
+  return normalizeAzureRetail(bundle.items, fetchedAt, bundle.sourceUrl);
 }
 
 function inheritContextWindow(records: PriceRecord[]): { records: PriceRecord[]; dropped: number } {
@@ -248,13 +252,17 @@ function inheritContextWindow(records: PriceRecord[]): { records: PriceRecord[];
   let dropped = 0;
   for (const record of records) {
     if (record.context_window > 0) {
+      // Published by the record's own source — keep whatever the normalizer set.
       output.push(record);
       continue;
     }
 
     const inherited = familyMaxContext.get(record.family);
     if (inherited !== undefined && inherited > 0) {
-      output.push({ ...record, context_window: inherited });
+      // Mark it: this number is the family maximum observed across LiteLLM and
+      // OpenRouter, not a limit the record's own source published. Consumers
+      // ranking on context must be able to tell the two apart.
+      output.push({ ...record, context_window: inherited, context_window_estimated: true });
     } else {
       dropped += 1;
     }
@@ -266,14 +274,20 @@ function inheritContextWindow(records: PriceRecord[]): { records: PriceRecord[];
 async function main(): Promise<void> {
   const litellm = requireLitellmShape(await readJson<unknown>(LITELLM_PATH));
   const openrouter = requireOpenRouterShape(await readJson<unknown>(OPENROUTER_PATH));
-  // Date-only ISO (YYYY-MM-DD) keeps same-day reruns byte-identical; daily-snapshot system
-  // doesn't need sub-day precision. Matches data/history/YYYY-MM-DD.json filename cadence.
-  const fetchedAt = todayISO();
+  // The scheduled slot this run belongs to, not the wall clock — see
+  // snapshotDateISO. Drives both the history filename and every record's
+  // fetched_at, so a delayed run lands in the slot it was meant for.
+  const snapshotDate = snapshotDateISO();
+  // SPEC calls fetched_at an ISO timestamp, and the AWS/Azure fetchers already
+  // emit one. Normalizing LiteLLM/OpenRouter to midnight-UTC of the snapshot
+  // slot makes the whole file one format while keeping same-day reruns
+  // byte-identical (which a live `new Date()` would not).
+  const fetchedAt = `${snapshotDate}T00:00:00.000Z`;
 
   const litellmResult = normalizeLitellm(litellm, fetchedAt, LITELLM_URL);
   const openrouterResult = normalizeOpenRouter(openrouter.data, fetchedAt, OPENROUTER_URL);
-  const awsResult = await normalizeAvailableAwsRaw();
-  const azureResult = await normalizeAvailableAzureRaw();
+  const awsResult = await normalizeAvailableAwsRaw(fetchedAt);
+  const azureResult = await normalizeAvailableAzureRaw(fetchedAt);
   const inherited = inheritContextWindow([
     ...litellmResult.records,
     ...openrouterResult.records,
@@ -289,21 +303,31 @@ async function main(): Promise<void> {
     + openrouterResult.skipped.missingPrice
     + awsResult.skipped.missingPrice
     + azureResult.skipped.missingPrice;
-  const skipped = zeroContext + missingPrice + inherited.dropped;
-  // Use the captured fetchedAt (not a second todayISO() call) so the run is atomically
-  // tied to one date across a UTC-midnight boundary. Codex P2 on PR #2.
-  const historyPath = `data/history/${fetchedAt}.json`;
+  const excludedTier = litellmResult.skipped.excludedTier
+    + openrouterResult.skipped.excludedTier
+    + awsResult.skipped.excludedTier
+    + azureResult.skipped.excludedTier;
+  const skipped = zeroContext + missingPrice + excludedTier + inherited.dropped;
+  // Use the captured snapshot date (not a second snapshotDateISO() call) so the
+  // run is atomically tied to one date across a UTC-midnight boundary.
+  const historyPath = `data/history/${snapshotDate}.json`;
 
   await writeJson('data/current.json', records);
   await writeJson(historyPath, records);
 
+  // Count the records that actually SHIPPED, per source. Reporting the
+  // pre-inheritance lengths overstated aws/azure by the records
+  // inheritContextWindow then dropped (471 logged vs 297 written).
+  const shipped = (source: PriceRecord['source']): number =>
+    records.filter((record: PriceRecord): boolean => record.source === source).length;
+
   console.log(
     `[Normalize] OK -- ${records.length} total records `
-      + `(${litellmResult.records.length} litellm, ${openrouterResult.records.length} openrouter, `
-      + `${awsResult.records.length} aws-pricelist, ${azureResult.records.length} azure-retail) `
+      + `(${shipped('litellm')} litellm, ${shipped('openrouter')} openrouter, `
+      + `${shipped('aws-pricelist')} aws-pricelist, ${shipped('azure-retail')} azure-retail) `
       + `-> data/current.json + ${historyPath} `
       + `(skipped ${skipped}: zero-context ${zeroContext}, missing-price ${missingPrice}, `
-      + `context-unmatched ${inherited.dropped})`,
+      + `non-ondemand-tier ${excludedTier}, context-unmatched ${inherited.dropped})`,
   );
   process.exit(0);
 }

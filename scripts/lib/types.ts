@@ -9,6 +9,28 @@ export type PriceRecord = {
   cached_input_per_1k: number | null;
   image_per_1k: number | null;
   context_window: number;
+  /**
+   * True when `context_window` was NOT published by this record's own source
+   * and was inherited from the family maximum across LiteLLM / OpenRouter.
+   * Always true for aws-pricelist and azure-retail records — neither billing
+   * catalog publishes a context length. Consumers ranking on context MUST
+   * treat these as approximate. See Normalize.ts → inheritContextWindow.
+   */
+  context_window_estimated: boolean;
+  /**
+   * True when the upstream source publishes conditional pricing (time-of-day
+   * or day-of-week windows) that this record does not capture. `input_per_1k`
+   * / `output_per_1k` are the published BASE rate; actual billing may differ
+   * inside an override window.
+   */
+  pricing_varies: boolean;
+  /**
+   * For catalog entries that are pointers to another model (OpenRouter's
+   * `~vendor/model-latest` aliases), the `model_id` they resolve to. `null`
+   * for ordinary records. Consumers counting distinct models should skip
+   * records where this is non-null to avoid double counting.
+   */
+  alias_of: string | null;
   source: 'litellm' | 'openrouter' | 'aws-pricelist' | 'azure-retail';
   source_url: string;
   fetched_at: string;
@@ -26,13 +48,34 @@ export type LiteLLMEntry = Partial<{
   mode: string;
 }>;
 
+export type OpenRouterPricing = {
+  prompt: string;
+  completion: string;
+  image?: string;
+  /** Per-token price for a prompt-cache READ hit. Present on ~60% of the catalog. */
+  input_cache_read?: string;
+  /** Per-token surcharge for WRITING to the prompt cache. Not modelled in PriceRecord. */
+  input_cache_write?: string;
+  /**
+   * Time-of-day / day-of-week price schedules. When present, the top-level
+   * prompt/completion values are the base rate and an override window can bill
+   * at a different rate. We ingest the base rate only — see `pricing_varies`.
+   */
+  overrides?: unknown[];
+};
+
 export type OpenRouterEntry = {
   id: string;
   name?: string;
-  pricing: { prompt: string; completion: string; image?: string };
+  pricing: OpenRouterPricing;
   context_length?: number;
   top_provider?: { context_length?: number };
   architecture?: { tokenizer?: string };
+  /**
+   * Set when this entry is a `~vendor/model-latest` pointer that redirects to
+   * another catalog entry rather than being a distinct deployment.
+   */
+  alias_target?: { name?: string; slug?: string } | null;
 };
 
 export type OpenRouterResponse = { data: OpenRouterEntry[] };

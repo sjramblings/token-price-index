@@ -1,5 +1,10 @@
 import { describe, expect, test } from 'bun:test';
-import { extractFamily, inferHyperscalerFromLitellm } from './normalize.ts';
+import {
+  extractFamily,
+  inferHyperscalerFromLitellm,
+  isExcludedTier,
+  normalizeOpenRouter,
+} from './normalize.ts';
 import type { Hyperscaler } from './types.ts';
 
 describe('extractFamily', () => {
@@ -88,6 +93,18 @@ describe('extractFamily', () => {
     ['cloudflare/@cf/meta/llama-2-7b-chat-int8', 'llama-2-7b-chat-int8'],
     ['cloudflare/@cf/mistral/mistral-7b-instruct-v0.1', 'mistral-7b-instruct-v0.1'],
     ['cloudflare/@hf/thebloke/codellama-7b-instruct-awq', 'codellama-7b-instruct-awq'],
+    // GovCloud Bedrock inference-profile prefix — `us` alone does not match
+    // `us-gov.`, so these used to survive into the family field.
+    ['us-gov.anthropic.claude-opus-5', 'claude-opus-5'],
+    ['us-gov.nvidia.nemotron-nano-9b-v2', 'nemotron-nano-9b-v2'],
+    // Bedrock bare-numeric minor tag (no `v`): the whole `-1:0` is the tag.
+    ['openai.gpt-oss-120b-1:0', 'gpt-oss-120b'],
+    ['us-gov.openai.gpt-oss-20b-1:0', 'gpt-oss-20b'],
+    // …but when the digit before the colon is the minor half of a dotted
+    // version (`rerank-v3-5:0` is Rerank v3.5), only the `:0` is a tag.
+    ['cohere.rerank-v3-5:0', 'rerank-v3-5'],
+    // The `-v\d+:\d+` form still wins where it applies.
+    ['anthropic.claude-opus-4-7-v1:0', 'claude-opus-4-7'],
   ];
 
   test.each(familyCases)('%s maps to %s', (modelId: string, expected: string) => {
@@ -221,4 +238,117 @@ describe('inferHyperscalerFromLitellm — data-driven via litellm_provider', () 
       expect(inferHyperscalerFromLitellm(modelId, provider)).toBe(expected);
     },
   );
+});
+
+
+describe('isExcludedTier — non-on-demand billing tiers', () => {
+  const excluded: string[] = [
+    'anthropic/claude-opus-5:batch',
+    'google/gemma-4-31b-it:batch',
+    'ft:gpt-4o-2024-08-06',
+    'azure/ft:gpt-4.1-mini-2025-04-14',
+  ];
+  test.each(excluded)('%s is excluded', (modelId: string) => {
+    expect(isExcludedTier(modelId)).toBe(true);
+  });
+
+  const kept: string[] = [
+    'anthropic/claude-opus-5',
+    'google/gemma-4-31b-it',
+    'gpt-4o-2024-08-06',
+    // `:70b` is an Ollama size tag, not a billing tier.
+    'ollama/llama3:70b',
+    // Substring `ft:` must be anchored to a path segment, not matched anywhere.
+    'someprovider/soft:model',
+  ];
+  test.each(kept)('%s is kept', (modelId: string) => {
+    expect(isExcludedTier(modelId)).toBe(false);
+  });
+});
+
+describe('normalizeOpenRouter', () => {
+  const FETCHED_AT = '2026-09-16T00:00:00.000Z';
+  const SOURCE_URL = 'https://openrouter.ai/api/v1/models';
+
+  function entry(overrides: Record<string, unknown> = {}): never {
+    return {
+      id: 'anthropic/claude-opus-5',
+      pricing: { prompt: '0.000005', completion: '0.000025' },
+      context_length: 200_000,
+      ...overrides,
+    } as never;
+  }
+
+  test('ingests input_cache_read as cached_input_per_1k', () => {
+    const { records } = normalizeOpenRouter(
+      [entry({ pricing: {
+        prompt: '0.000005',
+        completion: '0.000025',
+        input_cache_read: '0.0000005',
+      } })],
+      FETCHED_AT,
+      SOURCE_URL,
+    );
+    expect(records).toHaveLength(1);
+    expect(records[0]?.cached_input_per_1k).toBeCloseTo(0.0005, 12);
+  });
+
+  test('leaves cached_input_per_1k null when upstream omits the field', () => {
+    const { records } = normalizeOpenRouter([entry()], FETCHED_AT, SOURCE_URL);
+    expect(records[0]?.cached_input_per_1k).toBeNull();
+  });
+
+  test('strips the ~ alias marker from provider and records alias_of', () => {
+    const { records } = normalizeOpenRouter(
+      [entry({
+        id: '~anthropic/claude-opus-latest',
+        alias_target: { slug: 'anthropic/claude-opus-5' },
+      })],
+      FETCHED_AT,
+      SOURCE_URL,
+    );
+    expect(records[0]?.provider).toBe('anthropic');
+    expect(records[0]?.model_id).toBe('~anthropic/claude-opus-latest');
+    expect(records[0]?.alias_of).toBe('anthropic/claude-opus-5');
+  });
+
+  test('flags time-of-day override schedules via pricing_varies', () => {
+    const { records } = normalizeOpenRouter(
+      [entry({ pricing: {
+        prompt: '0.00000066',
+        completion: '0.00000198',
+        overrides: [{ utc_days: ['saturday'], prompt: '0.00000066' }],
+      } })],
+      FETCHED_AT,
+      SOURCE_URL,
+    );
+    expect(records[0]?.pricing_varies).toBe(true);
+  });
+
+  test('leaves pricing_varies false for a flat-rate model', () => {
+    const { records } = normalizeOpenRouter([entry()], FETCHED_AT, SOURCE_URL);
+    expect(records[0]?.pricing_varies).toBe(false);
+    expect(records[0]?.alias_of).toBeNull();
+  });
+
+  test('drops batch-tier SKUs and counts them', () => {
+    const { records, skipped } = normalizeOpenRouter(
+      [entry(), entry({ id: 'anthropic/claude-opus-5:batch' })],
+      FETCHED_AT,
+      SOURCE_URL,
+    );
+    expect(records).toHaveLength(1);
+    expect(records[0]?.model_id).toBe('anthropic/claude-opus-5');
+    expect(skipped.excludedTier).toBe(1);
+  });
+
+  test('still drops negative sentinel prices', () => {
+    const { records, skipped } = normalizeOpenRouter(
+      [entry({ id: 'openrouter/auto', pricing: { prompt: '-1', completion: '-1' } })],
+      FETCHED_AT,
+      SOURCE_URL,
+    );
+    expect(records).toHaveLength(0);
+    expect(skipped.missingPrice).toBe(1);
+  });
 });

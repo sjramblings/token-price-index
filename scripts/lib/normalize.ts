@@ -9,8 +9,37 @@ import type {
 
 type NormalizationResult = {
   records: PriceRecord[];
-  skipped: { zeroContext: number; missingPrice: number };
+  skipped: { zeroContext: number; missingPrice: number; excludedTier: number };
 };
+
+/**
+ * Non-on-demand pricing tiers, excluded from the dataset.
+ *
+ * The dataset's contract is on-demand list price for one deployment of one
+ * model. Batch and fine-tuned SKUs are a different billing tier for the same
+ * model — OpenRouter's `anthropic/claude-opus-5:batch` is exactly 50% of
+ * `anthropic/claude-opus-5`, and LiteLLM's `ft:gpt-4o-…` is fine-tune
+ * inference. Both were already excluded on the AWS side
+ * (`usagetype` contains `batch`) and the Azure side (`isExcludedAzureMeter`
+ * drops `/batch/i` and `/fine/i`), so LiteLLM and OpenRouter were the two
+ * sources leaking them.
+ *
+ * Leaving them in produced two visible defects: 77 phantom `:batch` families
+ * beside their parents in the Pivot family picker, and a cheapest-input
+ * highlight that could surface a batch rate as if it were the on-demand rate.
+ */
+export function isExcludedTier(modelId: string): boolean {
+  const normalized = modelId.toLowerCase();
+  // OpenRouter batch tier: `anthropic/claude-opus-5:batch`
+  if (normalized.endsWith(':batch')) {
+    return true;
+  }
+  // LiteLLM fine-tuned inference: `ft:gpt-4o-2024-08-06`, `azure/ft:gpt-4…`
+  if (/(^|\/)ft:/.test(normalized)) {
+    return true;
+  }
+  return false;
+}
 
 function stripSubstratePrefix(modelId: string): string {
   for (const prefix of ['bedrock/', 'azure/', 'vertex_ai/']) {
@@ -132,8 +161,15 @@ export const FAMILY_NOISE_PATTERNS: readonly FamilyNoisePattern[] = [
   },
   {
     name: 'regional-bedrock-prefix',
-    pattern: /^(eu|us|global|au|apac|ca|me|sa)\./,
+    pattern: /^(us-gov|eu|us|global|au|apac|ca|me|sa)\./,
     example: 'eu.anthropic.claude-opus-4-7 → claude-opus-4-7',
+  },
+  // Non-on-demand billing tier leaking into the family name. These records are
+  // dropped by isExcludedTier before normalization, so any survivor is a bug.
+  {
+    name: 'non-ondemand-tier-suffix',
+    pattern: /:batch$|(^|\/)ft:/,
+    example: 'claude-opus-5:batch → excluded (batch tier, not a family)',
   },
   {
     name: 'dashed-anthropic-reexport',
@@ -150,6 +186,15 @@ export const FAMILY_NOISE_PATTERNS: readonly FamilyNoisePattern[] = [
     name: 'bedrock-tagged-alias',
     pattern: /-v\d+:\d+$/,
     example: 'claude-opus-4-7-v1:0 → claude-opus-4-7',
+  },
+  // Bedrock minor-version tag without the `v`: `openai.gpt-oss-120b-1:0`.
+  // MUST stay after bedrock-tagged-alias — findFamilyNoise returns the first
+  // match, and this looser pattern would otherwise shadow the `-v\d+:\d+`
+  // diagnosis for every Anthropic Bedrock alias.
+  {
+    name: 'bedrock-numeric-tag',
+    pattern: /:\d+$/,
+    example: 'gpt-oss-120b-1:0 → gpt-oss-120b',
   },
   // Anthropic Claude bare `-v\d+` — only when there's a numeric base before
   // `-v`. Mirror of the extractFamily Rule 2; intentionally narrow so the
@@ -225,7 +270,10 @@ export function extractFamily(modelId: string): string {
   // (FAMILY_NOISE_PATTERNS: regional-bedrock-prefix). Must run before the
   // vendor-dot strip below so `anthropic.` is recognisable after stripping
   // the regional segment.
-  family = family.replace(/^(eu|us|global|au|apac|ca|me|sa)\./, '');
+  // `us-gov` is listed first for readability; the alternation backtracks either
+  // way, but `us` would otherwise be the eye-catching (and wrong) match for
+  // `us-gov.anthropic.claude-opus-5`.
+  family = family.replace(/^(us-gov|eu|us|global|au|apac|ca|me|sa)\./, '');
 
   const slashIndex = family.indexOf('/');
   if (slashIndex > 0 && !family.slice(0, slashIndex).includes('.')) {
@@ -233,7 +281,7 @@ export function extractFamily(modelId: string): string {
   }
 
   family = family.replace(
-    /^(anthropic|amazon|meta|mistral|mistralai|cohere|ai21|stability|deepseek|writer|openai|google|qwen|microsoft|huggingface|z-ai|zhipu)\./,
+    /^(anthropic|amazon|meta|mistral|mistralai|cohere|ai21|stability|deepseek|writer|openai|google|qwen|microsoft|huggingface|z-ai|zhipu|nvidia|xai|moonshot|minimax|luma|twelvelabs)\./,
     '',
   );
 
@@ -253,6 +301,19 @@ export function extractFamily(modelId: string): string {
   // FAMILY_NOISE_PATTERNS below mirrors these three rules so the guard
   // fires on the same shapes the normalizer is responsible for stripping.
   family = family.replace(/-v\d+:\d+$/, '');
+  // Bare-numeric Bedrock minor tag: `gpt-oss-120b-1:0`. Stripping the whole
+  // `-\d+:\d+` is right there, but wrong for `rerank-v3-5:0`, where the `-5`
+  // is the minor half of a dotted version (`v3.5`) rather than a tag. Detect
+  // that by looking at what the greedy strip would leave behind: if it ends in
+  // `-v\d+`, we ate a version digit, so drop only the `:\d+` suffix.
+  const numericTag = /-(\d+):\d+$/.exec(family);
+  if (numericTag !== null) {
+    const withTagStripped = family.slice(0, numericTag.index);
+    family = /-v\d+$/.test(withTagStripped)
+      ? `${withTagStripped}-${numericTag[1]}` // `rerank-v3-5:0` → `rerank-v3-5`
+      : withTagStripped; //                     `gpt-oss-120b-1:0` → `gpt-oss-120b`
+  }
+  family = family.replace(/:\d+$/, '');
   family = family.replace(/^(claude(?:-[a-z]+)*-\d+(?:-\d+)*)-v\d+$/, '$1');
   family = family.replace(/^(nova(?:-\d+)?-[a-z]+)-v\d+$/, '$1');
 
@@ -275,9 +336,14 @@ export function normalizeLitellm(
   const records: PriceRecord[] = [];
   let zeroContext = 0;
   let missingPrice = 0;
+  let excludedTier = 0;
 
   for (const [modelId, entry] of Object.entries(entries)) {
     if (modelId === 'sample_spec') {
+      continue;
+    }
+    if (isExcludedTier(modelId)) {
+      excludedTier += 1;
       continue;
     }
 
@@ -309,13 +375,16 @@ export function normalizeLitellm(
           : null,
       image_per_1k: entry.input_cost_per_image != null ? entry.input_cost_per_image * 1000 : null,
       context_window: contextWindow,
+      context_window_estimated: false,
+      pricing_varies: false,
+      alias_of: null,
       source: 'litellm',
       source_url: sourceUrl,
       fetched_at: fetchedAt,
     });
   }
 
-  return { records, skipped: { zeroContext, missingPrice } };
+  return { records, skipped: { zeroContext, missingPrice, excludedTier } };
 }
 
 export function normalizeOpenRouter(
@@ -326,8 +395,14 @@ export function normalizeOpenRouter(
   const records: PriceRecord[] = [];
   let zeroContext = 0;
   let missingPrice = 0;
+  let excludedTier = 0;
 
   for (const entry of entries) {
+    if (isExcludedTier(entry.id)) {
+      excludedTier += 1;
+      continue;
+    }
+
     const inputUSDPerToken = Number.parseFloat(entry.pricing.prompt);
     const outputUSDPerToken = Number.parseFloat(entry.pricing.completion);
     // OpenRouter ships sentinel "-1" prices for meta-models (openrouter/auto, /bodybuilder,
@@ -351,7 +426,18 @@ export function normalizeOpenRouter(
     const imageUSDPerToken = entry.pricing.image
       ? Number.parseFloat(entry.pricing.image)
       : Number.NaN;
-    const provider = entry.id.includes('/') ? entry.id.split('/', 1)[0] : entry.id;
+    // Prompt-cache read price. ~60% of the OpenRouter catalog publishes this
+    // and we were discarding all of it, leaving cache-aware comparison biased
+    // towards LiteLLM-sourced rows (which do populate the column).
+    const cacheReadUSDPerToken = entry.pricing.input_cache_read !== undefined
+      ? Number.parseFloat(entry.pricing.input_cache_read)
+      : Number.NaN;
+    // `~vendor/model-latest` entries are pointers, not deployments. The raw
+    // first path segment would otherwise become a `~anthropic` provider
+    // sitting beside the real `anthropic` in every provider facet.
+    const rawProvider = entry.id.includes('/') ? entry.id.split('/', 1)[0] : entry.id;
+    const provider = rawProvider.replace(/^~/, '');
+    const aliasTarget = entry.alias_target?.slug;
 
     records.push({
       provider: provider.toLowerCase(),
@@ -361,16 +447,23 @@ export function normalizeOpenRouter(
       region: null,
       input_per_1k: inputUSDPerToken * 1000,
       output_per_1k: outputUSDPerToken * 1000,
-      cached_input_per_1k: null,
+      cached_input_per_1k: Number.isNaN(cacheReadUSDPerToken) || cacheReadUSDPerToken < 0
+        ? null
+        : cacheReadUSDPerToken * 1000,
       image_per_1k: Number.isNaN(imageUSDPerToken) ? null : imageUSDPerToken * 1000,
       context_window: contextWindow,
+      context_window_estimated: false,
+      // OpenRouter publishes weekday/weekend and hour-window price schedules
+      // for part of the catalog. We ingest the base rate only.
+      pricing_varies: Array.isArray(entry.pricing.overrides) && entry.pricing.overrides.length > 0,
+      alias_of: typeof aliasTarget === 'string' && aliasTarget.length > 0 ? aliasTarget : null,
       source: 'openrouter',
       source_url: sourceUrl,
       fetched_at: fetchedAt,
     });
   }
 
-  return { records, skipped: { zeroContext, missingPrice } };
+  return { records, skipped: { zeroContext, missingPrice, excludedTier } };
 }
 
 function providerForAwsModel(modelName: string): string {
@@ -458,6 +551,14 @@ type AwsPriceGroup = {
   cachedInput?: number;
 };
 
+/**
+ * Canonical `model_id` for an AWS Price List `attributes.model` display name.
+ * Also the grouping key inside a region — see the comment at its call site.
+ */
+function awsModelId(model: string): string {
+  return model.toLowerCase().replace(/\s+/g, '-');
+}
+
 export function normalizeAwsPriceList(
   regionOffers: Array<{ region: string; offerJson: AwsPriceListOffer; sourceUrl: string }>,
   fetchedAt: string,
@@ -502,8 +603,15 @@ export function normalizeAwsPriceList(
         continue;
       }
 
-      const group = groups.get(model) ?? { model };
-      groups.set(model, group);
+      // Group on the SAME key the record is identified by downstream, not on
+      // the raw catalog string. AWS ships the same model under more than one
+      // display spelling (e.g. `Qwen3 Next 80B A3B` and `Qwen3-Next-80B-A3B`),
+      // which collapse to one `model_id`. Grouping on the raw string emitted
+      // two records with the same (model_id, region) and *different* prices —
+      // `qwen3-next-80b-a3b` @ ap-south-1 was $0.00018 and $0.000168 input.
+      const groupKey = awsModelId(model);
+      const group = groups.get(groupKey) ?? { model };
+      groups.set(groupKey, group);
       const price = usdPriceForAwsSku(offerJson, product.sku);
       if (price === null) {
         continue;
@@ -524,7 +632,7 @@ export function normalizeAwsPriceList(
         continue;
       }
 
-      const modelId = group.model.toLowerCase().replace(/\s+/g, '-');
+      const modelId = awsModelId(group.model);
       records.push({
         provider: providerForAwsModel(group.model),
         model_id: modelId,
@@ -535,7 +643,13 @@ export function normalizeAwsPriceList(
         output_per_1k: group.output,
         cached_input_per_1k: group.cachedInput ?? null,
         image_per_1k: null,
+        // The Price List Bulk API is a billing catalog — it carries no context
+        // length. Filled in by inheritContextWindow, which also flips
+        // context_window_estimated to true.
         context_window: 0,
+        context_window_estimated: true,
+        pricing_varies: false,
+        alias_of: null,
         source: 'aws-pricelist',
         source_url: sourceUrl,
         fetched_at: fetchedAt,
@@ -543,7 +657,7 @@ export function normalizeAwsPriceList(
     }
   }
 
-  return { records, skipped: { zeroContext: 0, missingPrice } };
+  return { records, skipped: { zeroContext: 0, missingPrice, excludedTier: 0 } };
 }
 
 function modelNameForAzureMeter(meterName: string): string {
@@ -688,12 +802,17 @@ export function normalizeAzureRetail(
       output_per_1k: group.output,
       cached_input_per_1k: group.cachedInput ?? null,
       image_per_1k: null,
+      // Retail Prices is a billing catalog — no context length. Filled in by
+      // inheritContextWindow, which flips context_window_estimated to true.
       context_window: 0,
+      context_window_estimated: true,
+      pricing_varies: false,
+      alias_of: null,
       source: 'azure-retail',
       source_url: sourceUrl,
       fetched_at: fetchedAt,
     });
   }
 
-  return { records, skipped: { zeroContext: 0, missingPrice } };
+  return { records, skipped: { zeroContext: 0, missingPrice, excludedTier: 0 } };
 }

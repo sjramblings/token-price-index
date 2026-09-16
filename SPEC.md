@@ -29,8 +29,8 @@ There is no machine-readable, time-versioned, multi-hyperscaler view of LLM toke
 
 | Source | URL | Auth | Scope |
 |--------|-----|------|-------|
-| LiteLLM | `https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json` | None | ~1500 models, MIT-licensed |
-| OpenRouter | `https://openrouter.ai/api/v1/models` | None | ~300 models, live API pricing |
+| LiteLLM | `https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json` | None | ~4000 models, MIT-licensed |
+| OpenRouter | `https://openrouter.ai/api/v1/models` | None | ~440 models, live API pricing |
 | AWS Price List Bulk API | `https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/region_index.json` | None | Bedrock per-region |
 | Azure Retail Prices API | `https://prices.azure.com/api/retail/prices` | None | Azure OpenAI per-region |
 
@@ -48,6 +48,9 @@ export type PriceRecord = {
   cached_input_per_1k: number | null;
   image_per_1k: number | null;
   context_window: number;
+  context_window_estimated: boolean;
+  pricing_varies: boolean;
+  alias_of: string | null;
   source: 'litellm' | 'openrouter' | 'aws-pricelist' | 'azure-retail';
   source_url: string;
   fetched_at: string;
@@ -66,9 +69,25 @@ export type PriceRecord = {
 | `cached_input_per_1k` | USD cached-input price per 1,000 tokens when available; otherwise `null`. |
 | `image_per_1k` | USD image price per 1,000 image units when available; otherwise `null`. |
 | `context_window` | Maximum context window in tokens. |
+| `context_window_estimated` | `true` when the context window was inherited from the family maximum across LiteLLM/OpenRouter because this record's own source publishes none. Always `true` for `aws-pricelist` and `azure-retail`. |
+| `pricing_varies` | `true` when the upstream publishes conditional (time-of-day / day-of-week) rates that this record does not capture; the price fields are the base rate. |
+| `alias_of` | For catalog entries that redirect to another model (OpenRouter `~vendor/model-latest`), the `model_id` they resolve to; otherwise `null`. |
 | `source` | Source system used for the record. |
 | `source_url` | Upstream URL used to fetch or derive the record. |
-| `fetched_at` | ISO timestamp for the fetch that produced the record. |
+| `fetched_at` | ISO timestamp identifying the snapshot slot that produced the record. Uniform across every record in a snapshot, and derived from the scheduled slot rather than the runner's wall clock — see `snapshotDateISO` in `scripts/lib/io.ts`. |
+
+## Record scope
+
+Every record is an **on-demand list price** for one model on one deployment channel
+(and region, where the channel is regional). Deliberately excluded:
+
+- Batch-tier SKUs (OpenRouter `…:batch`, AWS `usagetype` containing `batch`, Azure `batch` meters)
+- Fine-tuned inference (LiteLLM `ft:…`, Azure `-ft` / `fine` meters)
+- Provisioned throughput, flex and priority tiers
+- Embedding, rerank, audio and image meters on the hyperscaler sources
+
+Uniqueness invariant: `(source, model_id, hyperscaler, region)` identifies exactly one
+record. `scripts/Verify.ts` fails the refresh if two records share an identity.
 
 ## Anti-criteria
 

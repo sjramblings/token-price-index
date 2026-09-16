@@ -12,7 +12,7 @@ import {
   YAxis,
 } from 'recharts';
 import { cn } from '../lib/cn';
-import { iterateRecentDates, loadHistory } from '../lib/data';
+import { loadHistoryManifest, loadHistory, recentSnapshotDates } from '../lib/data';
 import { loadAllIndexHistories, loadAllIndices } from '../lib/indices';
 import type { IndexHistory, IndexMember, IndexResult } from '../lib/indices';
 import { buildProviderShareSeries } from '../lib/landscape';
@@ -476,9 +476,14 @@ export default function Indices(): JSX.Element {
 
   useEffect(() => {
     let active = true;
-    const dates = iterateRecentDates(30).reverse();
 
-    void Promise.all(dates.map((date) => loadHistory(date).then((records) => ({ date, records }))))
+    // Ask the manifest which snapshots exist instead of assuming the last 30
+    // days are contiguous — seven are missing, and each was a guaranteed 404.
+    void loadHistoryManifest()
+      .then((manifest) => (manifest === null ? [] : recentSnapshotDates(manifest, 30).reverse()))
+      .then((dates) => Promise.all(
+        dates.map((date) => loadHistory(date).then((records) => ({ date, records }))),
+      ))
       .then((results) => {
         if (!active) {
           return;

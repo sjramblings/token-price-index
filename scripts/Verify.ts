@@ -1,6 +1,6 @@
 import { readJson } from './lib/io.ts';
 import type { PriceRecord } from './lib/types.ts';
-import { validateAll } from './lib/verify.ts';
+import { findDuplicateIdentities, validateAll } from './lib/verify.ts';
 
 const CURRENT_PATH = 'data/current.json';
 
@@ -42,7 +42,20 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  console.log(`[Verify] OK -- ${records.length} records pass schema invariants`);
+  const duplicates = findDuplicateIdentities(records);
+  if (duplicates.length > 0) {
+    console.error(
+      `[Verify] FAIL -- ${duplicates.length} duplicate record identities `
+        + '(source | model_id | hyperscaler | region must be unique):',
+    );
+    console.table(duplicates.slice(0, 20));
+    process.exit(1);
+  }
+
+  console.log(
+    `[Verify] OK -- ${records.length} records pass schema invariants, `
+      + 'no duplicate identities',
+  );
   process.exit(0);
 }
 

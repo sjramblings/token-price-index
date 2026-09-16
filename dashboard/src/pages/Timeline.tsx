@@ -9,7 +9,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { iterateRecentDates, loadCurrent, loadHistory } from '../lib/data';
+import { loadCurrent, loadHistory, loadHistoryManifest, recentSnapshotDates } from '../lib/data';
 import { formatRegion } from '../lib/format';
 import type { PriceRecord } from '../lib/types';
 
@@ -81,8 +81,14 @@ export default function Timeline(): JSX.Element {
     setTimelineLoading(true);
     setTimelineError(null);
 
-    const dates = iterateRecentDates(HISTORY_DAYS);
-    void Promise.all(dates.map((date) => loadHistory(date)))
+    // Same reason as Indices: the manifest knows which days were actually
+    // written, so gaps in the series stop costing a 404 each.
+    let dates: string[] = [];
+    void loadHistoryManifest()
+      .then((manifest) => {
+        dates = manifest === null ? [] : recentSnapshotDates(manifest, HISTORY_DAYS);
+        return Promise.all(dates.map((date) => loadHistory(date)));
+      })
       .then((snapshots) => {
         if (!active) {
           return;

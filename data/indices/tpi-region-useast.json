@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-09-15T19:56:49.005Z",
+  "computed_at": "2026-09-16T13:57:53.120Z",
   "data_source": "data/current.json",
   "member_count": 19,
   "members_resolved": 19,
@@ -24,9 +24,12 @@
         "cached_input_per_1k": 0.0002,
         "image_per_1k": null,
         "context_window": 300000,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260915152020/us-east-1/index.json",
-        "fetched_at": "2026-09-15T19:56:44.016Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 1.52,
@@ -45,9 +48,12 @@
         "cached_input_per_1k": 0.000015,
         "image_per_1k": null,
         "context_window": 300000,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260915152020/us-east-1/index.json",
-        "fetched_at": "2026-09-15T19:56:44.016Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.11400000000000002,
@@ -66,9 +72,12 @@
         "cached_input_per_1k": 0.00000875,
         "image_per_1k": null,
         "context_window": 128000,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260915152020/us-east-1/index.json",
-        "fetched_at": "2026-09-15T19:56:44.016Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.06649999999999999,
@@ -87,9 +96,12 @@
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 262144,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260915152020/us-east-1/index.json",
-        "fetched_at": "2026-09-15T19:56:44.016Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.7999999999999999,
@@ -108,9 +120,12 @@
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 262144,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260915152020/us-east-1/index.json",
-        "fetched_at": "2026-09-15T19:56:44.016Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 1.5999999999999999,
@@ -129,9 +144,12 @@
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 128000,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260915152020/us-east-1/index.json",
-        "fetched_at": "2026-09-15T19:56:44.016Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.72,
@@ -150,9 +168,12 @@
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 131072,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260915152020/us-east-1/index.json",
-        "fetched_at": "2026-09-15T19:56:44.016Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.15,
@@ -171,9 +192,12 @@
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 163840,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260915152020/us-east-1/index.json",
-        "fetched_at": "2026-09-15T19:56:44.016Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.9890000000000001,
@@ -192,9 +216,12 @@
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 202752,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260915152020/us-east-1/index.json",
-        "fetched_at": "2026-09-15T19:56:44.016Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 1.08,
@@ -213,9 +240,12 @@
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 262144,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260915152020/us-east-1/index.json",
-        "fetched_at": "2026-09-15T19:56:44.016Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 1.17,
@@ -234,9 +264,12 @@
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 131072,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260915152020/us-east-1/index.json",
-        "fetched_at": "2026-09-15T19:56:44.016Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.285,
@@ -255,9 +288,12 @@
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 131072,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20260915152020/us-east-1/index.json",
-        "fetched_at": "2026-09-15T19:56:44.016Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.285,
@@ -276,9 +312,12 @@
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 1047576,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "azure-retail",
         "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
-        "fetched_at": "2026-09-15T19:56:48.592Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 3.8,
@@ -297,9 +336,12 @@
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 1047576,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "azure-retail",
         "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
-        "fetched_at": "2026-09-15T19:56:48.592Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.788,
@@ -318,9 +360,12 @@
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 1047576,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "azure-retail",
         "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
-        "fetched_at": "2026-09-15T19:56:48.592Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.202,
@@ -339,9 +384,12 @@
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 128000,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "azure-retail",
         "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
-        "fetched_at": "2026-09-15T19:56:48.592Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 5.225,
@@ -361,9 +409,12 @@
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 128000,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "azure-retail",
         "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
-        "fetched_at": "2026-09-15T19:56:48.592Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.3135,
@@ -382,9 +433,12 @@
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 200000,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "azure-retail",
         "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
-        "fetched_at": "2026-09-15T19:56:48.592Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 31.35,
@@ -403,9 +457,12 @@
         "cached_input_per_1k": null,
         "image_per_1k": null,
         "context_window": 200000,
+        "context_window_estimated": true,
+        "pricing_varies": false,
+        "alias_of": null,
         "source": "azure-retail",
         "source_url": "https://prices.azure.com/api/retail/prices?$filter=productName eq 'Azure OpenAI'",
-        "fetched_at": "2026-09-15T19:56:48.592Z"
+        "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 3.94,

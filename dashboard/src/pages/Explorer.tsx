@@ -12,8 +12,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { CountUp } from '../lib/CountUp';
 import { cn } from '../lib/cn';
 import type { HistoryManifest } from '../lib/data';
-import { loadCurrent, loadHistoryManifest } from '../lib/data';
-import { fmt, fmtRelative, formatContextWindow, formatPricePer1K, formatRegion } from '../lib/format';
+import { loadCurrent, loadHistoryManifest, snapshotDate } from '../lib/data';
+import { daysSince, fmt, fmtRelative, formatContextWindow, formatPricePer1K, formatRegion } from '../lib/format';
 import type { Hyperscaler, PriceRecord, Source } from '../lib/types';
 
 type HyperscalerFilter = 'all' | Hyperscaler;
@@ -147,7 +147,23 @@ export default function Explorer(): JSX.Element {
       }),
       columnHelper.accessor('context_window', {
         header: 'Context',
-        cell: (info) => <span className="num-display text-xs text-ink-800">{formatContextWindow(info.getValue())}</span>,
+        // AWS Price List and Azure Retail are billing catalogs and publish no
+        // context length — those rows inherit the family maximum observed in
+        // LiteLLM/OpenRouter. Rendering that as a bare number presented a
+        // derived value as a publisher-reported fact, so mark it.
+        cell: (info) => (
+          <span className="num-display text-xs text-ink-800">
+            {formatContextWindow(info.getValue())}
+            {info.row.original.context_window_estimated && (
+              <span
+                className="ml-0.5 cursor-help text-ink-500"
+                title="Estimated — this source publishes no context length; inherited from the family maximum in LiteLLM / OpenRouter"
+              >
+                ~
+              </span>
+            )}
+          </span>
+        ),
       }),
       columnHelper.accessor('source', {
         header: 'Source',
@@ -166,7 +182,8 @@ export default function Explorer(): JSX.Element {
     getPaginationRowModel: getPaginationRowModel(),
     initialState: { pagination: { pageSize: 25 } },
   });
-  const today = new Date().toISOString().slice(0, 10);
+  // The date the DATA was built, never the browser clock — see snapshotDate.
+  const snapshot = snapshotDate(records);
 
   function retry(): void {
     setRequestAttempt((attempt) => attempt + 1);
@@ -191,8 +208,19 @@ export default function Explorer(): JSX.Element {
     );
   }
 
+  // Distinct models, not rows. `records.length` counts one row per
+  // (model, channel, region) and read 4,099 against 3,627 real models — a 13%
+  // overstatement on the headline number. Alias pointers
+  // (`~vendor/model-latest`) resolve to a model already counted, so they are
+  // excluded rather than counted twice.
+  const modelCount = new Set(
+    records
+      .filter((record) => record.alias_of === null)
+      .map((record) => record.model_id),
+  ).size;
   const statCards: StatCardProps[] = [
-    { label: 'Models', value: records.length },
+    { label: 'Models', value: modelCount },
+    { label: 'Price records', value: records.length },
     { label: 'Providers', value: new Set(records.map((record) => record.provider)).size },
     { label: 'Hyperscalers', value: new Set(records.map((record) => record.hyperscaler)).size },
     {
@@ -202,6 +230,11 @@ export default function Explorer(): JSX.Element {
         : historyManifest.dates.length,
     },
   ];
+  // Name the sources that are actually in the loaded file. The pill used to
+  // hardcode "litellm + openrouter" and silently omitted the ~550 AWS Price
+  // List and Azure Retail records sitting in the same table.
+  const sourcesPresent = [...new Set(records.map((record) => record.source))].sort();
+  const stale = snapshot !== null && daysSince(snapshot) > 1;
 
   return (
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
@@ -216,19 +249,31 @@ export default function Explorer(): JSX.Element {
           <span className="text-accent-500">.</span>
         </h1>
         <p className="mt-7 max-w-2xl text-lg leading-relaxed text-ink-600 md:text-xl">
-          {fmt.format(records.length)} models from LiteLLM, OpenRouter, AWS Bedrock, Azure OpenAI, Vertex — normalized
-          into one machine-readable JSON, refreshed daily, free forever.
+          {fmt.format(modelCount)} models across {fmt.format(records.length)} priced deployments,
+          from LiteLLM, OpenRouter, AWS Bedrock and Azure OpenAI — normalized into one
+          machine-readable JSON, refreshed daily, free forever.
         </p>
         <div className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
           {statCards.map((stat) => <StatCard key={stat.label} label={stat.label} value={stat.value} />)}
         </div>
         <div className="mt-6 flex flex-wrap items-center gap-2">
-          <span className="pill">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-teal-400" />
-            updated {fmtRelative(today)}
-          </span>
-          <span className="pill font-mono">source: litellm + openrouter</span>
-          <span className="pill">snapshot {today}</span>
+          {snapshot !== null && (
+            <>
+              <span className="pill">
+                <span
+                  className={cn(
+                    'h-1.5 w-1.5 rounded-full',
+                    // Only pulse while the data is actually current. A stale
+                    // snapshot should look stale, not live.
+                    stale ? 'bg-amber-400' : 'animate-pulse bg-teal-400',
+                  )}
+                />
+                updated {fmtRelative(snapshot)}
+              </span>
+              <span className="pill font-mono">source: {sourcesPresent.join(' + ')}</span>
+              <span className="pill">snapshot {snapshot}</span>
+            </>
+          )}
         </div>
       </section>
 

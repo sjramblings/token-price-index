@@ -1,5 +1,27 @@
+/**
+ * Price per 1K tokens, at whatever precision the number actually needs.
+ *
+ * A flat `toFixed(4)` rendered 210 of 4,099 non-zero prices as `$0.0000` —
+ * visually identical to a genuinely free model — and flattened real per-region
+ * variation, so every `nova-lite` row read `$0.0001` input in all 11 regions.
+ * Four decimals is still the floor, so the common case keeps its familiar
+ * column alignment; cheaper prices get up to four significant digits.
+ */
 export function formatPricePer1K(usd: number): string {
-  return Number.isFinite(usd) ? `$${usd.toFixed(4)}` : '—';
+  if (!Number.isFinite(usd)) {
+    return '—';
+  }
+  if (usd === 0) {
+    return '$0';
+  }
+
+  // Smallest exponent that keeps four significant digits, floored at 4dp.
+  const magnitude = Math.floor(Math.log10(Math.abs(usd)));
+  const digits = Math.min(Math.max(4, 3 - magnitude), 10);
+  // Trim significant-digit padding (`$0.01500` → `$0.0150`) without dropping
+  // below the 4dp floor that keeps the column aligned.
+  const trimmed = usd.toFixed(digits).replace(/(\.\d{4}\d*?)0+$/, '$1');
+  return `$${trimmed}`;
 }
 
 export function formatPricePerMillion(usd: number): string {
@@ -23,6 +45,15 @@ export function formatRegion(region: string | null): string {
 }
 
 export const fmt = new Intl.NumberFormat('en-US');
+
+/** Whole days between a `YYYY-MM-DD` date and now; negative if in the future. */
+export function daysSince(date: string): number {
+  const target = new Date(`${date}T00:00:00Z`);
+  if (Number.isNaN(target.getTime())) {
+    return 0;
+  }
+  return Math.floor((Date.now() - target.getTime()) / (1000 * 60 * 60 * 24));
+}
 
 export function fmtRelative(date: string): string {
   const target = new Date(`${date}T00:00:00Z`);
