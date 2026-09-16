@@ -5,17 +5,17 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-09-15T19:56:48.900Z",
+  "computed_at": "2026-09-16T19:49:12.260Z",
   "data_source": "data/current.json",
   "member_count": 16,
-  "members_resolved": 15,
+  "members_resolved": 16,
   "members_with_invalid_price": 0,
   "members": [
     {
       "label": "GPT-5.5",
       "resolved": {
-        "provider": "openai",
-        "model_id": "gpt-5.5",
+        "provider": "aihubmix",
+        "model_id": "aihubmix/gpt-5.5",
         "family": "gpt-5.5",
         "hyperscaler": "direct",
         "region": null,
@@ -26,7 +26,7 @@
         "context_window": 1050000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-09-15"
+        "fetched_at": "2026-09-16"
       },
       "selector_matched": 0,
       "blended_per_million": 12.5,
@@ -49,7 +49,7 @@
         "context_window": 1000000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-09-15"
+        "fetched_at": "2026-09-16"
       },
       "selector_matched": 0,
       "blended_per_million": 11,
@@ -72,7 +72,7 @@
         "context_window": 1000000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-09-15"
+        "fetched_at": "2026-09-16"
       },
       "selector_matched": 0,
       "blended_per_million": 6.6,
@@ -95,7 +95,7 @@
         "context_window": 1050000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-09-15"
+        "fetched_at": "2026-09-16"
       },
       "selector_matched": 0,
       "blended_per_million": 6.25,
@@ -118,7 +118,7 @@
         "context_window": 1000000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-09-15"
+        "fetched_at": "2026-09-16"
       },
       "selector_matched": 0,
       "blended_per_million": 3.875,
@@ -128,13 +128,27 @@
     },
     {
       "label": "Gemini 3.5 Flash",
-      "resolved": null,
-      "selector_matched": -1,
-      "blended_per_million": null,
-      "ln_blended": null,
+      "resolved": {
+        "provider": "aihubmix",
+        "model_id": "aihubmix/gemini-3-flash-preview",
+        "family": "gemini-3-flash-preview",
+        "hyperscaler": "direct",
+        "region": null,
+        "input_per_1k": 0.0005,
+        "output_per_1k": 0.003,
+        "cached_input_per_1k": 0.000049999999999999996,
+        "image_per_1k": null,
+        "context_window": 1048576,
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
+        "fetched_at": "2026-09-16"
+      },
+      "selector_matched": 0,
+      "blended_per_million": 1.25,
+      "ln_blended": 0.22314355131420976,
       "published_blended_per_million": 3.75,
-      "note": "No direct hyperscaler record in our catalog — Gemini 3 Flash Preview is only available via aggregator/GCP. Expected to be unresolved.",
-      "excluded_reason": "unresolved"
+      "divergence_pct": -66.66666666666666,
+      "note": "No direct hyperscaler record in our catalog — Gemini 3 Flash Preview is only available via aggregator/GCP. Expected to be unresolved."
     },
     {
       "label": "GLM 5.1",
@@ -151,7 +165,7 @@
         "context_window": 202745,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-09-15"
+        "fetched_at": "2026-09-16"
       },
       "selector_matched": 0,
       "blended_per_million": 2.3,
@@ -163,31 +177,31 @@
     {
       "label": "Claude Haiku 4.5",
       "resolved": {
-        "provider": "anthropic",
-        "model_id": "claude-haiku-4-5",
+        "provider": "aihubmix",
+        "model_id": "aihubmix/claude-haiku-4-5",
         "family": "claude-haiku-4-5",
         "hyperscaler": "direct",
         "region": null,
-        "input_per_1k": 0.001,
-        "output_per_1k": 0.005,
-        "cached_input_per_1k": 0.00009999999999999999,
+        "input_per_1k": 0.0011,
+        "output_per_1k": 0.0055,
+        "cached_input_per_1k": 0.00011,
         "image_per_1k": null,
         "context_window": 200000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-09-15"
+        "fetched_at": "2026-09-16"
       },
       "selector_matched": 0,
-      "blended_per_million": 2.2,
-      "ln_blended": 0.7884573603642703,
+      "blended_per_million": 2.42,
+      "ln_blended": 0.883767540168595,
       "published_blended_per_million": 2.2,
-      "divergence_pct": 0
+      "divergence_pct": 9.999999999999988
     },
     {
       "label": "GPT-5.4 Mini",
       "resolved": {
-        "provider": "openai",
-        "model_id": "gpt-5.4-mini",
+        "provider": "aihubmix",
+        "model_id": "aihubmix/gpt-5.4-mini",
         "family": "gpt-5.4-mini",
         "hyperscaler": "direct",
         "region": null,
@@ -195,10 +209,10 @@
         "output_per_1k": 0.0045000000000000005,
         "cached_input_per_1k": 0.000075,
         "image_per_1k": null,
-        "context_window": 272000,
+        "context_window": 400000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-09-15"
+        "fetched_at": "2026-09-16"
       },
       "selector_matched": 0,
       "blended_per_million": 1.8750000000000002,
@@ -209,25 +223,25 @@
     {
       "label": "Kimi K2.6",
       "resolved": {
-        "provider": "cloudflare",
-        "model_id": "cloudflare/@cf/moonshotai/kimi-k2.6",
+        "provider": "aihubmix",
+        "model_id": "aihubmix/kimi-k2.6",
         "family": "kimi-k2.6",
         "hyperscaler": "direct",
         "region": null,
         "input_per_1k": 0.00095,
-        "output_per_1k": 0.004,
-        "cached_input_per_1k": 0.00016,
+        "output_per_1k": 0.0039995000000000005,
+        "cached_input_per_1k": 0.000160835,
         "image_per_1k": null,
         "context_window": 262144,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-09-15"
+        "fetched_at": "2026-09-16"
       },
       "selector_matched": 0,
-      "blended_per_million": 1.8649999999999998,
-      "ln_blended": 0.6232610530957787,
+      "blended_per_million": 1.8648500000000001,
+      "ln_blended": 0.6231806209067735,
       "published_blended_per_million": 1.865,
-      "divergence_pct": -1.1905876939679963e-14
+      "divergence_pct": -0.008042895442352411
     },
     {
       "label": "Grok 4.3",
@@ -244,7 +258,7 @@
         "context_window": 1000000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-09-15"
+        "fetched_at": "2026-09-16"
       },
       "selector_matched": 0,
       "blended_per_million": 1.625,
@@ -267,7 +281,7 @@
         "context_window": 129024,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-09-15"
+        "fetched_at": "2026-09-16"
       },
       "selector_matched": 0,
       "blended_per_million": 0.6399999999999999,
@@ -290,7 +304,7 @@
         "context_window": 262144,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-09-15"
+        "fetched_at": "2026-09-16"
       },
       "selector_matched": 0,
       "blended_per_million": 0.7999999999999999,
@@ -301,31 +315,31 @@
     {
       "label": "MiniMax M2.7",
       "resolved": {
-        "provider": "sambanova",
-        "model_id": "sambanova/MiniMax-M2.7",
+        "provider": "aihubmix",
+        "model_id": "aihubmix/minimax-m2.7",
         "family": "minimax-m2.7",
         "hyperscaler": "direct",
         "region": null,
-        "input_per_1k": 0.0006,
-        "output_per_1k": 0.0024,
-        "cached_input_per_1k": null,
+        "input_per_1k": 0.0002958,
+        "output_per_1k": 0.0011832,
+        "cached_input_per_1k": 0.00005916,
         "image_per_1k": null,
-        "context_window": 196608,
+        "context_window": 204800,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-09-15"
+        "fetched_at": "2026-09-16"
       },
       "selector_matched": 0,
-      "blended_per_million": 1.14,
-      "ln_blended": 0.131028262406404,
+      "blended_per_million": 0.56202,
+      "ln_blended": -0.5762178425330429,
       "published_blended_per_million": 0.57,
-      "divergence_pct": 100
+      "divergence_pct": -1.3999999999999977
     },
     {
       "label": "GPT-5.4 Nano",
       "resolved": {
-        "provider": "openai",
-        "model_id": "gpt-5.4-nano",
+        "provider": "aihubmix",
+        "model_id": "aihubmix/gpt-5.4-nano",
         "family": "gpt-5.4-nano",
         "hyperscaler": "direct",
         "region": null,
@@ -333,10 +347,10 @@
         "output_per_1k": 0.00125,
         "cached_input_per_1k": 0.00002,
         "image_per_1k": null,
-        "context_window": 272000,
+        "context_window": 400000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-09-15"
+        "fetched_at": "2026-09-16"
       },
       "selector_matched": 0,
       "blended_per_million": 0.515,
@@ -347,28 +361,28 @@
     {
       "label": "DeepSeek V4 Flash",
       "resolved": {
-        "provider": "dashscope",
-        "model_id": "dashscope/deepseek-v4-flash",
+        "provider": "aihubmix",
+        "model_id": "aihubmix/deepseek-v4-flash",
         "family": "deepseek-v4-flash",
         "hyperscaler": "direct",
         "region": null,
-        "input_per_1k": 0.00019999999999999998,
-        "output_per_1k": 0.00039999999999999996,
-        "cached_input_per_1k": 0.00004,
+        "input_per_1k": 0.000142,
+        "output_per_1k": 0.000284,
+        "cached_input_per_1k": 0.0000284,
         "image_per_1k": null,
         "context_window": 1000000,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-09-15"
+        "fetched_at": "2026-09-16"
       },
       "selector_matched": 0,
-      "blended_per_million": 0.25999999999999995,
-      "ln_blended": -1.3470736479666094,
+      "blended_per_million": 0.18460000000000001,
+      "ln_blended": -1.6895639569133851,
       "published_blended_per_million": 0.182,
-      "divergence_pct": 42.85714285714284,
+      "divergence_pct": 1.428571428571439,
       "note": "DeepSeek has no direct provider record in our LiteLLM source — only aggregator. Expected to be unresolved."
     }
   ],
-  "geometric_mean_usd_per_million": 2.0554607233514406,
-  "arithmetic_mean_usd_per_million": 3.563
+  "geometric_mean_usd_per_million": 1.877157328503022,
+  "arithmetic_mean_usd_per_million": 3.3913418749999997
 }
