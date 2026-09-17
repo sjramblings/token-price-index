@@ -4,7 +4,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-09-16T13:57:52.625Z",
+  "computed_at": "2026-09-17T02:42:36.847Z",
   "data_source": "data/current.json",
   "member_count": 16,
   "members_resolved": 16,
@@ -411,9 +411,9 @@
         "family": "deepseek-v4-flash",
         "hyperscaler": "aggregator",
         "region": null,
-        "input_per_1k": 0.00008708,
-        "output_per_1k": 0.00017416,
-        "cached_input_per_1k": 0.000017415999999999997,
+        "input_per_1k": 0.00008860600000000001,
+        "output_per_1k": 0.00017721200000000002,
+        "cached_input_per_1k": 0.000017721200000000002,
         "image_per_1k": null,
         "context_window": 1024000,
         "context_window_estimated": false,
@@ -424,14 +424,14 @@
         "fetched_at": "2026-09-16T00:00:00.000Z"
       },
       "selector_matched": 0,
-      "blended_per_million": 0.113204,
-      "ln_blended": -2.178563778148299,
+      "blended_per_million": 0.11518780000000002,
+      "ln_blended": -2.161191439106219,
       "published_blended_per_million": 0.182,
-      "divergence_pct": -37.8
+      "divergence_pct": -36.70999999999999
     }
   ],
-  "geometric_mean_usd_per_million": 1.7229018573583064,
-  "arithmetic_mean_usd_per_million": 3.31507525,
+  "geometric_mean_usd_per_million": 1.7247735504898092,
+  "arithmetic_mean_usd_per_million": 3.3151992375,
   "published_value_usd_per_million": 2.08,
-  "index_divergence_pct": -17.168179934696813
+  "index_divergence_pct": -17.078194687989946
 }

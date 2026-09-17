@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-09-16T13:57:52.725Z",
+  "computed_at": "2026-09-17T02:42:36.932Z",
   "data_source": "data/current.json",
   "member_count": 16,
   "members_resolved": 11,
@@ -99,7 +99,7 @@
         "region": null,
         "input_per_1k": 0.00275,
         "output_per_1k": 0.0165,
-        "cached_input_per_1k": 0.00028000000000000003,
+        "cached_input_per_1k": 0.000275,
         "image_per_1k": null,
         "context_window": 1050000,
         "context_window_estimated": false,
