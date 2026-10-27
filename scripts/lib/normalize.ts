@@ -232,6 +232,25 @@ export function extractFamily(modelId: string): string {
     family = family.slice(slashIndex + 1);
   }
 
+  // Leading `@org/` segment, stripped AFTER the slash collapse above and
+  // BEFORE the `@.*$` snapshot rule below.
+  //
+  // Several hosts namespace their catalog this way: Cloudflare ships
+  // `cloudflare/@cf/…` and `cloudflare/@hf/…`, OpenInfer ships
+  // `openinfer/@oi/…`. The slash collapse removes the outer host segment and
+  // leaves `@oi/glm-5.3-flash`, which the `@.*$` rule then truncates to the
+  // empty string — so extractFamily falls back to the raw model id and the
+  // family-shape guard correctly rejects the record.
+  //
+  // That took the daily refresh down from 2026-10-18 to 2026-10-26: nine
+  // consecutive runs aborted at Verify when `openinfer/@oi/…` appeared
+  // upstream, freezing the published index on 2026-10-17 data.
+  //
+  // `@cf/` and `@hf/` were fixed by name in PR #25, which is why a third
+  // vendor could break it again. Match the SHAPE instead of enumerating
+  // hosts, so a fourth costs nothing.
+  family = family.replace(/^@[a-z0-9_-]+\//, '');
+
   family = family.replace(
     /^(anthropic|amazon|meta|mistral|mistralai|cohere|ai21|stability|deepseek|writer|openai|google|qwen|microsoft|huggingface|z-ai|zhipu)\./,
     '',
