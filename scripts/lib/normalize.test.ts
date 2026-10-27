@@ -109,6 +109,12 @@ describe('extractFamily', () => {
     ['anyscale/HuggingFaceH4/zephyr-7b-beta', 'zephyr-7b-beta'],
     // The dot guard still protects the vendor-dot form the next rule owns.
     ['bedrock/anthropic.claude-3-5-sonnet', 'claude-3-5-sonnet'],
+    // Hyphenated dated snapshots: 59 of 66 duplicated an undated twin.
+    ['gpt-4o-2024-05-13', 'gpt-4o'],
+    ['openai/gpt-5.4-pro-2026-03-05', 'gpt-5.4-pro'],
+    ['gpt-4o-mini-2024-07-18', 'gpt-4o-mini'],
+    // The compact 8-digit form keeps working.
+    ['claude-3-5-sonnet-20240620', 'claude-3-5-sonnet'],
     // GovCloud Bedrock inference-profile prefix — `us` alone does not match
     // `us-gov.`, so these used to survive into the family field.
     ['us-gov.anthropic.claude-opus-5', 'claude-opus-5'],

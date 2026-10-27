@@ -181,6 +181,11 @@ export const FAMILY_NOISE_PATTERNS: readonly FamilyNoisePattern[] = [
     pattern: /@/,
     example: 'claude-opus-4-1@20250805 → claude-opus-4-1',
   },
+  {
+    name: 'hyphenated-date-pin',
+    pattern: /-\d{4}-\d{2}-\d{2}$/,
+    example: 'gpt-4o-2024-05-13 → gpt-4o',
+  },
   // Bedrock tagged versioned alias (always strips regardless of family prefix)
   {
     name: 'bedrock-tagged-alias',
@@ -351,6 +356,12 @@ export function extractFamily(modelId: string): string {
   family = family.replace(/^(claude(?:-[a-z]+)*-\d+(?:-\d+)*)-v\d+$/, '$1');
   family = family.replace(/^(nova(?:-\d+)?-[a-z]+)-v\d+$/, '$1');
 
+  // Dated snapshot pin in hyphenated form: `gpt-4o-2024-05-13`. Must run
+  // before the bare `-\d{8}`/`-\d{4}` rules, which cannot see it — the final
+  // segment is two digits, so neither matches and the date survived. 66 such
+  // families existed and 59 duplicated an undated twin: `gpt-4o-2024-05-13`,
+  // `gpt-4o-2024-08-06` and `gpt-4o-2024-11-20` all sat beside `gpt-4o`.
+  family = family.replace(/-\d{4}-\d{2}-\d{2}$/, '');
   family = family.replace(/-\d{8}$/, '');
   family = family.replace(/-\d{4}$/, '');
   family = family.replace(/^gpt-35-/, 'gpt-3.5-');

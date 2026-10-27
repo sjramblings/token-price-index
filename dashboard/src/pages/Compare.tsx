@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { X } from 'lucide-react';
+import { buildCompareSuggestions } from '../lib/compare-suggestions';
 import { loadCurrent } from '../lib/data';
 import { formatContextWindow, formatPricePer1K, formatRegion } from '../lib/format';
 import { cn } from '../lib/cn';
@@ -70,6 +72,26 @@ export default function Compare(): JSX.Element {
   const [requestAttempt, setRequestAttempt] = useState(0);
   const [selection, setSelection] = useState<PriceRecord[]>([]);
   const [query, setQuery] = useState('');
+  // `?models=` makes a comparison shareable — the whole point of building one
+  // is usually to show someone else.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedKeys = searchParams.get('models');
+
+  function publishSelection(next: PriceRecord[]): void {
+    setSelection(next);
+    setSearchParams(
+      (params: URLSearchParams): URLSearchParams => {
+        const updated = new URLSearchParams(params);
+        if (next.length === 0) {
+          updated.delete('models');
+        } else {
+          updated.set('models', next.map(recordKey).join(','));
+        }
+        return updated;
+      },
+      { replace: true },
+    );
+  }
 
   useEffect(() => {
     let active = true;
@@ -94,6 +116,34 @@ export default function Compare(): JSX.Element {
       active = false;
     };
   }, [requestAttempt]);
+
+  // Resolve ?models= against the catalogue. Keys that no longer exist are
+  // dropped rather than substituted, so a stale link shows what it can and
+  // says nothing false about the rest.
+  //
+  // This reacts to the param CHANGING, not just to first load. HashRouter does
+  // not remount on a hash change, so guarding on "selection is empty" meant
+  // opening a shared link while already comparing something left the old
+  // comparison on screen under the new URL. Writes from publishSelection
+  // serialize to exactly these keys, so the comparison below no-ops and this
+  // cannot loop.
+  const selectionKeys = selection.map(recordKey).join(',');
+  useEffect(() => {
+    if (records.length === 0) {
+      return;
+    }
+    const wanted = (requestedKeys ?? '').split(',').filter((key) => key !== '');
+    const byKey = new Map(records.map((record) => [recordKey(record), record]));
+    const resolved = wanted
+      .map((key) => byKey.get(key))
+      .filter((record): record is PriceRecord => record !== undefined)
+      .slice(0, MAX_SELECTIONS);
+    if (resolved.map(recordKey).join(',') !== selectionKeys) {
+      setSelection(resolved);
+    }
+  }, [requestedKeys, records, selectionKeys]);
+
+  const suggestions = useMemo(() => buildCompareSuggestions(records), [records]);
 
   const pickerResults = useMemo(() => {
     const normalizedQuery = query.toLowerCase().trim();
@@ -122,14 +172,14 @@ export default function Compare(): JSX.Element {
 
   function addRecord(record: PriceRecord): void {
     if (selection.length < MAX_SELECTIONS) {
-      setSelection((current) => [...current, record]);
+      publishSelection([...selection, record]);
       setQuery('');
     }
   }
 
   function removeRecord(record: PriceRecord): void {
     const key = recordKey(record);
-    setSelection((current) => current.filter((selected) => recordKey(selected) !== key));
+    publishSelection(selection.filter((selected) => recordKey(selected) !== key));
   }
 
   if (loading) {
@@ -173,7 +223,29 @@ export default function Compare(): JSX.Element {
               className="w-full rounded-full border border-ink-300/30 bg-ink-100/30 px-4 py-2 font-mono text-sm text-ink-900 placeholder-ink-500 transition focus:border-accent-500/50 focus:outline-none focus:ring-1 focus:ring-accent-500/20"
             />
             {query.trim() === '' ? (
-              <p className="mt-3 font-mono text-sm text-ink-600">search above to start comparing</p>
+              suggestions.length === 0 ? (
+                <p className="mt-3 font-mono text-sm text-ink-600">search above to start comparing</p>
+              ) : (
+                <div className="mt-4">
+                  <p className="h-eyebrow">or start from one of these</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {suggestions.map((suggestion) => (
+                      <button
+                        key={suggestion.id}
+                        type="button"
+                        onClick={() => publishSelection(suggestion.records.slice(0, MAX_SELECTIONS))}
+                        title={suggestion.detail}
+                        className="max-w-full rounded-xl border border-ink-300/30 bg-ink-100/20 px-3 py-2 text-left transition hover:border-accent-500/40 hover:bg-ink-100/40"
+                      >
+                        <span className="block font-mono text-[11px] text-ink-900">{suggestion.label}</span>
+                        <span className="mt-0.5 block max-w-md truncate text-[10px] text-ink-600">
+                          {suggestion.detail}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )
             ) : pickerResults.length === 0 ? (
               <p className="mt-3 font-mono text-sm text-ink-600">no matches</p>
             ) : (
@@ -204,7 +276,7 @@ export default function Compare(): JSX.Element {
 
       {selection.length === 0 ? (
         <p className="py-12 text-center font-mono text-sm text-ink-600">
-          no models selected — search above
+          no models selected — search, or pick a suggested comparison above
         </p>
       ) : (
         <section className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">

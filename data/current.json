@@ -13502,7 +13502,7 @@
   {
     "provider": "azure",
     "model_id": "azure/eu/gpt-4o-2024-05-13",
-    "family": "gpt-4o-2024-05-13",
+    "family": "gpt-4o",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0055,
@@ -13520,7 +13520,7 @@
   {
     "provider": "azure",
     "model_id": "azure/eu/gpt-4o-2024-08-06",
-    "family": "gpt-4o-2024-08-06",
+    "family": "gpt-4o",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00275,
@@ -13538,7 +13538,7 @@
   {
     "provider": "azure",
     "model_id": "azure/eu/gpt-4o-2024-11-20",
-    "family": "gpt-4o-2024-11-20",
+    "family": "gpt-4o",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00275,
@@ -13574,7 +13574,7 @@
   {
     "provider": "azure",
     "model_id": "azure/eu/gpt-4o-mini-2024-07-18",
-    "family": "gpt-4o-mini-2024-07-18",
+    "family": "gpt-4o-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.000165,
@@ -13592,7 +13592,7 @@
   {
     "provider": "azure",
     "model_id": "azure/eu/gpt-4o-mini-realtime-preview-2024-12-17",
-    "family": "gpt-4o-mini-realtime-preview-2024-12-17",
+    "family": "gpt-4o-mini-realtime-preview",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00066,
@@ -13610,7 +13610,7 @@
   {
     "provider": "azure",
     "model_id": "azure/eu/gpt-4o-realtime-preview-2024-10-01",
-    "family": "gpt-4o-realtime-preview-2024-10-01",
+    "family": "gpt-4o-realtime-preview",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0055,
@@ -13628,7 +13628,7 @@
   {
     "provider": "azure",
     "model_id": "azure/eu/gpt-4o-realtime-preview-2024-12-17",
-    "family": "gpt-4o-realtime-preview-2024-12-17",
+    "family": "gpt-4o-realtime-preview",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0055,
@@ -13646,7 +13646,7 @@
   {
     "provider": "azure",
     "model_id": "azure/eu/gpt-5-2025-08-07",
-    "family": "gpt-5-2025-08-07",
+    "family": "gpt-5",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.001375,
@@ -13664,7 +13664,7 @@
   {
     "provider": "azure",
     "model_id": "azure/eu/gpt-5-mini-2025-08-07",
-    "family": "gpt-5-mini-2025-08-07",
+    "family": "gpt-5-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.000275,
@@ -13682,7 +13682,7 @@
   {
     "provider": "azure",
     "model_id": "azure/eu/gpt-5-nano-2025-08-07",
-    "family": "gpt-5-nano-2025-08-07",
+    "family": "gpt-5-nano",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.000055,
@@ -13826,7 +13826,7 @@
   {
     "provider": "azure",
     "model_id": "azure/eu/gpt-5.4-2026-03-05",
-    "family": "gpt-5.4-2026-03-05",
+    "family": "gpt-5.4",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00275,
@@ -13862,7 +13862,7 @@
   {
     "provider": "azure",
     "model_id": "azure/eu/gpt-5.5-2026-04-23",
-    "family": "gpt-5.5-2026-04-23",
+    "family": "gpt-5.5",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0055,
@@ -13880,7 +13880,7 @@
   {
     "provider": "azure",
     "model_id": "azure/eu/gpt-5.5-2026-04-24",
-    "family": "gpt-5.5-2026-04-24",
+    "family": "gpt-5.5",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0055,
@@ -14060,7 +14060,7 @@
   {
     "provider": "azure",
     "model_id": "azure/eu/o1-2024-12-17",
-    "family": "o1-2024-12-17",
+    "family": "o1",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0165,
@@ -14078,7 +14078,7 @@
   {
     "provider": "azure",
     "model_id": "azure/eu/o1-mini-2024-09-12",
-    "family": "o1-mini-2024-09-12",
+    "family": "o1-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0012100000000000001,
@@ -14132,7 +14132,7 @@
   {
     "provider": "azure",
     "model_id": "azure/eu/o3-2025-04-16",
-    "family": "o3-2025-04-16",
+    "family": "o3",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0022,
@@ -14168,7 +14168,7 @@
   {
     "provider": "azure",
     "model_id": "azure/eu/o3-mini-2025-01-31",
-    "family": "o3-mini-2025-01-31",
+    "family": "o3-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0012100000000000001,
@@ -14204,7 +14204,7 @@
   {
     "provider": "azure",
     "model_id": "azure/eu/o4-mini-2025-04-16",
-    "family": "o4-mini-2025-04-16",
+    "family": "o4-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0012100000000000001,
@@ -14222,7 +14222,7 @@
   {
     "provider": "azure",
     "model_id": "azure/global-standard/gpt-4o-2024-08-06",
-    "family": "gpt-4o-2024-08-06",
+    "family": "gpt-4o",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0025,
@@ -14240,7 +14240,7 @@
   {
     "provider": "azure",
     "model_id": "azure/global-standard/gpt-4o-2024-11-20",
-    "family": "gpt-4o-2024-11-20",
+    "family": "gpt-4o",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0025,
@@ -14276,7 +14276,7 @@
   {
     "provider": "azure",
     "model_id": "azure/global/gpt-4o-2024-08-06",
-    "family": "gpt-4o-2024-08-06",
+    "family": "gpt-4o",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0025,
@@ -14294,7 +14294,7 @@
   {
     "provider": "azure",
     "model_id": "azure/global/gpt-4o-2024-11-20",
-    "family": "gpt-4o-2024-11-20",
+    "family": "gpt-4o",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0025,
@@ -14564,7 +14564,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-4-turbo-2024-04-09",
-    "family": "gpt-4-turbo-2024-04-09",
+    "family": "gpt-4-turbo",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.011,
@@ -14618,7 +14618,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-4.1-2025-04-14",
-    "family": "gpt-4.1-2025-04-14",
+    "family": "gpt-4.1",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.002,
@@ -14654,7 +14654,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-4.1-mini-2025-04-14",
-    "family": "gpt-4.1-mini-2025-04-14",
+    "family": "gpt-4.1-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00039999999999999996,
@@ -14690,7 +14690,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-4.1-nano-2025-04-14",
-    "family": "gpt-4.1-nano-2025-04-14",
+    "family": "gpt-4.1-nano",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00009999999999999999,
@@ -14744,7 +14744,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-4o-2024-05-13",
-    "family": "gpt-4o-2024-05-13",
+    "family": "gpt-4o",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.005,
@@ -14762,7 +14762,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-4o-2024-08-06",
-    "family": "gpt-4o-2024-08-06",
+    "family": "gpt-4o",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0025,
@@ -14780,7 +14780,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-4o-2024-11-20",
-    "family": "gpt-4o-2024-11-20",
+    "family": "gpt-4o",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0025,
@@ -14798,7 +14798,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-4o-audio-preview-2024-12-17",
-    "family": "gpt-4o-audio-preview-2024-12-17",
+    "family": "gpt-4o-audio-preview",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0025,
@@ -14834,7 +14834,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-4o-mini-2024-07-18",
-    "family": "gpt-4o-mini-2024-07-18",
+    "family": "gpt-4o-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00015,
@@ -14852,7 +14852,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-4o-mini-audio-preview-2024-12-17",
-    "family": "gpt-4o-mini-audio-preview-2024-12-17",
+    "family": "gpt-4o-mini-audio-preview",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00015,
@@ -14870,7 +14870,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-4o-mini-realtime-preview-2024-12-17",
-    "family": "gpt-4o-mini-realtime-preview-2024-12-17",
+    "family": "gpt-4o-mini-realtime-preview",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0006,
@@ -14906,7 +14906,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-4o-realtime-preview-2024-10-01",
-    "family": "gpt-4o-realtime-preview-2024-10-01",
+    "family": "gpt-4o-realtime-preview",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.005,
@@ -14924,7 +14924,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-4o-realtime-preview-2024-12-17",
-    "family": "gpt-4o-realtime-preview-2024-12-17",
+    "family": "gpt-4o-realtime-preview",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.005,
@@ -14996,7 +14996,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-5-2025-08-07",
-    "family": "gpt-5-2025-08-07",
+    "family": "gpt-5",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00125,
@@ -15068,7 +15068,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-5-mini-2025-08-07",
-    "family": "gpt-5-mini-2025-08-07",
+    "family": "gpt-5-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00025,
@@ -15104,7 +15104,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-5-nano-2025-08-07",
-    "family": "gpt-5-nano-2025-08-07",
+    "family": "gpt-5-nano",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.000049999999999999996,
@@ -15158,7 +15158,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-5.1-2025-11-13",
-    "family": "gpt-5.1-2025-11-13",
+    "family": "gpt-5.1",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00125,
@@ -15212,7 +15212,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-5.1-codex-2025-11-13",
-    "family": "gpt-5.1-codex-2025-11-13",
+    "family": "gpt-5.1-codex",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00125,
@@ -15266,7 +15266,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-5.1-codex-mini-2025-11-13",
-    "family": "gpt-5.1-codex-mini-2025-11-13",
+    "family": "gpt-5.1-codex-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00025,
@@ -15302,7 +15302,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-5.2-2025-12-11",
-    "family": "gpt-5.2-2025-12-11",
+    "family": "gpt-5.2",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00175,
@@ -15374,7 +15374,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-5.2-pro-2025-12-11",
-    "family": "gpt-5.2-pro-2025-12-11",
+    "family": "gpt-5.2-pro",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.020999999999999998,
@@ -15446,7 +15446,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-5.4-2026-03-05",
-    "family": "gpt-5.4-2026-03-05",
+    "family": "gpt-5.4",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0025,
@@ -15482,7 +15482,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-5.4-mini-2026-03-17",
-    "family": "gpt-5.4-mini-2026-03-17",
+    "family": "gpt-5.4-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00075,
@@ -15518,7 +15518,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-5.4-nano-2026-03-17",
-    "family": "gpt-5.4-nano-2026-03-17",
+    "family": "gpt-5.4-nano",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00019999999999999998,
@@ -15554,7 +15554,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-5.4-pro-2026-03-05",
-    "family": "gpt-5.4-pro-2026-03-05",
+    "family": "gpt-5.4-pro",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.030000000000000002,
@@ -15590,7 +15590,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-5.5-2026-04-23",
-    "family": "gpt-5.5-2026-04-23",
+    "family": "gpt-5.5",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.005,
@@ -15608,7 +15608,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-5.5-2026-04-24",
-    "family": "gpt-5.5-2026-04-24",
+    "family": "gpt-5.5",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.005,
@@ -15644,7 +15644,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-5.5-pro-2026-04-23",
-    "family": "gpt-5.5-pro-2026-04-23",
+    "family": "gpt-5.5-pro",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.030000000000000002,
@@ -15698,7 +15698,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-5.6-luna-2026-07-09",
-    "family": "gpt-5.6-luna-2026-07-09",
+    "family": "gpt-5.6-luna",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00019999999999999998,
@@ -15734,7 +15734,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-5.6-sol-2026-07-09",
-    "family": "gpt-5.6-sol-2026-07-09",
+    "family": "gpt-5.6-sol",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.004,
@@ -15770,7 +15770,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-5.6-terra-2026-07-09",
-    "family": "gpt-5.6-terra-2026-07-09",
+    "family": "gpt-5.6-terra",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.002,
@@ -15806,7 +15806,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-6-astra-2026-09-03",
-    "family": "gpt-6-astra-2026-09-03",
+    "family": "gpt-6-astra",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.01,
@@ -15842,7 +15842,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-6-luna-2026-09-22",
-    "family": "gpt-6-luna-2026-09-22",
+    "family": "gpt-6-luna",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00009999999999999999,
@@ -15878,7 +15878,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-6-sol-2026-09-22",
-    "family": "gpt-6-sol-2026-09-22",
+    "family": "gpt-6-sol",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.002,
@@ -15914,7 +15914,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-6.1-sol-2026-09-29",
-    "family": "gpt-6.1-sol-2026-09-29",
+    "family": "gpt-6.1-sol",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.002,
@@ -15968,7 +15968,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-audio-1.5-2026-02-23",
-    "family": "gpt-audio-1.5-2026-02-23",
+    "family": "gpt-audio-1.5",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0025,
@@ -15986,7 +15986,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-audio-2025-08-28",
-    "family": "gpt-audio-2025-08-28",
+    "family": "gpt-audio",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0025,
@@ -16022,7 +16022,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-audio-mini-2025-10-06",
-    "family": "gpt-audio-mini-2025-10-06",
+    "family": "gpt-audio-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0006,
@@ -16094,7 +16094,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-realtime-1.5-2026-02-23",
-    "family": "gpt-realtime-1.5-2026-02-23",
+    "family": "gpt-realtime-1.5",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.004,
@@ -16166,7 +16166,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-realtime-2025-08-28",
-    "family": "gpt-realtime-2025-08-28",
+    "family": "gpt-realtime",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.004,
@@ -16202,7 +16202,7 @@
   {
     "provider": "azure",
     "model_id": "azure/gpt-realtime-mini-2025-10-06",
-    "family": "gpt-realtime-mini-2025-10-06",
+    "family": "gpt-realtime-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0006,
@@ -16292,7 +16292,7 @@
   {
     "provider": "azure",
     "model_id": "azure/o1-2024-12-17",
-    "family": "o1-2024-12-17",
+    "family": "o1",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.015000000000000001,
@@ -16328,7 +16328,7 @@
   {
     "provider": "azure",
     "model_id": "azure/o1-mini-2024-09-12",
-    "family": "o1-mini-2024-09-12",
+    "family": "o1-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0011,
@@ -16364,7 +16364,7 @@
   {
     "provider": "azure",
     "model_id": "azure/o3-2025-04-16",
-    "family": "o3-2025-04-16",
+    "family": "o3",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.002,
@@ -16418,7 +16418,7 @@
   {
     "provider": "azure",
     "model_id": "azure/o3-mini-2025-01-31",
-    "family": "o3-mini-2025-01-31",
+    "family": "o3-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0011,
@@ -16454,7 +16454,7 @@
   {
     "provider": "azure",
     "model_id": "azure/o3-pro-2025-06-10",
-    "family": "o3-pro-2025-06-10",
+    "family": "o3-pro",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.02,
@@ -16490,7 +16490,7 @@
   {
     "provider": "azure",
     "model_id": "azure/o4-mini-2025-04-16",
-    "family": "o4-mini-2025-04-16",
+    "family": "o4-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0011,
@@ -16634,7 +16634,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/gpt-4.1-2025-04-14",
-    "family": "gpt-4.1-2025-04-14",
+    "family": "gpt-4.1",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0022,
@@ -16652,7 +16652,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/gpt-4.1-mini-2025-04-14",
-    "family": "gpt-4.1-mini-2025-04-14",
+    "family": "gpt-4.1-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00044,
@@ -16670,7 +16670,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/gpt-4.1-nano-2025-04-14",
-    "family": "gpt-4.1-nano-2025-04-14",
+    "family": "gpt-4.1-nano",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00011,
@@ -16706,7 +16706,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/gpt-4o-2024-05-13",
-    "family": "gpt-4o-2024-05-13",
+    "family": "gpt-4o",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0055,
@@ -16724,7 +16724,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/gpt-4o-2024-08-06",
-    "family": "gpt-4o-2024-08-06",
+    "family": "gpt-4o",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00275,
@@ -16742,7 +16742,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/gpt-4o-2024-11-20",
-    "family": "gpt-4o-2024-11-20",
+    "family": "gpt-4o",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00275,
@@ -16778,7 +16778,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/gpt-4o-mini-2024-07-18",
-    "family": "gpt-4o-mini-2024-07-18",
+    "family": "gpt-4o-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.000165,
@@ -16796,7 +16796,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/gpt-4o-mini-realtime-preview-2024-12-17",
-    "family": "gpt-4o-mini-realtime-preview-2024-12-17",
+    "family": "gpt-4o-mini-realtime-preview",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00066,
@@ -16814,7 +16814,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/gpt-4o-realtime-preview-2024-10-01",
-    "family": "gpt-4o-realtime-preview-2024-10-01",
+    "family": "gpt-4o-realtime-preview",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0055,
@@ -16832,7 +16832,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/gpt-4o-realtime-preview-2024-12-17",
-    "family": "gpt-4o-realtime-preview-2024-12-17",
+    "family": "gpt-4o-realtime-preview",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0055,
@@ -16850,7 +16850,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/gpt-5-2025-08-07",
-    "family": "gpt-5-2025-08-07",
+    "family": "gpt-5",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.001375,
@@ -16868,7 +16868,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/gpt-5-mini-2025-08-07",
-    "family": "gpt-5-mini-2025-08-07",
+    "family": "gpt-5-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.000275,
@@ -16886,7 +16886,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/gpt-5-nano-2025-08-07",
-    "family": "gpt-5-nano-2025-08-07",
+    "family": "gpt-5-nano",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.000055,
@@ -17030,7 +17030,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/gpt-5.4-2026-03-05",
-    "family": "gpt-5.4-2026-03-05",
+    "family": "gpt-5.4",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00275,
@@ -17066,7 +17066,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/gpt-5.5-2026-04-23",
-    "family": "gpt-5.5-2026-04-23",
+    "family": "gpt-5.5",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0055,
@@ -17084,7 +17084,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/gpt-5.5-2026-04-24",
-    "family": "gpt-5.5-2026-04-24",
+    "family": "gpt-5.5",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0055,
@@ -17282,7 +17282,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/o1-2024-12-17",
-    "family": "o1-2024-12-17",
+    "family": "o1",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0165,
@@ -17300,7 +17300,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/o1-mini-2024-09-12",
-    "family": "o1-mini-2024-09-12",
+    "family": "o1-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0012100000000000001,
@@ -17354,7 +17354,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/o3-2025-04-16",
-    "family": "o3-2025-04-16",
+    "family": "o3",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0022,
@@ -17390,7 +17390,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/o3-mini-2025-01-31",
-    "family": "o3-mini-2025-01-31",
+    "family": "o3-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0012100000000000001,
@@ -17426,7 +17426,7 @@
   {
     "provider": "azure",
     "model_id": "azure/us/o4-mini-2025-04-16",
-    "family": "o4-mini-2025-04-16",
+    "family": "o4-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0012100000000000001,
@@ -18452,7 +18452,7 @@
   {
     "provider": "azure_ai",
     "model_id": "azure_ai/gpt-5.4-2026-03-05",
-    "family": "gpt-5.4-2026-03-05",
+    "family": "gpt-5.4",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.0025,
@@ -18488,7 +18488,7 @@
   {
     "provider": "azure_ai",
     "model_id": "azure_ai/gpt-5.4-mini-2026-03-17",
-    "family": "gpt-5.4-mini-2026-03-17",
+    "family": "gpt-5.4-mini",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00075,
@@ -18524,7 +18524,7 @@
   {
     "provider": "azure_ai",
     "model_id": "azure_ai/gpt-5.4-nano-2026-03-17",
-    "family": "gpt-5.4-nano-2026-03-17",
+    "family": "gpt-5.4-nano",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.00019999999999999998,
@@ -18560,7 +18560,7 @@
   {
     "provider": "azure_ai",
     "model_id": "azure_ai/gpt-5.4-pro-2026-03-05",
-    "family": "gpt-5.4-pro-2026-03-05",
+    "family": "gpt-5.4-pro",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.030000000000000002,
@@ -18596,7 +18596,7 @@
   {
     "provider": "azure_ai",
     "model_id": "azure_ai/gpt-5.5-2026-04-23",
-    "family": "gpt-5.5-2026-04-23",
+    "family": "gpt-5.5",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.005,
@@ -18614,7 +18614,7 @@
   {
     "provider": "azure_ai",
     "model_id": "azure_ai/gpt-5.5-2026-04-24",
-    "family": "gpt-5.5-2026-04-24",
+    "family": "gpt-5.5",
     "hyperscaler": "azure",
     "region": null,
     "input_per_1k": 0.005,
@@ -31250,7 +31250,7 @@
   {
     "provider": "dashscope",
     "model_id": "dashscope/qwen-plus-2025-01-25",
-    "family": "qwen-plus-2025-01-25",
+    "family": "qwen-plus",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00039999999999999996,
@@ -31268,7 +31268,7 @@
   {
     "provider": "dashscope",
     "model_id": "dashscope/qwen-plus-2025-04-28",
-    "family": "qwen-plus-2025-04-28",
+    "family": "qwen-plus",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00039999999999999996,
@@ -31286,7 +31286,7 @@
   {
     "provider": "dashscope",
     "model_id": "dashscope/qwen-plus-2025-07-14",
-    "family": "qwen-plus-2025-07-14",
+    "family": "qwen-plus",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00039999999999999996,
@@ -31322,7 +31322,7 @@
   {
     "provider": "dashscope",
     "model_id": "dashscope/qwen-turbo-2024-11-01",
-    "family": "qwen-turbo-2024-11-01",
+    "family": "qwen-turbo",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.000049999999999999996,
@@ -31340,7 +31340,7 @@
   {
     "provider": "dashscope",
     "model_id": "dashscope/qwen-turbo-2025-04-28",
-    "family": "qwen-turbo-2025-04-28",
+    "family": "qwen-turbo",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.000049999999999999996,
@@ -52598,7 +52598,7 @@
   {
     "provider": "openai",
     "model_id": "computer-use-preview-2025-03-11",
-    "family": "computer-use-preview-2025-03-11",
+    "family": "computer-use-preview",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.003,
@@ -52796,7 +52796,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-4-turbo-2024-04-09",
-    "family": "gpt-4-turbo-2024-04-09",
+    "family": "gpt-4-turbo",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.01,
@@ -52832,7 +52832,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-4.1-2025-04-14",
-    "family": "gpt-4.1-2025-04-14",
+    "family": "gpt-4.1",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.002,
@@ -52868,7 +52868,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-4.1-mini-2025-04-14",
-    "family": "gpt-4.1-mini-2025-04-14",
+    "family": "gpt-4.1-mini",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00039999999999999996,
@@ -52904,7 +52904,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-4.1-nano-2025-04-14",
-    "family": "gpt-4.1-nano-2025-04-14",
+    "family": "gpt-4.1-nano",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00009999999999999999,
@@ -52940,7 +52940,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-4o-2024-05-13",
-    "family": "gpt-4o-2024-05-13",
+    "family": "gpt-4o",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.005,
@@ -52958,7 +52958,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-4o-2024-08-06",
-    "family": "gpt-4o-2024-08-06",
+    "family": "gpt-4o",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.0025,
@@ -52976,7 +52976,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-4o-2024-11-20",
-    "family": "gpt-4o-2024-11-20",
+    "family": "gpt-4o",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.0025,
@@ -52994,7 +52994,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-4o-audio-preview-2024-12-17",
-    "family": "gpt-4o-audio-preview-2024-12-17",
+    "family": "gpt-4o-audio-preview",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.0025,
@@ -53012,7 +53012,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-4o-audio-preview-2025-06-03",
-    "family": "gpt-4o-audio-preview-2025-06-03",
+    "family": "gpt-4o-audio-preview",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.0025,
@@ -53048,7 +53048,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-4o-mini-2024-07-18",
-    "family": "gpt-4o-mini-2024-07-18",
+    "family": "gpt-4o-mini",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00015,
@@ -53066,7 +53066,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-4o-mini-audio-preview-2024-12-17",
-    "family": "gpt-4o-mini-audio-preview-2024-12-17",
+    "family": "gpt-4o-mini-audio-preview",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00015,
@@ -53084,7 +53084,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-4o-mini-realtime-preview-2024-12-17",
-    "family": "gpt-4o-mini-realtime-preview-2024-12-17",
+    "family": "gpt-4o-mini-realtime-preview",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.0006,
@@ -53120,7 +53120,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-4o-mini-search-preview-2025-03-11",
-    "family": "gpt-4o-mini-search-preview-2025-03-11",
+    "family": "gpt-4o-mini-search-preview",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00015,
@@ -53156,7 +53156,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-4o-mini-transcribe-2025-03-20",
-    "family": "gpt-4o-mini-transcribe-2025-03-20",
+    "family": "gpt-4o-mini-transcribe",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00125,
@@ -53174,7 +53174,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-4o-mini-transcribe-2025-12-15",
-    "family": "gpt-4o-mini-transcribe-2025-12-15",
+    "family": "gpt-4o-mini-transcribe",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00125,
@@ -53210,7 +53210,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-4o-search-preview-2025-03-11",
-    "family": "gpt-4o-search-preview-2025-03-11",
+    "family": "gpt-4o-search-preview",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.0025,
@@ -53282,7 +53282,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-5-2025-08-07",
-    "family": "gpt-5-2025-08-07",
+    "family": "gpt-5",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00125,
@@ -53372,7 +53372,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-5-mini-2025-08-07",
-    "family": "gpt-5-mini-2025-08-07",
+    "family": "gpt-5-mini",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00025,
@@ -53408,7 +53408,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-5-nano-2025-08-07",
-    "family": "gpt-5-nano-2025-08-07",
+    "family": "gpt-5-nano",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.000049999999999999996,
@@ -53444,7 +53444,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-5-pro-2025-10-06",
-    "family": "gpt-5-pro-2025-10-06",
+    "family": "gpt-5-pro",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.015000000000000001,
@@ -53480,7 +53480,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-5-search-api-2025-10-14",
-    "family": "gpt-5-search-api-2025-10-14",
+    "family": "gpt-5-search-api",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00125,
@@ -53516,7 +53516,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-5.1-2025-11-13",
-    "family": "gpt-5.1-2025-11-13",
+    "family": "gpt-5.1",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00125,
@@ -53624,7 +53624,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-5.2-2025-12-11",
-    "family": "gpt-5.2-2025-12-11",
+    "family": "gpt-5.2",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00175,
@@ -53696,7 +53696,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-5.2-pro-2025-12-11",
-    "family": "gpt-5.2-pro-2025-12-11",
+    "family": "gpt-5.2-pro",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.020999999999999998,
@@ -53768,7 +53768,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-5.4-2026-03-05",
-    "family": "gpt-5.4-2026-03-05",
+    "family": "gpt-5.4",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.0025,
@@ -53804,7 +53804,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-5.4-mini-2026-03-17",
-    "family": "gpt-5.4-mini-2026-03-17",
+    "family": "gpt-5.4-mini",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00075,
@@ -53840,7 +53840,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-5.4-nano-2026-03-17",
-    "family": "gpt-5.4-nano-2026-03-17",
+    "family": "gpt-5.4-nano",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00019999999999999998,
@@ -53876,7 +53876,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-5.4-pro-2026-03-05",
-    "family": "gpt-5.4-pro-2026-03-05",
+    "family": "gpt-5.4-pro",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.030000000000000002,
@@ -53912,7 +53912,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-5.5-2026-04-23",
-    "family": "gpt-5.5-2026-04-23",
+    "family": "gpt-5.5",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.005,
@@ -53948,7 +53948,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-5.5-pro-2026-04-23",
-    "family": "gpt-5.5-pro-2026-04-23",
+    "family": "gpt-5.5-pro",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.030000000000000002,
@@ -54182,7 +54182,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-audio-2025-08-28",
-    "family": "gpt-audio-2025-08-28",
+    "family": "gpt-audio",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.0025,
@@ -54218,7 +54218,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-audio-mini-2025-10-06",
-    "family": "gpt-audio-mini-2025-10-06",
+    "family": "gpt-audio-mini",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.0006,
@@ -54236,7 +54236,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-audio-mini-2025-12-15",
-    "family": "gpt-audio-mini-2025-12-15",
+    "family": "gpt-audio-mini",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.0006,
@@ -54380,7 +54380,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-realtime-2025-08-28",
-    "family": "gpt-realtime-2025-08-28",
+    "family": "gpt-realtime",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.004,
@@ -54416,7 +54416,7 @@
   {
     "provider": "openai",
     "model_id": "gpt-realtime-mini-2025-12-15",
-    "family": "gpt-realtime-mini-2025-12-15",
+    "family": "gpt-realtime-mini",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.0006,
@@ -54452,7 +54452,7 @@
   {
     "provider": "openai",
     "model_id": "o1-2024-12-17",
-    "family": "o1-2024-12-17",
+    "family": "o1",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.015000000000000001,
@@ -54488,7 +54488,7 @@
   {
     "provider": "openai",
     "model_id": "o1-pro-2025-03-19",
-    "family": "o1-pro-2025-03-19",
+    "family": "o1-pro",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.15,
@@ -54524,7 +54524,7 @@
   {
     "provider": "openai",
     "model_id": "o3-2025-04-16",
-    "family": "o3-2025-04-16",
+    "family": "o3",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.002,
@@ -54560,7 +54560,7 @@
   {
     "provider": "openai",
     "model_id": "o3-deep-research-2025-06-26",
-    "family": "o3-deep-research-2025-06-26",
+    "family": "o3-deep-research",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.01,
@@ -54596,7 +54596,7 @@
   {
     "provider": "openai",
     "model_id": "o3-mini-2025-01-31",
-    "family": "o3-mini-2025-01-31",
+    "family": "o3-mini",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.0011,
@@ -54632,7 +54632,7 @@
   {
     "provider": "openai",
     "model_id": "o3-pro-2025-06-10",
-    "family": "o3-pro-2025-06-10",
+    "family": "o3-pro",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.02,
@@ -54668,7 +54668,7 @@
   {
     "provider": "openai",
     "model_id": "o4-mini-2025-04-16",
-    "family": "o4-mini-2025-04-16",
+    "family": "o4-mini",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.0011,
@@ -54704,7 +54704,7 @@
   {
     "provider": "openai",
     "model_id": "o4-mini-deep-research-2025-06-26",
-    "family": "o4-mini-deep-research-2025-06-26",
+    "family": "o4-mini-deep-research",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.002,
@@ -54722,7 +54722,7 @@
   {
     "provider": "openai",
     "model_id": "omni-moderation-2024-09-26",
-    "family": "omni-moderation-2024-09-26",
+    "family": "omni-moderation",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0,
@@ -56702,7 +56702,7 @@
   {
     "provider": "qwen_ai_platform",
     "model_id": "qwen_ai_platform/qwen-plus-2025-01-25",
-    "family": "qwen-plus-2025-01-25",
+    "family": "qwen-plus",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00039999999999999996,
@@ -56720,7 +56720,7 @@
   {
     "provider": "qwen_ai_platform",
     "model_id": "qwen_ai_platform/qwen-plus-2025-04-28",
-    "family": "qwen-plus-2025-04-28",
+    "family": "qwen-plus",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00039999999999999996,
@@ -56738,7 +56738,7 @@
   {
     "provider": "qwen_ai_platform",
     "model_id": "qwen_ai_platform/qwen-plus-2025-07-14",
-    "family": "qwen-plus-2025-07-14",
+    "family": "qwen-plus",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00039999999999999996,
@@ -56774,7 +56774,7 @@
   {
     "provider": "qwen_ai_platform",
     "model_id": "qwen_ai_platform/qwen-turbo-2024-11-01",
-    "family": "qwen-turbo-2024-11-01",
+    "family": "qwen-turbo",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.000049999999999999996,
@@ -56792,7 +56792,7 @@
   {
     "provider": "qwen_ai_platform",
     "model_id": "qwen_ai_platform/qwen-turbo-2025-04-28",
-    "family": "qwen-turbo-2025-04-28",
+    "family": "qwen-turbo",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.000049999999999999996,
@@ -57188,7 +57188,7 @@
   {
     "provider": "qwencloud",
     "model_id": "qwencloud/qwen-plus-2025-01-25",
-    "family": "qwen-plus-2025-01-25",
+    "family": "qwen-plus",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00039999999999999996,
@@ -57206,7 +57206,7 @@
   {
     "provider": "qwencloud",
     "model_id": "qwencloud/qwen-plus-2025-04-28",
-    "family": "qwen-plus-2025-04-28",
+    "family": "qwen-plus",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00039999999999999996,
@@ -57224,7 +57224,7 @@
   {
     "provider": "qwencloud",
     "model_id": "qwencloud/qwen-plus-2025-07-14",
-    "family": "qwen-plus-2025-07-14",
+    "family": "qwen-plus",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.00039999999999999996,
@@ -57260,7 +57260,7 @@
   {
     "provider": "qwencloud",
     "model_id": "qwencloud/qwen-turbo-2024-11-01",
-    "family": "qwen-turbo-2024-11-01",
+    "family": "qwen-turbo",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.000049999999999999996,
@@ -57278,7 +57278,7 @@
   {
     "provider": "qwencloud",
     "model_id": "qwencloud/qwen-turbo-2025-04-28",
-    "family": "qwen-turbo-2025-04-28",
+    "family": "qwen-turbo",
     "hyperscaler": "direct",
     "region": null,
     "input_per_1k": 0.000049999999999999996,
@@ -72560,7 +72560,7 @@
   {
     "provider": "openai",
     "model_id": "openai/gpt-4o-2024-05-13",
-    "family": "gpt-4o-2024-05-13",
+    "family": "gpt-4o",
     "hyperscaler": "aggregator",
     "region": null,
     "input_per_1k": 0.005,
@@ -72578,7 +72578,7 @@
   {
     "provider": "openai",
     "model_id": "openai/gpt-4o-2024-08-06",
-    "family": "gpt-4o-2024-08-06",
+    "family": "gpt-4o",
     "hyperscaler": "aggregator",
     "region": null,
     "input_per_1k": 0.0025,
@@ -72596,7 +72596,7 @@
   {
     "provider": "openai",
     "model_id": "openai/gpt-4o-2024-11-20",
-    "family": "gpt-4o-2024-11-20",
+    "family": "gpt-4o",
     "hyperscaler": "aggregator",
     "region": null,
     "input_per_1k": 0.0025,
@@ -72632,7 +72632,7 @@
   {
     "provider": "openai",
     "model_id": "openai/gpt-4o-mini-2024-07-18",
-    "family": "gpt-4o-mini-2024-07-18",
+    "family": "gpt-4o-mini",
     "hyperscaler": "aggregator",
     "region": null,
     "input_per_1k": 0.00015,
