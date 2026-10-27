@@ -14,6 +14,7 @@ import {
 import { cn } from '../lib/cn';
 import { loadHistoryManifest, loadHistory, recentSnapshotDates } from '../lib/data';
 import { loadAllIndexHistories, loadAllIndices } from '../lib/indices';
+import { likeForLike } from '../lib/like-for-like';
 import type { IndexHistory, IndexMember, IndexResult } from '../lib/indices';
 import { buildProviderShareSeries } from '../lib/landscape';
 import type { ProviderShareSeries } from '../lib/landscape';
@@ -293,6 +294,14 @@ function IndexCard({ index, history, expanded, onToggle }: IndexCardProps): JSX.
           <p className="mt-1 font-mono text-[11px] text-ink-600">
             {index.members_resolved}/{index.member_count} members
           </p>
+          {/* A headline averaged over half the roster is not wrong, but it is
+              not the same quantity as a full-roster one, and putting the two
+              side by side invites a comparison the numbers do not support. */}
+          {index.members_resolved < index.member_count * 0.75 && (
+            <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-amber-400">
+              partial roster
+            </p>
+          )}
           {reference !== undefined && index.index_divergence_pct !== undefined && (
             <p className={cn('mt-1 font-mono text-[11px]', divergenceTone(index.index_divergence_pct))}>
               {formatDivergence(index.index_divergence_pct)} vs published {formatIndexValue(reference)}
@@ -347,6 +356,82 @@ function IndexCard({ index, history, expanded, onToggle }: IndexCardProps): JSX.
         </div>
       )}
     </article>
+  );
+}
+
+function LikeForLikeChannels({ indices }: { indices: IndexResult[] }): JSX.Element | null {
+  const result = likeForLike(indices, 'tpi-channel-aggregator');
+  if (result === null) {
+    return null;
+  }
+
+  const rows = indices
+    .map((index) => ({
+      name: index.name,
+      label: DISPLAY_LABELS[index.name]?.title ?? index.name,
+      headline: index.geometric_mean_usd_per_million,
+      resolved: index.members_resolved,
+      total: index.member_count,
+      common: result.meanByIndex.get(index.name),
+      pct: result.pctVsBaselineByIndex.get(index.name),
+    }))
+    .filter((row): row is typeof row & { common: number; pct: number } =>
+      typeof row.common === 'number' && typeof row.pct === 'number');
+
+  return (
+    <div className="card mt-4 p-4 md:p-5">
+      <p className="h-eyebrow">like for like</p>
+      <h3 className="mt-1.5 text-sm font-medium text-ink-900">
+        The same {result.commonMembers.length} models, priced on every channel
+      </h3>
+      <p className="mt-2 max-w-3xl text-[11px] leading-relaxed text-ink-600">
+        Each headline above averages whatever members its channel carries, and the rosters
+        differ — so the headline gap between them is mostly a membership artefact, not a price
+        difference. Restricted to the {result.commonMembers.length} members every channel
+        carries ({result.commonMembers.join(', ')}), the channels land within a few percent of
+        each other.
+      </p>
+      <div className="mt-3 overflow-x-auto">
+        <table className="w-full min-w-[520px] text-left">
+          <thead>
+            <tr className="border-b border-ink-300/20">
+              <th scope="col" className="py-2 pr-3 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-600">Channel</th>
+              <th scope="col" className="py-2 pr-3 text-right font-mono text-[10px] uppercase tracking-[0.14em] text-ink-600">Headline</th>
+              <th scope="col" className="py-2 pr-3 text-right font-mono text-[10px] uppercase tracking-[0.14em] text-ink-600">Roster</th>
+              <th scope="col" className="py-2 pr-3 text-right font-mono text-[10px] uppercase tracking-[0.14em] text-ink-600">Like for like</th>
+              <th scope="col" className="py-2 text-right font-mono text-[10px] uppercase tracking-[0.14em] text-ink-600">vs aggregator</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.name} className="border-b border-ink-300/10 last:border-0">
+                <td className="py-2 pr-3 font-mono text-[11px] text-ink-900">{row.label}</td>
+                <td className="num-display py-2 pr-3 text-right text-[11px] text-ink-600">
+                  {formatIndexValue(row.headline)}
+                </td>
+                <td className="num-display py-2 pr-3 text-right text-[11px] text-ink-600">
+                  {row.resolved}/{row.total}
+                </td>
+                <td className="num-display py-2 pr-3 text-right text-[11px] text-ink-900">
+                  {formatIndexValue(row.common)}
+                </td>
+                <td className="num-display py-2 text-right text-[11px] text-ink-800">
+                  {row.name === result.baseline
+                    ? 'baseline'
+                    : `${row.pct > 0 ? '+' : ''}${row.pct.toFixed(1)}%`}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {rows.length > 1 && (
+        <p className="mt-3 text-[10px] leading-relaxed text-ink-600">
+          The headline column is each index's published value, shown only for contrast: those
+          are averages over different rosters and should not be compared with one another.
+        </p>
+      )}
+    </div>
   );
 }
 
@@ -626,7 +711,7 @@ export default function Indices(): JSX.Element {
         <GroupHeader
           eyebrow="by deployment channel"
           title="Channel indices"
-          description="The same 16 members, filtered by deployment channel — aggregator, provider-direct, AWS Bedrock, Azure OpenAI. A lens that extends the reference index along the channel dimension our catalog carries: cloud channels run roughly 50–90% above aggregator pricing in the data we currently have, and host fewer than half of the 16 reference members today."
+          description="The same 16 members, filtered by deployment channel — aggregator, provider-direct, AWS Bedrock, Azure OpenAI. Each headline below is computed over the members that channel actually carries, and the channels carry different subsets, so the headline numbers are NOT comparable with each other. Compared like for like, on the members every channel carries, they are within a few percent. The comparison below does that."
         />
         <div className="space-y-3">
           {grouped.channel.map((index) => (
@@ -639,6 +724,7 @@ export default function Indices(): JSX.Element {
             />
           ))}
         </div>
+        <LikeForLikeChannels indices={grouped.channel} />
       </section>
 
       <section className="mb-12">

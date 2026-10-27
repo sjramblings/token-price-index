@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   CartesianGrid,
   Legend,
@@ -38,6 +39,12 @@ export default function Timeline(): JSX.Element {
   const [error, setError] = useState<Error | null>(null);
   const [requestAttempt, setRequestAttempt] = useState(0);
   const [selected, setSelected] = useState<PriceRecord | null>(null);
+  // `?model=` (plus source/region, because one model id can exist on several
+  // deployments) lets the movement panel link to the exact series it charted.
+  const [searchParams] = useSearchParams();
+  const requestedModel = searchParams.get('model');
+  const requestedSource = searchParams.get('source');
+  const requestedRegion = searchParams.get('region');
   const [query, setQuery] = useState('');
   const [pickerOpen, setPickerOpen] = useState(false);
   const [timelinePoints, setTimelinePoints] = useState<TimelinePoint[]>([]);
@@ -68,6 +75,25 @@ export default function Timeline(): JSX.Element {
       active = false;
     };
   }, [requestAttempt]);
+
+  // Resolve an incoming ?model= once the catalogue is loaded. Matching on
+  // source and region too, because the same model id exists on several
+  // deployments and charting a different one than the link named would be
+  // quietly wrong. A link that resolves to nothing leaves the picker empty
+  // rather than charting an arbitrary near-match.
+  useEffect(() => {
+    if (requestedModel === null || records.length === 0 || selected !== null) {
+      return;
+    }
+    const match = records.find((record) => (
+      record.model_id === requestedModel
+      && (requestedSource === null || record.source === requestedSource)
+      && (requestedRegion === null || (record.region ?? '') === requestedRegion)
+    ));
+    if (match !== undefined) {
+      setSelected(match);
+    }
+  }, [requestedModel, requestedSource, requestedRegion, records, selected]);
 
   useEffect(() => {
     if (selected === null) {

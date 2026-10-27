@@ -9,6 +9,7 @@ import {
 import type { SortingState } from '@tanstack/react-table';
 import { motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Signals } from '../components/Signals';
 import { CountUp } from '../lib/CountUp';
 import { cn } from '../lib/cn';
@@ -66,7 +67,25 @@ export default function Explorer(): JSX.Element {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [requestAttempt, setRequestAttempt] = useState(0);
-  const [search, setSearch] = useState('');
+  // `?q=` is the source of truth for the search box, so a filtered view is
+  // shareable and the signal panels can link straight into one.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get('q') ?? '';
+  const setSearch = (value: string): void => {
+    setSearchParams(
+      (params: URLSearchParams): URLSearchParams => {
+        const next = new URLSearchParams(params);
+        if (value === '') {
+          next.delete('q');
+        } else {
+          next.set('q', value);
+        }
+        return next;
+      },
+      // Replace, so typing does not bury the previous page in history.
+      { replace: true },
+    );
+  };
   const [hyperscalerFilter, setHyperscalerFilter] = useState<HyperscalerFilter>('all');
   const [sourceFilter, setSourceFilter] = useState<SourceFilter>('all');
   const [sorting, setSorting] = useState<SortingState>([]);

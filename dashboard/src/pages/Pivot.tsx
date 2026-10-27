@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { cn } from '../lib/cn';
 import { loadCurrent } from '../lib/data';
 import { formatContextWindow, formatPricePer1K, formatRegion } from '../lib/format';
@@ -125,6 +126,11 @@ export default function Pivot(): JSX.Element {
   const [error, setError] = useState<Error | null>(null);
   const [requestAttempt, setRequestAttempt] = useState(0);
   const [family, setFamily] = useState<string | null>(null);
+  // `?family=` lets the routing-arbitrage panel link straight to the family it
+  // is talking about, instead of naming one and leaving you to find it in a
+  // dropdown of ~1,900.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedFamily = searchParams.get('family');
   const [search, setSearch] = useState('');
 
   useEffect(() => {
@@ -156,6 +162,34 @@ export default function Pivot(): JSX.Element {
     [records],
   );
 
+  // Apply the deep link once the catalogue has loaded and we can confirm the
+  // family actually exists — a stale or hand-edited link should leave the page
+  // in its normal empty state, not select something that is not there.
+  useEffect(() => {
+    if (requestedFamily === null || families.length === 0) {
+      return;
+    }
+    if (families.includes(requestedFamily)) {
+      setFamily(requestedFamily);
+    }
+  }, [requestedFamily, families]);
+
+  function chooseFamily(next: string | null): void {
+    setFamily(next);
+    setSearchParams(
+      (params: URLSearchParams): URLSearchParams => {
+        const updated = new URLSearchParams(params);
+        if (next === null) {
+          updated.delete('family');
+        } else {
+          updated.set('family', next);
+        }
+        return updated;
+      },
+      { replace: true },
+    );
+  }
+
   // Search narrows what the dropdown renders without losing the selected
   // value. The currently-selected family is always rendered even when the
   // search filters it out, so users never see an empty/inconsistent picker.
@@ -168,10 +202,17 @@ export default function Pivot(): JSX.Element {
   }, [families, search]);
 
   useEffect(() => {
-    if (family === null && families.length > 0) {
-      setFamily(pickInitialFamily(families));
+    if (family !== null || families.length === 0) {
+      return;
     }
-  }, [families, family]);
+    // Do not race the deep link. Both effects fire in the same flush once
+    // `families` populates, and neither sees the other's state update, so
+    // without this guard the default would overwrite an incoming ?family=.
+    if (requestedFamily !== null && families.includes(requestedFamily)) {
+      return;
+    }
+    setFamily(pickInitialFamily(families));
+  }, [families, family, requestedFamily]);
 
   // Many upstream sources expose multiple identifiers for the same model on
   // the same deployment channel (LiteLLM alone lists ~12 IDs for Claude Opus
@@ -272,7 +313,7 @@ export default function Pivot(): JSX.Element {
         <select
           id="pivot-family"
           value={family ?? ''}
-          onChange={(event) => setFamily(event.target.value)}
+          onChange={(event) => chooseFamily(event.target.value)}
           className="w-full rounded-full border border-ink-300/30 bg-ink-100/30 px-4 py-2 font-mono text-sm text-ink-900 transition focus:border-accent-500/50 focus:outline-none focus:ring-1 focus:ring-accent-500/20"
         >
           {/* Always render the selected family so the picker stays consistent

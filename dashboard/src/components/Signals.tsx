@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { cn } from '../lib/cn';
 import { formatPricePer1K } from '../lib/format';
 import {
@@ -36,10 +37,12 @@ interface SignalRowProps {
   /** Colour intent: 'up' is bad for a buyer, 'down' is good, 'neutral' is size. */
   intent?: 'up' | 'down' | 'neutral';
   title?: string;
+  /** In-app destination that shows the rows behind this number. */
+  href: string;
 }
 
 function SignalRow({
-  label, detail, value, magnitude, intent = 'neutral', title,
+  label, detail, value, magnitude, intent = 'neutral', title, href,
 }: SignalRowProps): JSX.Element {
   // Status hues are reserved for polarity and always ship alongside a signed
   // number, never as the only cue — the sign in `value` carries the meaning for
@@ -62,19 +65,26 @@ function SignalRow({
       ? 'text-emerald-400'
       : 'text-ink-800';
 
+  // The whole row is the hit target, not just the label — a signal that names
+  // a number and leaves you to go find the rows behind it is a dead end.
   return (
-    <li className="px-4 py-2.5" title={title}>
-      <div className="flex items-baseline justify-between gap-3">
-        <span className="truncate font-mono text-[11px] text-ink-900">{label}</span>
-        <span className={cn('num-display shrink-0 text-xs font-medium', text)}>{value}</span>
-      </div>
-      <p className="mt-0.5 truncate font-mono text-[10px] text-ink-600">{detail}</p>
-      <div aria-hidden="true" className="mt-1.5 h-[3px] w-full rounded-full bg-ink-300/20">
-        <div
-          className={cn('h-full rounded-full', bar)}
-          style={{ width: `${Math.max(2, Math.min(100, magnitude * 100))}%` }}
-        />
-      </div>
+    <li title={title}>
+      <Link
+        to={href}
+        className="block px-4 py-2.5 transition hover:bg-ink-100/40 focus:bg-ink-100/40 focus:outline-none focus-visible:ring-1 focus-visible:ring-accent-500/40"
+      >
+        <div className="flex items-baseline justify-between gap-3">
+          <span className="truncate font-mono text-[11px] text-ink-900">{label}</span>
+          <span className={cn('num-display shrink-0 text-xs font-medium', text)}>{value}</span>
+        </div>
+        <p className="mt-0.5 truncate font-mono text-[10px] text-ink-600">{detail}</p>
+        <div aria-hidden="true" className="mt-1.5 h-[3px] w-full rounded-full bg-ink-300/20">
+          <div
+            className={cn('h-full rounded-full', bar)}
+            style={{ width: `${Math.max(2, Math.min(100, magnitude * 100))}%` }}
+          />
+        </div>
+      </Link>
     </li>
   );
 }
@@ -172,6 +182,7 @@ export function Signals({
               value={`+${s.spreadPct.toFixed(0)}%`}
               magnitude={s.spreadPct / maxRegion}
               title={`${s.regionCount} regions carry ${s.modelId} on ${s.hyperscaler}`}
+              href={`/?q=${encodeURIComponent(s.modelId)}`}
             />
           ))}
         </Panel>
@@ -190,6 +201,7 @@ export function Signals({
               value={`+${s.spreadPct.toFixed(0)}%`}
               magnitude={s.spreadPct / maxRoute}
               title={`${s.family} is carried on ${s.channelCount} channels`}
+              href={`/pivot?family=${encodeURIComponent(s.family)}`}
             />
           ))}
         </Panel>
@@ -209,6 +221,9 @@ export function Signals({
               magnitude={Math.abs(m.deltaPct) / maxMove}
               intent={m.deltaPct > 0 ? 'up' : 'down'}
               title={`${m.modelId} on ${m.hyperscaler} via ${m.source}`}
+              href={`/timeline?model=${encodeURIComponent(m.modelId)}`
+                + `&source=${encodeURIComponent(m.source)}`
+                + `&region=${encodeURIComponent(m.region ?? '')}`}
             />
           ))}
         </Panel>
@@ -227,6 +242,7 @@ export function Signals({
               value={`−${formatPricePer1K(c.savingPer1k)}`}
               magnitude={c.savingPer1k / maxCache}
               title={`${c.modelId} on ${c.hyperscaler}`}
+              href={`/?q=${encodeURIComponent(c.modelId)}`}
             />
           ))}
         </Panel>
