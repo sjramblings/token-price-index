@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-09-17T02:42:39.747Z",
+  "computed_at": "2026-10-27T11:44:06.514Z",
   "member_count": 16,
   "series": [
     {
@@ -770,12 +770,229 @@
       "arithmetic_mean_usd_per_million": 3.540934666666667,
       "members_resolved": 15,
       "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-09-17",
+      "geometric_mean_usd_per_million": 1.835704050565431,
+      "arithmetic_mean_usd_per_million": 3.540934666666667,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-09-18",
+      "geometric_mean_usd_per_million": 1.7709678498196695,
+      "arithmetic_mean_usd_per_million": 3.5378528,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-09-19",
+      "geometric_mean_usd_per_million": 1.7233722022144744,
+      "arithmetic_mean_usd_per_million": 3.4787186666666665,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-09-20",
+      "geometric_mean_usd_per_million": 1.7082108057890635,
+      "arithmetic_mean_usd_per_million": 3.478281866666667,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-09-21",
+      "geometric_mean_usd_per_million": 1.759538994787447,
+      "arithmetic_mean_usd_per_million": 3.4800048,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-09-22",
+      "geometric_mean_usd_per_million": 1.7451138018850516,
+      "arithmetic_mean_usd_per_million": 3.4794466666666666,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-09-23",
+      "geometric_mean_usd_per_million": 1.7451138018850516,
+      "arithmetic_mean_usd_per_million": 3.4794466666666666,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-09-24",
+      "geometric_mean_usd_per_million": 1.808961402038519,
+      "arithmetic_mean_usd_per_million": 3.4824800000000002,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-09-25",
+      "geometric_mean_usd_per_million": 1.7451138018850516,
+      "arithmetic_mean_usd_per_million": 3.4794466666666666,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-09-26",
+      "geometric_mean_usd_per_million": 1.7402027244910045,
+      "arithmetic_mean_usd_per_million": 3.4791234666666666,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-09-27",
+      "geometric_mean_usd_per_million": 1.6993116973658613,
+      "arithmetic_mean_usd_per_million": 3.467723466666667,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-09-28",
+      "geometric_mean_usd_per_million": 1.9185035668701842,
+      "arithmetic_mean_usd_per_million": 3.534866666666667,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-09-29",
+      "geometric_mean_usd_per_million": 1.8889870654501988,
+      "arithmetic_mean_usd_per_million": 3.509066666666667,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-09-30",
+      "geometric_mean_usd_per_million": 1.8889870654501988,
+      "arithmetic_mean_usd_per_million": 3.509066666666667,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-10-01",
+      "geometric_mean_usd_per_million": 1.7313345364932395,
+      "arithmetic_mean_usd_per_million": 3.444653466666667,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-10-02",
+      "geometric_mean_usd_per_million": 1.6003792837997226,
+      "arithmetic_mean_usd_per_million": 3.3997615333333333,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-10-03",
+      "geometric_mean_usd_per_million": 1.597223016983078,
+      "arithmetic_mean_usd_per_million": 3.446247,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-10-04",
+      "geometric_mean_usd_per_million": 1.6828205752862844,
+      "arithmetic_mean_usd_per_million": 3.51376,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-10-05",
+      "geometric_mean_usd_per_million": 1.9742942570603885,
+      "arithmetic_mean_usd_per_million": 3.537978666666667,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-10-06",
+      "geometric_mean_usd_per_million": 1.9742942570603885,
+      "arithmetic_mean_usd_per_million": 3.537978666666667,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-10-07",
+      "geometric_mean_usd_per_million": 1.9277527383379316,
+      "arithmetic_mean_usd_per_million": 3.4908,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-10-08",
+      "geometric_mean_usd_per_million": 1.9277527383379316,
+      "arithmetic_mean_usd_per_million": 3.4908,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-10-09",
+      "geometric_mean_usd_per_million": 1.8516476899445236,
+      "arithmetic_mean_usd_per_million": 3.436116666666666,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-10-10",
+      "geometric_mean_usd_per_million": 1.8540267903975136,
+      "arithmetic_mean_usd_per_million": 3.4357386666666665,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-10-11",
+      "geometric_mean_usd_per_million": 1.8980939368526892,
+      "arithmetic_mean_usd_per_million": 3.4650000000000003,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-10-13",
+      "geometric_mean_usd_per_million": 1.7906600615734505,
+      "arithmetic_mean_usd_per_million": 3.4572866666666666,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-10-14",
+      "geometric_mean_usd_per_million": 1.8292431959011963,
+      "arithmetic_mean_usd_per_million": 3.497153333333334,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-10-15",
+      "geometric_mean_usd_per_million": 1.7906600615734505,
+      "arithmetic_mean_usd_per_million": 3.4572866666666666,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-10-16",
+      "geometric_mean_usd_per_million": 1.7906600615734505,
+      "arithmetic_mean_usd_per_million": 3.4572866666666666,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-10-17",
+      "geometric_mean_usd_per_million": 1.7906600615734505,
+      "arithmetic_mean_usd_per_million": 3.4572866666666666,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
+    },
+    {
+      "date": "2026-10-27",
+      "geometric_mean_usd_per_million": 1.83447061329705,
+      "arithmetic_mean_usd_per_million": 3.460733333333333,
+      "members_resolved": 15,
+      "members_with_invalid_price": 0
     }
   ],
   "earliest_date": "2026-05-24",
-  "latest_date": "2026-09-16",
+  "latest_date": "2026-10-27",
   "earliest_value": 1.2490347138419216,
-  "latest_value": 1.835704050565431,
-  "pct_change_earliest_to_latest": 46.969818390312454,
+  "latest_value": 1.83447061329705,
+  "pct_change_earliest_to_latest": 46.87106715027791,
   "stable": false
 }

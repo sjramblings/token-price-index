@@ -93,6 +93,14 @@ describe('extractFamily', () => {
     ['cloudflare/@cf/meta/llama-2-7b-chat-int8', 'llama-2-7b-chat-int8'],
     ['cloudflare/@cf/mistral/mistral-7b-instruct-v0.1', 'mistral-7b-instruct-v0.1'],
     ['cloudflare/@hf/thebloke/codellama-7b-instruct-awq', 'codellama-7b-instruct-awq'],
+    // OpenInfer, which appeared upstream on 2026-10-18 and took the daily
+    // refresh down for nine days: the `@oi/` segment reached the `@.*$`
+    // snapshot rule and emptied the family. Matched by shape now, not by host.
+    ['openinfer/@oi/GLM-5.3-Flash', 'glm-5.3-flash'],
+    ['openinfer/@oi/Qwen3.5-27B', 'qwen3.5-27b'],
+    ['openinfer/@oi/Qwen3.5-9B', 'qwen3.5-9b'],
+    // A fourth host using the same shape must work without a code change.
+    ['somehost/@zz/some-model-7b', 'some-model-7b'],
     // GovCloud Bedrock inference-profile prefix — `us` alone does not match
     // `us-gov.`, so these used to survive into the family field.
     ['us-gov.anthropic.claude-opus-5', 'claude-opus-5'],

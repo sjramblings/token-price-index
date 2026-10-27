@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-09-17T02:42:37.057Z",
+  "computed_at": "2026-10-27T11:44:04.723Z",
   "data_source": "data/current.json",
   "member_count": 4,
   "members_resolved": 4,
@@ -14,24 +14,24 @@
     {
       "label": "Mistral Large 3",
       "resolved": {
-        "provider": "openrouter",
-        "model_id": "openrouter/mistralai/mistral-large-2512",
-        "family": "mistral-large",
-        "hyperscaler": "aggregator",
-        "region": null,
+        "provider": "mistral",
+        "model_id": "mistral-large-3",
+        "family": "mistral-large-3",
+        "hyperscaler": "aws",
+        "region": "us-east-1",
         "input_per_1k": 0.0005,
         "output_per_1k": 0.0015,
         "cached_input_per_1k": null,
-        "image_per_1k": 0,
+        "image_per_1k": null,
         "context_window": 262144,
-        "context_window_estimated": false,
+        "context_window_estimated": true,
         "pricing_varies": false,
         "alias_of": null,
-        "source": "litellm",
-        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-09-16T00:00:00.000Z"
+        "source": "aws-pricelist",
+        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20261016210806/us-east-1/index.json",
+        "fetched_at": "2026-10-27T00:00:00.000Z"
       },
-      "selector_matched": 0,
+      "selector_matched": 1,
       "blended_per_million": 0.7999999999999999,
       "ln_blended": -0.22314355131420985,
       "published_blended_per_million": 0.8,
@@ -56,7 +56,7 @@
         "alias_of": null,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-09-16T00:00:00.000Z"
+        "fetched_at": "2026-10-27T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.57,
@@ -82,7 +82,7 @@
         "alias_of": null,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-09-16T00:00:00.000Z"
+        "fetched_at": "2026-10-27T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.515,
@@ -98,25 +98,25 @@
         "family": "deepseek-v4-flash",
         "hyperscaler": "aggregator",
         "region": null,
-        "input_per_1k": 0.00008860600000000001,
-        "output_per_1k": 0.00017721200000000002,
-        "cached_input_per_1k": 0.000017721200000000002,
+        "input_per_1k": 0.000049999999999999996,
+        "output_per_1k": 0.00045,
+        "cached_input_per_1k": 0.000049999999999999996,
         "image_per_1k": null,
-        "context_window": 1024000,
+        "context_window": 1048576,
         "context_window_estimated": false,
         "pricing_varies": false,
         "alias_of": null,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-09-16T00:00:00.000Z"
+        "fetched_at": "2026-10-27T00:00:00.000Z"
       },
       "selector_matched": 0,
-      "blended_per_million": 0.11518780000000002,
-      "ln_blended": -2.161191439106219,
+      "blended_per_million": 0.17,
+      "ln_blended": -1.7719568419318752,
       "published_blended_per_million": 0.182,
-      "divergence_pct": -36.70999999999999
+      "divergence_pct": -6.593406593406584
     }
   ],
-  "geometric_mean_usd_per_million": 0.4055502176760566,
-  "arithmetic_mean_usd_per_million": 0.50004695
+  "geometric_mean_usd_per_million": 0.44699765859289264,
+  "arithmetic_mean_usd_per_million": 0.5137499999999999
 }

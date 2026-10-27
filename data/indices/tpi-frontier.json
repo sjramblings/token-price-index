@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-09-17T02:42:37.099Z",
+  "computed_at": "2026-10-27T11:44:04.750Z",
   "data_source": "data/current.json",
   "member_count": 4,
   "members_resolved": 4,
@@ -29,7 +29,7 @@
         "alias_of": null,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-09-16T00:00:00.000Z"
+        "fetched_at": "2026-10-27T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 12.5,
@@ -55,7 +55,7 @@
         "alias_of": null,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-09-16T00:00:00.000Z"
+        "fetched_at": "2026-10-27T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 11,
@@ -81,7 +81,7 @@
         "alias_of": null,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-09-16T00:00:00.000Z"
+        "fetched_at": "2026-10-27T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 6.6,
@@ -107,7 +107,7 @@
         "alias_of": null,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-09-16T00:00:00.000Z"
+        "fetched_at": "2026-10-27T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 6.25,
