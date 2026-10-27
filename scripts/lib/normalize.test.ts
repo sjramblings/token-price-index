@@ -101,6 +101,14 @@ describe('extractFamily', () => {
     ['openinfer/@oi/Qwen3.5-9B', 'qwen3.5-9b'],
     // A fourth host using the same shape must work without a code change.
     ['somehost/@zz/some-model-7b', 'some-model-7b'],
+    // Nested org paths: one strip left 764 families carrying a slash, 304 of
+    // them duplicating a clean family that already existed.
+    ['anyscale/meta-llama/Llama-2-13b-chat-hf', 'llama-2-13b-chat-hf'],
+    ['fireworks_ai/accounts/fireworks/models/deepseek-v3', 'deepseek-v3'],
+    ['deepseek-ai/deepseek-v4-flash', 'deepseek-v4-flash'],
+    ['anyscale/HuggingFaceH4/zephyr-7b-beta', 'zephyr-7b-beta'],
+    // The dot guard still protects the vendor-dot form the next rule owns.
+    ['bedrock/anthropic.claude-3-5-sonnet', 'claude-3-5-sonnet'],
     // GovCloud Bedrock inference-profile prefix — `us` alone does not match
     // `us-gov.`, so these used to survive into the family field.
     ['us-gov.anthropic.claude-opus-5', 'claude-opus-5'],

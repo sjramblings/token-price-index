@@ -5,10 +5,10 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-10-27T11:44:04.590Z",
+  "computed_at": "2026-10-27T12:19:39.874Z",
   "data_source": "data/current.json",
   "member_count": 16,
-  "members_resolved": 15,
+  "members_resolved": 14,
   "members_with_invalid_price": 0,
   "members": [
     {
@@ -117,29 +117,12 @@
     },
     {
       "label": "Gemini 2.5 Pro",
-      "resolved": {
-        "provider": "vercel_ai_gateway",
-        "model_id": "vercel_ai_gateway/google/gemini-2.5-pro",
-        "family": "google/gemini-2.5-pro",
-        "hyperscaler": "aggregator",
-        "region": null,
-        "input_per_1k": 0.00125,
-        "output_per_1k": 0.01,
-        "cached_input_per_1k": 0.000125,
-        "image_per_1k": null,
-        "context_window": 1048576,
-        "context_window_estimated": false,
-        "pricing_varies": false,
-        "alias_of": null,
-        "source": "litellm",
-        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-10-27T00:00:00.000Z"
-      },
-      "selector_matched": 0,
-      "blended_per_million": 3.875,
-      "ln_blended": 1.3545456628053103,
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
       "published_blended_per_million": 4,
-      "divergence_pct": -3.125
+      "excluded_reason": "unresolved"
     },
     {
       "label": "Gemini 3.5 Flash",
@@ -170,34 +153,34 @@
     {
       "label": "GLM 5.1",
       "resolved": {
-        "provider": "z-ai",
-        "model_id": "z-ai/glm-5.1",
+        "provider": "novita",
+        "model_id": "novita/zai-org/glm-5.1",
         "family": "glm-5.1",
         "hyperscaler": "aggregator",
         "region": null,
-        "input_per_1k": 0.000966,
-        "output_per_1k": 0.0030359999999999996,
-        "cached_input_per_1k": 0.0001794,
+        "input_per_1k": 0.00138,
+        "output_per_1k": 0.0044,
+        "cached_input_per_1k": 0.00026,
         "image_per_1k": null,
-        "context_window": 200000,
+        "context_window": 204800,
         "context_window_estimated": false,
         "pricing_varies": false,
         "alias_of": null,
-        "source": "openrouter",
-        "source_url": "https://openrouter.ai/api/v1/models",
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
         "fetched_at": "2026-10-27T00:00:00.000Z"
       },
       "selector_matched": 0,
-      "blended_per_million": 1.5869999999999997,
-      "ln_blended": 0.4618454415442719,
+      "blended_per_million": 2.286,
+      "ln_blended": 0.8268035653726189,
       "published_blended_per_million": 2.3,
-      "divergence_pct": -31.000000000000007
+      "divergence_pct": -0.608695652173904
     },
     {
       "label": "Claude Haiku 4.5",
       "resolved": {
-        "provider": "anthropic",
-        "model_id": "anthropic/claude-haiku-4.5",
+        "provider": "vercel_ai_gateway",
+        "model_id": "vercel_ai_gateway/anthropic/claude-haiku-4.5",
         "family": "claude-haiku-4-5",
         "hyperscaler": "aggregator",
         "region": null,
@@ -209,8 +192,8 @@
         "context_window_estimated": false,
         "pricing_varies": false,
         "alias_of": null,
-        "source": "openrouter",
-        "source_url": "https://openrouter.ai/api/v1/models",
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
         "fetched_at": "2026-10-27T00:00:00.000Z"
       },
       "selector_matched": 0,
@@ -248,28 +231,28 @@
     {
       "label": "Kimi K2.6",
       "resolved": {
-        "provider": "moonshotai",
-        "model_id": "moonshotai/kimi-k2.6",
+        "provider": "novita",
+        "model_id": "novita/moonshotai/kimi-k2.6",
         "family": "kimi-k2.6",
         "hyperscaler": "aggregator",
         "region": null,
-        "input_per_1k": 0.00065,
-        "output_per_1k": 0.00341,
-        "cached_input_per_1k": 0.00015,
+        "input_per_1k": 0.0008,
+        "output_per_1k": 0.0034000000000000002,
+        "cached_input_per_1k": 0.00016,
         "image_per_1k": null,
         "context_window": 262144,
         "context_window_estimated": false,
         "pricing_varies": false,
         "alias_of": null,
-        "source": "openrouter",
-        "source_url": "https://openrouter.ai/api/v1/models",
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
         "fetched_at": "2026-10-27T00:00:00.000Z"
       },
       "selector_matched": 0,
-      "blended_per_million": 1.4779999999999998,
-      "ln_blended": 0.39068982252600987,
+      "blended_per_million": 1.58,
+      "ln_blended": 0.4574248470388755,
       "published_blended_per_million": 1.865,
-      "divergence_pct": -20.750670241286876
+      "divergence_pct": -15.28150134048257
     },
     {
       "label": "Grok 4.3",
@@ -336,8 +319,8 @@
     {
       "label": "MiniMax M2.7",
       "resolved": {
-        "provider": "minimax",
-        "model_id": "minimax/minimax-m2.7",
+        "provider": "novita",
+        "model_id": "novita/minimax/minimax-m2.7",
         "family": "minimax-m2.7",
         "hyperscaler": "aggregator",
         "region": null,
@@ -349,8 +332,8 @@
         "context_window_estimated": false,
         "pricing_varies": false,
         "alias_of": null,
-        "source": "openrouter",
-        "source_url": "https://openrouter.ai/api/v1/models",
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
         "fetched_at": "2026-10-27T00:00:00.000Z"
       },
       "selector_matched": 0,
@@ -388,30 +371,30 @@
     {
       "label": "DeepSeek V4 Flash",
       "resolved": {
-        "provider": "deepseek",
-        "model_id": "deepseek/deepseek-v4-flash",
+        "provider": "novita",
+        "model_id": "novita/deepseek/deepseek-v4-flash",
         "family": "deepseek-v4-flash",
         "hyperscaler": "aggregator",
         "region": null,
-        "input_per_1k": 0.000049999999999999996,
-        "output_per_1k": 0.00045,
-        "cached_input_per_1k": 0.000049999999999999996,
+        "input_per_1k": 0.00014000000000000001,
+        "output_per_1k": 0.00028000000000000003,
+        "cached_input_per_1k": 0.000028,
         "image_per_1k": null,
         "context_window": 1048576,
         "context_window_estimated": false,
         "pricing_varies": false,
         "alias_of": null,
-        "source": "openrouter",
-        "source_url": "https://openrouter.ai/api/v1/models",
+        "source": "litellm",
+        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
         "fetched_at": "2026-10-27T00:00:00.000Z"
       },
       "selector_matched": 0,
-      "blended_per_million": 0.17,
-      "ln_blended": -1.7719568419318752,
+      "blended_per_million": 0.182,
+      "ln_blended": -1.7037485919053417,
       "published_blended_per_million": 0.182,
-      "divergence_pct": -6.593406593406584
+      "divergence_pct": 0
     }
   ],
-  "geometric_mean_usd_per_million": 1.83447061329705,
-  "arithmetic_mean_usd_per_million": 3.460733333333333
+  "geometric_mean_usd_per_million": 1.802274786495062,
+  "arithmetic_mean_usd_per_million": 3.489214285714286
 }

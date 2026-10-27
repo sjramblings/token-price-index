@@ -275,8 +275,24 @@ export function extractFamily(modelId: string): string {
   // `us-gov.anthropic.claude-opus-5`.
   family = family.replace(/^(us-gov|eu|us|global|au|apac|ca|me|sa)\./, '');
 
-  const slashIndex = family.indexOf('/');
-  if (slashIndex > 0 && !family.slice(0, slashIndex).includes('.')) {
+  // Collapse EVERY leading org segment, not just the first.
+  //
+  // Upstream ids nest arbitrarily deep — `anyscale/meta-llama/Llama-2-13b`,
+  // `accounts/fireworks/models/deepseek-v3`, `openinfer/@oi/Qwen3.5-9B`.
+  // Stripping one segment left 764 families still carrying a slash, and 304 of
+  // those were duplicates of a clean family that already existed:
+  // `deepseek-ai/deepseek-v4-flash` sat beside `deepseek-v4-flash` as a
+  // separate model. That fragmented the Pivot family picker, inflated the
+  // Landscape availability counts, and split channel comparisons across two
+  // families that are the same model.
+  //
+  // The dot guard is unchanged and still stops this from eating a vendor-dot
+  // form such as `anthropic.claude-3-5-sonnet`, which the rule below owns.
+  for (;;) {
+    const slashIndex = family.indexOf('/');
+    if (slashIndex <= 0 || family.slice(0, slashIndex).includes('.')) {
+      break;
+    }
     family = family.slice(slashIndex + 1);
   }
 

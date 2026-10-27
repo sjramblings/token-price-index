@@ -5,10 +5,10 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-10-27T11:44:04.687Z",
+  "computed_at": "2026-10-27T12:19:39.962Z",
   "data_source": "data/current.json",
   "member_count": 16,
-  "members_resolved": 16,
+  "members_resolved": 15,
   "members_with_invalid_price": 0,
   "members": [
     {
@@ -117,29 +117,12 @@
     },
     {
       "label": "Gemini 2.5 Pro",
-      "resolved": {
-        "provider": "deepinfra",
-        "model_id": "deepinfra/google/gemini-2.5-pro",
-        "family": "google/gemini-2.5-pro",
-        "hyperscaler": "direct",
-        "region": null,
-        "input_per_1k": 0.00125,
-        "output_per_1k": 0.01,
-        "cached_input_per_1k": null,
-        "image_per_1k": null,
-        "context_window": 1000000,
-        "context_window_estimated": false,
-        "pricing_varies": false,
-        "alias_of": null,
-        "source": "litellm",
-        "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-10-27T00:00:00.000Z"
-      },
-      "selector_matched": 0,
-      "blended_per_million": 3.875,
-      "ln_blended": 1.3545456628053103,
+      "resolved": null,
+      "selector_matched": -1,
+      "blended_per_million": null,
+      "ln_blended": null,
       "published_blended_per_million": 4,
-      "divergence_pct": -3.125
+      "excluded_reason": "unresolved"
     },
     {
       "label": "Gemini 3.5 Flash",
@@ -431,6 +414,6 @@
       "note": "DeepSeek has no direct provider record in our LiteLLM source — only aggregator. Expected to be unresolved."
     }
   ],
-  "geometric_mean_usd_per_million": 1.877157328503022,
-  "arithmetic_mean_usd_per_million": 3.3913418749999997
+  "geometric_mean_usd_per_million": 1.7886111662359732,
+  "arithmetic_mean_usd_per_million": 3.359098
 }

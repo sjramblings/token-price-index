@@ -8,71 +8,160 @@ import type { Hyperscaler, PriceRecord } from './types';
  * Anthropic into three series in the streamgraph. Family names carry the
  * actual ownership signal (`claude-*` is Anthropic regardless of route).
  */
+/**
+ * Prefix match that will not run on into a longer word.
+ *
+ * A bare `family.startsWith('command')` claimed `commander-x` for Cohere, and
+ * `startsWith('phi')` would claim anything beginning "phi". Digits are still
+ * allowed to follow, so `phi3` and `gpt4` keep matching — it is only a
+ * continuing LETTER that means we have hit a different word.
+ */
+function startsWithToken(family: string, token: string): boolean {
+  return family.startsWith(token) && !/^[a-z]/.test(family.slice(token.length));
+}
+
 export function deriveModelOwner(record: Pick<PriceRecord, 'family' | 'provider'>): string {
   const family = record.family.toLowerCase();
-  if (family.startsWith('claude')) return 'anthropic';
-  if (family.startsWith('gpt')
-    || family.startsWith('o1')
-    || family.startsWith('o3')
-    || family.startsWith('o4')
-    || family.startsWith('chatgpt')
-    || family.startsWith('text-davinci')
-    || family.startsWith('text-embedding')
-    || family.startsWith('text-curie')
-    || family.startsWith('text-babbage')
-    || family.startsWith('text-ada')
-    || family.startsWith('dall-e')
-    || family.startsWith('whisper')
-    || family.startsWith('tts')
-    || family.startsWith('omni-')
-    || family.startsWith('davinci')
-    || family.startsWith('babbage')) return 'openai';
-  if (family.startsWith('gemini')
-    || family.startsWith('gemma')
-    || family.startsWith('palm')
-    || family.startsWith('text-bison')
-    || family.startsWith('chat-bison')
-    || family.startsWith('code-bison')
-    || family.startsWith('codechat-bison')
-    || family.startsWith('imagen')) return 'google';
-  if (family.startsWith('llama')
-    || family.startsWith('codellama')) return 'meta';
-  if (family.startsWith('mistral')
-    || family.startsWith('mixtral')
-    || family.startsWith('codestral')
-    || family.startsWith('pixtral')
-    || family.startsWith('ministral')) return 'mistral';
-  if (family.startsWith('nova')
-    || family.startsWith('titan')
-    || family.startsWith('rerank')) return 'amazon';
-  if (family.startsWith('phi')) return 'microsoft';
-  if (family.startsWith('command')
-    || family.startsWith('embed-english')
-    || family.startsWith('embed-multilingual')
-    || family.startsWith('rerank-english')
-    || family.startsWith('rerank-multilingual')
-    || family.startsWith('aya')) return 'cohere';
-  if (family.startsWith('grok')) return 'xai';
-  if (family.startsWith('deepseek')) return 'deepseek';
-  if (family.startsWith('qwen')) return 'alibaba';
-  if (family.startsWith('jamba')) return 'ai21';
-  if (family.startsWith('stable-diffusion')
-    || family.startsWith('sd3')
-    || family.startsWith('sdxl')) return 'stability';
-  if (family.startsWith('falcon')) return 'tii';
+  if (startsWithToken(family, 'claude')) return 'anthropic';
+  if (startsWithToken(family, 'gpt')
+    || startsWithToken(family, 'o1')
+    || startsWithToken(family, 'o3')
+    || startsWithToken(family, 'o4')
+    || startsWithToken(family, 'chatgpt')
+    || startsWithToken(family, 'text-davinci')
+    || startsWithToken(family, 'text-embedding')
+    || startsWithToken(family, 'text-curie')
+    || startsWithToken(family, 'text-babbage')
+    || startsWithToken(family, 'text-ada')
+    || startsWithToken(family, 'dall-e')
+    || startsWithToken(family, 'whisper')
+    || startsWithToken(family, 'tts')
+    || startsWithToken(family, 'omni-')
+    || startsWithToken(family, 'davinci')
+    || startsWithToken(family, 'babbage')) return 'openai';
+  if (startsWithToken(family, 'gemini')
+    || startsWithToken(family, 'gemma')
+    || startsWithToken(family, 'palm')
+    || startsWithToken(family, 'text-bison')
+    || startsWithToken(family, 'chat-bison')
+    || startsWithToken(family, 'code-bison')
+    || startsWithToken(family, 'codechat-bison')
+    || startsWithToken(family, 'imagen')) return 'google';
+  if (startsWithToken(family, 'llama')
+    || startsWithToken(family, 'codellama')) return 'meta';
+  if (startsWithToken(family, 'mistral')
+    || startsWithToken(family, 'mixtral')
+    || startsWithToken(family, 'codestral')
+    || startsWithToken(family, 'pixtral')
+    || startsWithToken(family, 'ministral')) return 'mistral';
+  if (startsWithToken(family, 'nova')
+    || startsWithToken(family, 'titan')
+    || startsWithToken(family, 'rerank')) return 'amazon';
+  if (startsWithToken(family, 'phi')) return 'microsoft';
+  if (startsWithToken(family, 'command')
+    || startsWithToken(family, 'embed-english')
+    || startsWithToken(family, 'embed-multilingual')
+    || startsWithToken(family, 'rerank-english')
+    || startsWithToken(family, 'rerank-multilingual')
+    || startsWithToken(family, 'aya')) return 'cohere';
+  if (startsWithToken(family, 'grok')) return 'xai';
+  if (startsWithToken(family, 'deepseek')) return 'deepseek';
+  if (startsWithToken(family, 'qwen')) return 'alibaba';
+  if (startsWithToken(family, 'jamba')) return 'ai21';
+  if (startsWithToken(family, 'stable-diffusion')
+    || startsWithToken(family, 'sd3')
+    || startsWithToken(family, 'sdxl')) return 'stability';
+  if (startsWithToken(family, 'falcon')) return 'tii';
+  // Owners that were missing, measured from the records that fell through:
+  // glm/zai 165, minimax 80, kimi 75, nemotron 40, and the long tail below.
+  if (startsWithToken(family, 'glm') || startsWithToken(family, 'zai')) return 'z-ai';
+  if (startsWithToken(family, 'minimax')) return 'minimax';
+  if (startsWithToken(family, 'kimi') || startsWithToken(family, 'moonshot')) return 'moonshot';
+  if (startsWithToken(family, 'nemotron')) return 'nvidia';
+  if (startsWithToken(family, 'voyage')) return 'voyage';
+  if (startsWithToken(family, 'doubao') || startsWithToken(family, 'seed-')) return 'bytedance';
+  if (startsWithToken(family, 'mimo')) return 'xiaomi';
+  if (startsWithToken(family, 'sonar') || startsWithToken(family, 'pplx')) return 'perplexity';
+  if (startsWithToken(family, 'hunyuan')) return 'tencent';
+  if (startsWithToken(family, 'ernie')) return 'baidu';
+  if (startsWithToken(family, 'yi-')) return '01-ai';
+  if (startsWithToken(family, 'internlm')) return 'shanghai-ai-lab';
+  if (startsWithToken(family, 'granite')) return 'ibm';
+  if (startsWithToken(family, 'solar')) return 'upstage';
+  if (startsWithToken(family, 'inkling')) return 'thinkingmachines';
+  if (startsWithToken(family, 'ling-') || startsWithToken(family, 'ring-')) return 'inclusionai';
+  if (startsWithToken(family, 'laguna')) return 'poolside';
+  if (startsWithToken(family, 'lfm')) return 'liquid';
+
+  // Second pass: a distinctive brand token anywhere in the family, on word
+  // boundaries. The prefix chain above misses relabelled variants — resellers
+  // ship `coding-glm-5.3`, `cc-glm-5.1`, `coding-kimi-k3`, which are plainly
+  // Z.ai and Moonshot models wearing a task prefix. This recovers 106 of the
+  // 304 records the prefix chain could not place; the remainder (agnes,
+  // longcat, hy3, step-3.7) are genuinely unrecognised and stay that way.
+  //
+  // Word boundaries matter: a bare substring test would read "command" inside
+  // "commander" and "phi" inside "sophia".
+  for (const [token, owner] of BRAND_TOKENS) {
+    if (new RegExp(`(^|[^a-z0-9])${token}([^a-z0-9]|$)`).test(family)) {
+      return owner;
+    }
+  }
+
   const provider = record.provider.toLowerCase();
-  if (provider === 'bedrock' || provider === 'bedrock_converse') return 'amazon-bedrock-hosted';
-  if (provider === 'azure' || provider === 'azure_ai') return 'azure-hosted';
   if (provider === 'vertex_ai' || provider.startsWith('vertex_ai-')) return 'google';
-  if (provider === 'fireworks_ai') return 'fireworks';
-  if (provider === 'together_ai' || provider === 'togetherai') return 'together';
-  if (provider === 'openrouter') return 'openrouter';
-  if (provider === 'deepinfra') return 'deepinfra';
-  if (provider === 'groq') return 'groq';
-  if (provider === 'replicate') return 'replicate';
-  if (provider === 'perplexity') return 'perplexity';
+
+  // A HOST is not an OWNER. The fallback used to return the routing label,
+  // so a Sankey of "provider → hyperscaler" showed `fireworks → direct` with
+  // 320 SKUs as though Fireworks authored those models — it hosts Llama,
+  // Qwen and DeepSeek weights it did not train. 36% of records resolved to a
+  // name like this. Saying "unattributed" is less satisfying than a confident
+  // wrong answer and is what the data actually supports.
+  if (MODEL_HOSTS.has(provider)) {
+    return 'unattributed';
+  }
   return record.provider;
 }
+
+/**
+ * Distinctive model-name tokens and who trained them. Ordered most to least
+ * specific, since the first match wins.
+ */
+const BRAND_TOKENS: ReadonlyArray<readonly [string, string]> = [
+  ['nemotron', 'nvidia'],
+  ['hunyuan', 'tencent'],
+  ['minimax', 'minimax'],
+  ['deepseek', 'deepseek'],
+  ['doubao', 'bytedance'],
+  ['mistral', 'mistral'],
+  ['command', 'cohere'],
+  ['claude', 'anthropic'],
+  ['gemini', 'google'],
+  ['gemma', 'google'],
+  ['llama', 'meta'],
+  ['qwen', 'alibaba'],
+  ['kimi', 'moonshot'],
+  ['grok', 'xai'],
+  ['mimo', 'xiaomi'],
+  ['glm', 'z-ai'],
+  ['phi', 'microsoft'],
+  ['gpt', 'openai'],
+];
+
+/**
+ * Providers that serve other companies' models. Never an owner — when the
+ * family name does not identify who trained the model, these resolve to
+ * `unattributed` rather than lending their name to someone else's work.
+ */
+const MODEL_HOSTS: ReadonlySet<string> = new Set([
+  'bedrock', 'bedrock_converse', 'bedrock_mantle', 'sagemaker',
+  'azure', 'azure_ai', 'azure_text',
+  'openrouter', 'vercel_ai_gateway', 'llamagate', 'aiml', 'aihubmix',
+  'fireworks_ai', 'together_ai', 'togetherai', 'deepinfra', 'novita',
+  'groq', 'replicate', 'anyscale', 'nebius', 'cloudflare', 'databricks',
+  'watsonx', 'sambanova', 'cerebras', 'hyperbolic', 'lepton', 'octoai',
+  'ollama', 'lm_studio', 'vllm', 'openai_like', 'custom_openai',
+]);
 
 export type ProviderSharePoint = {
   date: string;
