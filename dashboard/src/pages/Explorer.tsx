@@ -9,10 +9,11 @@ import {
 import type { SortingState } from '@tanstack/react-table';
 import { motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
+import { Signals } from '../components/Signals';
 import { CountUp } from '../lib/CountUp';
 import { cn } from '../lib/cn';
 import type { HistoryManifest } from '../lib/data';
-import { loadCurrent, loadHistoryManifest, snapshotDate } from '../lib/data';
+import { loadCurrent, loadHistory, loadHistoryManifest, recentSnapshotDates, snapshotDate } from '../lib/data';
 import { daysSince, fmt, fmtRelative, formatContextWindow, formatPricePer1K, formatRegion } from '../lib/format';
 import type { Hyperscaler, PriceRecord, Source } from '../lib/types';
 
@@ -60,6 +61,8 @@ function isSourceFilter(value: string): value is SourceFilter {
 export default function Explorer(): JSX.Element {
   const [records, setRecords] = useState<PriceRecord[]>([]);
   const [historyManifest, setHistoryManifest] = useState<HistoryManifest | null>(null);
+  const [previous, setPrevious] = useState<PriceRecord[] | null>(null);
+  const [previousDate, setPreviousDate] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [requestAttempt, setRequestAttempt] = useState(0);
@@ -75,11 +78,35 @@ export default function Explorer(): JSX.Element {
 
     void Promise.all([loadCurrent(), loadHistoryManifest().catch(() => null)])
       .then(([currentRecords, manifest]) => {
-        if (active) {
-          setRecords(currentRecords);
-          setHistoryManifest(manifest);
-          setLoading(false);
+        if (!active) {
+          return;
         }
+        setRecords(currentRecords);
+        setHistoryManifest(manifest);
+        setLoading(false);
+
+        // The movement panel needs one earlier snapshot. Take the most recent
+        // one BEFORE the current snapshot from the manifest rather than
+        // "yesterday" — the series has gaps, and asking for a date that was
+        // never written is a guaranteed 404 and an empty panel.
+        const today = snapshotDate(currentRecords);
+        const earlier = manifest === null
+          ? []
+          : recentSnapshotDates(manifest, manifest.dates.length)
+            .filter((date) => today === null || date < today);
+        const target = earlier[0];
+        if (target === undefined) {
+          return;
+        }
+        void loadHistory(target)
+          .then((priorRecords) => {
+            if (active && priorRecords !== null) {
+              setPrevious(priorRecords);
+              setPreviousDate(target);
+            }
+          })
+          // Movement is an enhancement; losing it must not break the page.
+          .catch(() => undefined);
       })
       .catch((reason: unknown) => {
         if (active) {
@@ -277,7 +304,16 @@ export default function Explorer(): JSX.Element {
         </div>
       </section>
 
-      <section className="card mt-12 p-4 md:p-6">
+      <div className="mt-12">
+        <Signals
+          records={records}
+          previous={previous}
+          previousDate={previousDate}
+          snapshot={snapshot}
+        />
+      </div>
+
+      <section className="card mt-4 p-4 md:p-6">
         <div className="mb-4 flex flex-wrap items-center gap-3">
           <input
             type="search"

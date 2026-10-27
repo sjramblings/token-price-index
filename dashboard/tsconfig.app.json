@@ -23,5 +23,7 @@
     "composite": true,
     "strict": true
   },
-  "include": ["src", "../scripts/lib/types.ts"]
+  "include": ["src", "../scripts/lib/types.ts"],
+  "// exclude": "Tests import bun:test, which the app build has no types for and never ships. `bun test` runs them; this build is for shippable source only.",
+  "exclude": ["src/**/*.test.ts"]
 }
