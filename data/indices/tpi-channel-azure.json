@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-10-27T16:40:08.005Z",
+  "computed_at": "2026-10-28T21:28:40.205Z",
   "data_source": "data/current.json",
   "member_count": 16,
   "members_resolved": 11,
@@ -29,7 +29,7 @@
         "alias_of": null,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-10-27T00:00:00.000Z"
+        "fetched_at": "2026-10-28T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 13.75,
@@ -55,7 +55,7 @@
         "alias_of": null,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-10-27T00:00:00.000Z"
+        "fetched_at": "2026-10-28T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 11,
@@ -81,7 +81,7 @@
         "alias_of": null,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-10-27T00:00:00.000Z"
+        "fetched_at": "2026-10-28T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 6.6,
@@ -107,7 +107,7 @@
         "alias_of": null,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-10-27T00:00:00.000Z"
+        "fetched_at": "2026-10-28T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 6.875,
@@ -163,7 +163,7 @@
         "alias_of": null,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-10-27T00:00:00.000Z"
+        "fetched_at": "2026-10-28T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 2.2,
@@ -189,7 +189,7 @@
         "alias_of": null,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-10-27T00:00:00.000Z"
+        "fetched_at": "2026-10-28T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 1.8750000000000002,
@@ -215,7 +215,7 @@
         "alias_of": null,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-10-27T00:00:00.000Z"
+        "fetched_at": "2026-10-28T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 1.8649999999999998,
@@ -242,7 +242,7 @@
         "alias_of": null,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-10-27T00:00:00.000Z"
+        "fetched_at": "2026-10-28T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 1.625,
@@ -279,7 +279,7 @@
         "alias_of": null,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-10-27T00:00:00.000Z"
+        "fetched_at": "2026-10-28T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.7999999999999999,
@@ -315,7 +315,7 @@
         "alias_of": null,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-10-27T00:00:00.000Z"
+        "fetched_at": "2026-10-28T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.515,
@@ -341,7 +341,7 @@
         "alias_of": null,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-10-27T00:00:00.000Z"
+        "fetched_at": "2026-10-28T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.286,
