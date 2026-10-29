@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-10-28T21:28:40.262Z",
+  "computed_at": "2026-10-29T21:30:06.687Z",
   "data_source": "data/current.json",
   "member_count": 4,
   "members_resolved": 4,
@@ -28,8 +28,8 @@
         "pricing_varies": false,
         "alias_of": null,
         "source": "aws-pricelist",
-        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20261028192216/us-east-1/index.json",
-        "fetched_at": "2026-10-28T00:00:00.000Z"
+        "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20261029185748/us-east-1/index.json",
+        "fetched_at": "2026-10-29T00:00:00.000Z"
       },
       "selector_matched": 1,
       "blended_per_million": 0.7999999999999999,
@@ -56,7 +56,7 @@
         "alias_of": null,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-10-28T00:00:00.000Z"
+        "fetched_at": "2026-10-29T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.57,
@@ -82,7 +82,7 @@
         "alias_of": null,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-10-28T00:00:00.000Z"
+        "fetched_at": "2026-10-29T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.515,
@@ -108,7 +108,7 @@
         "alias_of": null,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-10-28T00:00:00.000Z"
+        "fetched_at": "2026-10-29T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.11829999999999996,
