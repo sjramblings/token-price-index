@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-10-29T21:30:06.728Z",
+  "computed_at": "2026-10-30T21:17:34.341Z",
   "data_source": "data/current.json",
   "member_count": 8,
   "members_resolved": 7,
@@ -38,7 +38,7 @@
         "alias_of": null,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-10-29T00:00:00.000Z"
+        "fetched_at": "2026-10-30T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 1.25,
@@ -65,7 +65,7 @@
         "alias_of": null,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-10-29T00:00:00.000Z"
+        "fetched_at": "2026-10-30T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 2.3,
@@ -91,7 +91,7 @@
         "alias_of": null,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-10-29T00:00:00.000Z"
+        "fetched_at": "2026-10-30T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 2.2,
@@ -117,7 +117,7 @@
         "alias_of": null,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-10-29T00:00:00.000Z"
+        "fetched_at": "2026-10-30T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 1.8750000000000002,
@@ -143,7 +143,7 @@
         "alias_of": null,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-10-29T00:00:00.000Z"
+        "fetched_at": "2026-10-30T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 1.8649999999999998,
@@ -169,7 +169,7 @@
         "alias_of": null,
         "source": "litellm",
         "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
-        "fetched_at": "2026-10-29T00:00:00.000Z"
+        "fetched_at": "2026-10-30T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 1.625,
@@ -195,7 +195,7 @@
         "alias_of": null,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-10-29T00:00:00.000Z"
+        "fetched_at": "2026-10-30T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.41600000000000004,
