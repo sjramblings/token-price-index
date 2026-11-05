@@ -5,7 +5,7 @@
     "input": 0.7,
     "output": 0.3
   },
-  "computed_at": "2026-11-03T22:09:56.651Z",
+  "computed_at": "2026-11-05T22:28:37.864Z",
   "data_source": "data/current.json",
   "member_count": 4,
   "members_resolved": 4,
@@ -29,7 +29,7 @@
         "alias_of": null,
         "source": "aws-pricelist",
         "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/20261102165015/us-east-1/index.json",
-        "fetched_at": "2026-11-03T00:00:00.000Z"
+        "fetched_at": "2026-11-05T00:00:00.000Z"
       },
       "selector_matched": 1,
       "blended_per_million": 0.7999999999999999,
@@ -46,23 +46,23 @@
         "family": "minimax-m2.7",
         "hyperscaler": "aggregator",
         "region": null,
-        "input_per_1k": 0.0003,
-        "output_per_1k": 0.0012,
-        "cached_input_per_1k": 0.000059999999999999995,
+        "input_per_1k": 0.00021,
+        "output_per_1k": 0.00084,
+        "cached_input_per_1k": 0.000042,
         "image_per_1k": null,
-        "context_window": 204800,
+        "context_window": 196608,
         "context_window_estimated": false,
         "pricing_varies": false,
         "alias_of": null,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-11-03T00:00:00.000Z"
+        "fetched_at": "2026-11-05T00:00:00.000Z"
       },
       "selector_matched": 0,
-      "blended_per_million": 0.57,
-      "ln_blended": -0.5621189181535413,
+      "blended_per_million": 0.399,
+      "ln_blended": -0.9187938620922735,
       "published_blended_per_million": 0.57,
-      "divergence_pct": 0
+      "divergence_pct": -29.99999999999999
     },
     {
       "label": "GPT-5.4 Nano",
@@ -82,7 +82,7 @@
         "alias_of": null,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-11-03T00:00:00.000Z"
+        "fetched_at": "2026-11-05T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.515,
@@ -108,7 +108,7 @@
         "alias_of": null,
         "source": "openrouter",
         "source_url": "https://openrouter.ai/api/v1/models",
-        "fetched_at": "2026-11-03T00:00:00.000Z"
+        "fetched_at": "2026-11-05T00:00:00.000Z"
       },
       "selector_matched": 0,
       "blended_per_million": 0.11829999999999996,
@@ -117,6 +117,6 @@
       "divergence_pct": -35.00000000000002
     }
   ],
-  "geometric_mean_usd_per_million": 0.40826223061246375,
-  "arithmetic_mean_usd_per_million": 0.500825
+  "geometric_mean_usd_per_million": 0.37343387748394086,
+  "arithmetic_mean_usd_per_million": 0.458075
 }
